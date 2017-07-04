@@ -1,0 +1,74 @@
+package protocol
+
+import (
+	"encoding/binary"
+	"github.com/michey/gokkan/data"
+)
+
+const (
+	OUTGOING_FRAME  uint8 = '>'
+	INCOMING_FRAME  uint8 = '!'
+	OUTGOING_FILTER uint8 = '^'
+	STOP_CHAR             = '#'
+)
+
+type PotatoProtocol struct {
+	IProtocol
+}
+
+func (p *PotatoProtocol) Encode(frame *data.CANFrame) []byte {
+	bytes := make([]byte, 30)
+	bytes[0] = OUTGOING_FRAME
+	bytes[29] = STOP_CHAR
+
+	data_bytes := bytes[1:30]
+	copy(data_bytes, writeCANFrameToByteArray(frame))
+	return bytes
+}
+
+func (p *PotatoProtocol) Decode(bytes []byte) (err error, frame *data.CANFrame) {
+	return nil, readCANFrameFromByteArray(bytes[1:30])
+}
+
+func writeCANFrameToByteArray(frame *data.CANFrame) []byte {
+	bs := make([]byte, 28)
+	id := make([]byte, 4)
+	eId := make([]byte, 4)
+	ide := make([]byte, 4)
+	rtr := make([]byte, 4)
+	dlc := make([]byte, 4)
+
+	binary.BigEndian.PutUint32(id, frame.StdId)
+	binary.BigEndian.PutUint32(eId, frame.ExtendedId)
+	binary.BigEndian.PutUint32(ide, frame.IDE)
+	binary.BigEndian.PutUint32(rtr, frame.RTR)
+	binary.BigEndian.PutUint32(dlc, frame.DLC)
+
+	copy(bs[0:4], id)
+	copy(bs[4:8], eId)
+	copy(bs[8:12], ide)
+	copy(bs[12:16], rtr)
+	copy(bs[16:20], dlc)
+	copy(bs[20:28], frame.Data)
+	return bs
+}
+
+func readCANFrameFromByteArray(bytes []byte) *data.CANFrame {
+	canFrame := new(data.CANFrame)
+
+	id := binary.BigEndian.Uint32(bytes[0:4])
+	eid := binary.BigEndian.Uint32(bytes[4:8])
+	ide := binary.BigEndian.Uint32(bytes[8:12])
+	rtr := binary.BigEndian.Uint32(bytes[12:16])
+	dlc := binary.BigEndian.Uint32(bytes[16:20])
+	data := bytes[20:28]
+
+	canFrame.StdId = id
+	canFrame.ExtendedId = eid
+	canFrame.IDE = ide
+	canFrame.RTR = rtr
+	canFrame.DLC = dlc
+	canFrame.Data = data
+
+	return canFrame
+}
