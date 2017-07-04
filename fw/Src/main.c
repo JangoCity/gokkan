@@ -80,6 +80,10 @@ uint8_t* pt_CANMessage;
 uint8_t canLocked = 0;
 uint8_t serialLocked = 0;
 
+static CanTxMsgTypeDef TxMessage;
+static CanRxMsgTypeDef RxMessage;
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -110,8 +114,6 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 
-    static CanTxMsgTypeDef TxMessage;
-    static CanRxMsgTypeDef RxMessage;
 
   /* USER CODE END 1 */
 
@@ -150,7 +152,7 @@ int main(void)
     sFilterConfig.FilterIdLow = 0x0000;
     sFilterConfig.FilterMaskIdHigh = 0x0000;
     sFilterConfig.FilterMaskIdLow = 0x0000;
-    sFilterConfig.FilterFIFOAssignment = 0;
+    sFilterConfig.FilterFIFOAssignment = 1;
     sFilterConfig.FilterActivation = ENABLE;
     sFilterConfig.BankNumber = 14;
 
@@ -166,7 +168,7 @@ int main(void)
     flushBuffers();
 
     HAL_UART_Receive_IT(&huart3, &RX_Data, 1);
-    HAL_CAN_Receive_IT(&hcan, CAN_FIFO0);
+    HAL_CAN_Receive_IT(&hcan, CAN_FIFO1);
 
   /* USER CODE END 2 */
 
@@ -305,11 +307,11 @@ static void MX_CAN_Init(void)
 {
 
   hcan.Instance = CAN1;
-  hcan.Init.Prescaler = 8;
+  hcan.Init.Prescaler = 20;
   hcan.Init.Mode = CAN_MODE_SILENT_LOOPBACK;
   hcan.Init.SJW = CAN_SJW_1TQ;
-  hcan.Init.BS1 = CAN_BS1_3TQ;
-  hcan.Init.BS2 = CAN_BS2_5TQ;
+  hcan.Init.BS1 = CAN_BS1_13TQ;
+  hcan.Init.BS2 = CAN_BS2_2TQ;
   hcan.Init.TTCM = DISABLE;
   hcan.Init.ABOM = DISABLE;
   hcan.Init.AWUM = DISABLE;
@@ -422,8 +424,8 @@ void QToSerialF(void const * argument)
   SMessage sMessage;
     for (;;) {
         if (serialLocked == 0 && xQueuePeek(CAN_TO_SERIALHandle, &sMessage, 10)) {
-            pt_serialMessage = malloc(sizeof(CanRxMsgTypeDef) + 1);
-            memcpy(pt_serialMessage, sMessage.dataPointer, sizeof(CanRxMsgTypeDef));
+            pt_serialMessage = malloc(sizeof(CanRxMsgTypeDef) + 2);
+            memcpy(pt_serialMessage, &sMessage.dataPointer, sizeof(CanRxMsgTypeDef));
             pt_serialMessage[sizeof(CanRxMsgTypeDef)] = '\n';
             free(sMessage.dataPointer);
             HAL_StatusTypeDef r = HAL_UART_Transmit_IT(&huart3, pt_serialMessage, sizeof(CanRxMsgTypeDef));

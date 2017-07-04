@@ -57,7 +57,7 @@ extern osMessageQId SERIAL_TO_CANHandle;
 uint8_t serial_RX_iter = 0x00;
 uint8_t serial_RX_lm = 0x00;
 
-uint8_t STOP_CHAR = '\n';
+uint8_t STOP_CHAR = '#';
 uint8_t CMD_CHAR = '>';
 uint8_t FILTER_CHAR = '^';
 
@@ -77,16 +77,13 @@ void processCanMessage(CAN_HandleTypeDef *can) {
     xQueueSendFromISR(CAN_TO_SERIALHandle, &sMessage, NULL);
 }
 
-void sendCommand(uint8_t* msg, uint8_t length) {
-    uint8_t destLength = length;
-    uint8_t* pt_CANMessage = malloc(sizeof(CanTxMsgTypeDef));
-    memset(pt_CANMessage, 0x00, sizeof(CanTxMsgTypeDef));
-    
-    if (sizeof(CanTxMsgTypeDef) < length) {
-      destLength = sizeof(CanTxMsgTypeDef);
-    }
-    
-    memcpy(pt_CANMessage, msg, destLength);
+void sendCommand(uint8_t *msg, uint8_t length) {
+   
+    uint32_t sizeOfTxMsg = sizeof(CanTxMsgTypeDef);
+    uint8_t *pt_CANMessage = malloc(sizeOfTxMsg);
+   
+  
+    memcpy(pt_CANMessage, msg + 1, sizeOfTxMsg);
     
     CANMessage cMessage;
     cMessage.canMessageId = 0;
@@ -98,10 +95,11 @@ void processSerialMessage(UART_HandleTypeDef *uart) {
     HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
 
     uint8_t message_length = 0;
+    uint32_t sizeofReciverBuffer = sizeof(serial_RX_Data);
     if (serial_RX_lm < serial_RX_iter) {
         message_length = serial_RX_iter - serial_RX_lm;
     } else {
-        message_length = (sizeof(serial_RX_Data) - 1) - serial_RX_lm + serial_RX_iter;
+        message_length = (sizeofReciverBuffer - 1) - serial_RX_lm + serial_RX_iter;
     }
 
     uint8_t *message_buff;
@@ -109,8 +107,8 @@ void processSerialMessage(UART_HandleTypeDef *uart) {
 
     for (uint8_t i = 0; i < message_length; i++) {
         uint8_t buff_idx = serial_RX_lm + i;
-        if (buff_idx == (sizeof(serial_RX_Data) - 1)) {
-            buff_idx = buff_idx - (sizeof(serial_RX_Data) - 1);
+        if (buff_idx == (sizeofReciverBuffer - 1)) {
+            buff_idx = buff_idx - (sizeofReciverBuffer - 1);
         }
         message_buff[i] = serial_RX_Data[buff_idx];
     }
@@ -384,7 +382,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 
 void HAL_CAN_RxCpltCallback(CAN_HandleTypeDef *can) {
     processCanMessage(can);
-    HAL_CAN_Receive_IT(&hcan, CAN_FIFO0);
+    HAL_CAN_Receive_IT(&hcan, CAN_FIFO1);
 }
 
 void HAL_CAN_ErrorCallback(CAN_HandleTypeDef *hcan) {
