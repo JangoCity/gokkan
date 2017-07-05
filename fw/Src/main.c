@@ -80,8 +80,11 @@ uint8_t* pt_CANMessage;
 uint8_t canLocked = 0;
 uint8_t serialLocked = 0;
 
+//skip fmi and fifo number;
+uint8_t rxMessageSize = sizeof(CanRxMsgTypeDef) - 8;
+
 static CanTxMsgTypeDef TxMessage;
-static CanRxMsgTypeDef RxMessage;
+//static CanRxMsgTypeDef RxMessage;
 
 
 /* USER CODE END PV */
@@ -161,8 +164,9 @@ int main(void)
         Error_Handler();
     }
 
+    
     hcan.pTxMsg = &TxMessage;
-    hcan.pRxMsg = &RxMessage;
+    hcan.pRxMsg = malloc(sizeof(CanRxMsgTypeDef));
 
 
     flushBuffers();
@@ -424,11 +428,12 @@ void QToSerialF(void const * argument)
   SMessage sMessage;
     for (;;) {
         if (serialLocked == 0 && xQueuePeek(CAN_TO_SERIALHandle, &sMessage, 10)) {
-            pt_serialMessage = malloc(sizeof(CanRxMsgTypeDef) + 2);
-            memcpy(pt_serialMessage, &sMessage.dataPointer, sizeof(CanRxMsgTypeDef));
-            pt_serialMessage[sizeof(CanRxMsgTypeDef)] = '\n';
+            pt_serialMessage = malloc(rxMessageSize + 2);
+            memcpy(pt_serialMessage + 1, sMessage.dataPointer, rxMessageSize);
+            pt_serialMessage[rxMessageSize + 1] = '\n';
+            pt_serialMessage[0] = '!';
             free(sMessage.dataPointer);
-            HAL_StatusTypeDef r = HAL_UART_Transmit_IT(&huart3, pt_serialMessage, sizeof(CanRxMsgTypeDef));
+            HAL_StatusTypeDef r = HAL_UART_Transmit_IT(&huart3, pt_serialMessage, rxMessageSize + 2);
             if (r == HAL_OK) {
                 serialLocked = 1;
             }
