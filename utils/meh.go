@@ -9,13 +9,15 @@ import (
 )
 
 func main() {
-	c, err := driver.CANConnectWithPotato("/dev/ttyUSB0", 115200)
+	p := "/dev/ttyUSB0"
+	c, err := driver.CANConnectWithPotato(&p, 115200)
 	if err != nil {
 		log.Fatal(err)
 	}
 	go pp(c.GetChan())
 
-	frame := data.SimpleCANFrameConstruct(0xff, 8, []byte{0, 1, 2, 3, 4, 5, 6, 7})
+	frame := data.SimpleCANFrameConstruct(0x3f, 8, []byte{0, 1, 2, 3, 4, 5, 6, 7})
+	c.Skip(false)
 	c.Send(frame)
 	if err != nil {
 		log.Fatal(err)
@@ -23,7 +25,7 @@ func main() {
 	time.Sleep(10 * time.Second)
 }
 
-func pp(c chan data.Response) {
+func pp(c <-chan data.Response) {
 	msg := <-c
-	fmt.Printf("%#v", msg.CANFrame)
+	fmt.Println(&msg)
 }

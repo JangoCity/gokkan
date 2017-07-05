@@ -2,6 +2,7 @@ package protocol
 
 import (
 	"encoding/binary"
+	"fmt"
 	"github.com/michey/gokkan/data"
 )
 
@@ -27,6 +28,7 @@ func (p *PotatoProtocol) Encode(frame *data.CANFrame) []byte {
 }
 
 func (p *PotatoProtocol) Decode(bytes []byte) (err error, frame *data.CANFrame) {
+	fmt.Printf("%+v\n", bytes)
 	return nil, readCANFrameFromByteArray(bytes[1:30])
 }
 
@@ -40,8 +42,8 @@ func writeCANFrameToByteArray(frame *data.CANFrame) []byte {
 
 	binary.LittleEndian.PutUint32(id, frame.StdId)
 	binary.LittleEndian.PutUint32(eId, frame.ExtendedId)
-	binary.LittleEndian.PutUint32(ide, frame.IDE)
-	binary.LittleEndian.PutUint32(rtr, frame.RTR)
+	binary.LittleEndian.PutUint32(ide, uint32(frame.IDE))
+	binary.LittleEndian.PutUint32(rtr, uint32(frame.RTR))
 	binary.LittleEndian.PutUint32(dlc, frame.DLC)
 
 	copy(bs[0:4], id)
@@ -58,8 +60,8 @@ func readCANFrameFromByteArray(bytes []byte) *data.CANFrame {
 
 	id := binary.LittleEndian.Uint32(bytes[0:4])
 	eid := binary.LittleEndian.Uint32(bytes[4:8])
-	ide := binary.LittleEndian.Uint32(bytes[8:12])
-	rtr := binary.LittleEndian.Uint32(bytes[12:16])
+	ide := data.IDE(binary.LittleEndian.Uint32(bytes[8:12]))
+	rtr := data.RTR(binary.LittleEndian.Uint32(bytes[12:16]))
 	dlc := binary.LittleEndian.Uint32(bytes[16:20])
 	data := bytes[20:28]
 
