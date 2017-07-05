@@ -38,11 +38,11 @@ func writeCANFrameToByteArray(frame *data.CANFrame) []byte {
 	rtr := make([]byte, 4)
 	dlc := make([]byte, 4)
 
-	binary.BigEndian.PutUint32(id, frame.StdId)
-	binary.BigEndian.PutUint32(eId, frame.ExtendedId)
-	binary.BigEndian.PutUint32(ide, frame.IDE)
-	binary.BigEndian.PutUint32(rtr, frame.RTR)
-	binary.BigEndian.PutUint32(dlc, frame.DLC)
+	binary.LittleEndian.PutUint32(id, frame.StdId)
+	binary.LittleEndian.PutUint32(eId, frame.ExtendedId)
+	binary.LittleEndian.PutUint32(ide, frame.IDE)
+	binary.LittleEndian.PutUint32(rtr, frame.RTR)
+	binary.LittleEndian.PutUint32(dlc, frame.DLC)
 
 	copy(bs[0:4], id)
 	copy(bs[4:8], eId)
@@ -56,11 +56,11 @@ func writeCANFrameToByteArray(frame *data.CANFrame) []byte {
 func readCANFrameFromByteArray(bytes []byte) *data.CANFrame {
 	canFrame := new(data.CANFrame)
 
-	id := binary.BigEndian.Uint32(bytes[0:4])
-	eid := binary.BigEndian.Uint32(bytes[4:8])
-	ide := binary.BigEndian.Uint32(bytes[8:12])
-	rtr := binary.BigEndian.Uint32(bytes[12:16])
-	dlc := binary.BigEndian.Uint32(bytes[16:20])
+	id := binary.LittleEndian.Uint32(bytes[0:4])
+	eid := binary.LittleEndian.Uint32(bytes[4:8])
+	ide := binary.LittleEndian.Uint32(bytes[8:12])
+	rtr := binary.LittleEndian.Uint32(bytes[12:16])
+	dlc := binary.LittleEndian.Uint32(bytes[16:20])
 	data := bytes[20:28]
 
 	canFrame.StdId = id

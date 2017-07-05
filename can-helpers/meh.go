@@ -15,7 +15,7 @@ func main() {
 	}
 	go pp(c.GetChan())
 
-	frame := data.SimpleCANFrameConstruct(0xff, 7, []byte{0, 1, 2, 3, 4, 5, 6, 7})
+	frame := data.SimpleCANFrameConstruct(0xff, 8, []byte{0, 1, 2, 3, 4, 5, 6, 7})
 	c.Send(frame)
 	if err != nil {
 		log.Fatal(err)
@@ -25,5 +25,5 @@ func main() {
 
 func pp(c chan data.Response) {
 	msg := <-c
-	fmt.Printf("%+v", msg)
+	fmt.Printf("%#v", msg.CANFrame)
 }
