@@ -53,6 +53,7 @@ extern uint8_t* pt_serialMessage;
 
 extern osMessageQId CAN_TO_SERIALHandle;
 extern osMessageQId SERIAL_TO_CANHandle;
+extern uint8_t rxMessageSize;
 
 uint8_t serial_RX_iter = 0x00;
 uint8_t serial_RX_lm = 0x00;
@@ -69,9 +70,9 @@ uint8_t BLYA_DBG[] = "BLAY=((((\n";
 
 void processCanMessage(CAN_HandleTypeDef *can) {
     HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-    CanRxMsgTypeDef *receiveMsg = malloc(sizeof(CanRxMsgTypeDef));
+    uint8_t *receiveMsg = malloc(rxMessageSize);
     SMessage sMessage;
-    memcpy(receiveMsg, can->pRxMsg, sizeof(CanRxMsgTypeDef));
+    memcpy(receiveMsg, can->pRxMsg, rxMessageSize);
     sMessage.serialMessageId = 0;
     sMessage.dataPointer = (uint8_t*) receiveMsg;
     xQueueSendFromISR(CAN_TO_SERIALHandle, &sMessage, NULL);
