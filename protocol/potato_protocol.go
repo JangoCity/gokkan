@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"github.com/michey/gokkan/data"
+	"time"
 )
 
 const (
@@ -15,6 +16,14 @@ const (
 
 type PotatoProtocol struct {
 	IProtocol
+	buffer         []byte
+	bufferPosition uint16
+	read           bool
+}
+
+func InitPotatoProtocol() *PotatoProtocol {
+	buffer := make([]byte, 32)
+	return &PotatoProtocol{buffer: buffer, bufferPosition: 0, read: true}
 }
 
 func (p *PotatoProtocol) Encode(frame *data.CANFrame) []byte {
@@ -24,12 +33,26 @@ func (p *PotatoProtocol) Encode(frame *data.CANFrame) []byte {
 
 	data_bytes := bytes[1:30]
 	copy(data_bytes, writeCANFrameToByteArray(frame))
+	fmt.Println("<", bytes[1:30])
 	return bytes
 }
 
-func (p *PotatoProtocol) Decode(bytes []byte) (err error, frame *data.CANFrame) {
-	fmt.Printf("%+v\n", bytes)
-	return nil, readCANFrameFromByteArray(bytes[1:30])
+func (p *PotatoProtocol) Stop() {
+	p.read = false
+}
+
+func (p *PotatoProtocol) Decode(bytes <-chan byte, responses chan<- data.Response) {
+	for p.read {
+		byte := <-bytes
+		p.buffer[p.bufferPosition] = byte
+		p.bufferPosition++
+		if p.bufferPosition == 30 {
+			frame := readCANFrameFromByteArray(p.buffer[1:30])
+			response := data.Response{frame, time.Now().UnixNano() / int64(time.Millisecond)}
+			responses <- response
+			p.bufferPosition = 0
+		}
+	}
 }
 
 func writeCANFrameToByteArray(frame *data.CANFrame) []byte {
@@ -57,6 +80,8 @@ func writeCANFrameToByteArray(frame *data.CANFrame) []byte {
 
 func readCANFrameFromByteArray(bytes []byte) *data.CANFrame {
 	canFrame := new(data.CANFrame)
+
+	fmt.Println(">", bytes)
 
 	id := binary.LittleEndian.Uint32(bytes[0:4])
 	eid := binary.LittleEndian.Uint32(bytes[4:8])

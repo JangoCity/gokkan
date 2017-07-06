@@ -28,7 +28,7 @@ func main() {
 
 	for f.StdId <= data.MAX_STD_ID {
 		c.Skip(false)
-		helpers.ReadByTimeWindow(300*time.Millisecond, c.GetChan(), output)
+		helpers.ReadByTimeWindow(10*time.Millisecond, c.GetChan(), output)
 		c.Send(f)
 		msgs := <-output
 		c.Skip(true)
@@ -39,15 +39,17 @@ func main() {
 }
 
 func singleFrameSupplier(c chan data.CANFrame) {
-	for i := data.MIN_STD_ID; i <= data.MAX_STD_ID; i++ {
+	for i := 0; i <= data.MAX_STD_ID; i++ {
 		sf := uds.RequestForSession(uds.DefaultSession)
 		c <- *sf.ToFrame(uint32(i))
 	}
 }
 
 func findCorrectResponse(responses []data.Response) {
-	fmt.Printf("%+v", responses)
-	for _, response := range responses {
+	//fmt.Printf("%+v", responses)
+
+	for i := 0; i < len(responses); i++ {
+		response := responses[i]
 		if response.Data[1] == 0x50 || response.Data[1] == 0x7F {
 			fmt.Println(&response)
 			fmt.Printf("Well, ECU CAN ID is %#v. \n", response.StdId)

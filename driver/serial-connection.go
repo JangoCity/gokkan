@@ -4,7 +4,6 @@ import (
 	"github.com/michey/gokkan/data"
 	"github.com/michey/gokkan/protocol"
 	"github.com/tarm/serial"
-	"log"
 	"time"
 )
 
@@ -19,8 +18,8 @@ type SerialCANConnection struct {
 }
 
 func CANConnectWithPotato(serialName *string, baudRate int) (connection SerialCANConnection, err error) {
-	p := protocol.PotatoProtocol{}
-	return CANConnect(serialName, baudRate, &p)
+	p := protocol.InitPotatoProtocol()
+	return CANConnect(serialName, baudRate, p)
 }
 
 func CANConnect(serialName *string, baudRate int, iProtocol protocol.IProtocol) (connection SerialCANConnection, err error) {
@@ -56,41 +55,21 @@ func (conn *SerialCANConnection) GetChan() <-chan data.Response {
 func (conn *SerialCANConnection) stop() {
 	conn.readEnabled = false
 	conn.writeEnabled = false
+	(*conn.protocol).Stop()
 }
 
 func (conn *SerialCANConnection) reader(output chan<- data.Response) {
-	d := make([]byte, 1024)
-	dataPosition := 0
 	p := *conn.protocol
+	bytes := make(chan byte, 1)
+	b := make([]byte, 32)
 
-	b := make([]byte, 256)
+	go p.Decode(bytes, output)
 
 	for conn.readEnabled {
-
 		n, _ := conn.port.Read(b)
 		if n > 0 {
 			for i := 0; i < n; i++ {
-				d[dataPosition] = b[i]
-
-				if d[dataPosition] == '\n' {
-					validData := make([]byte, dataPosition+1)
-					copy(validData, d)
-					err, frame := p.Decode(validData)
-					if err != nil {
-						log.Fatal(err, validData)
-					} else {
-						response := data.Response{frame, time.Now().UnixNano() / int64(time.Millisecond)}
-						if !conn.readSkip {
-							output <- response
-						}
-					}
-					dataPosition = 0
-				}
-
-				dataPosition++
-				if dataPosition >= 1024 {
-					dataPosition = 0
-				}
+				bytes <- b[i]
 			}
 		}
 	}

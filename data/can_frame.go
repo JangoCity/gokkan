@@ -6,7 +6,7 @@ type IDE uint32
 
 const (
 	MIN_STD_ID = 0x00
-	MAX_STD_ID = 0xFF
+	MAX_STD_ID = 0x7FF
 )
 
 //CAN Identifier Type
