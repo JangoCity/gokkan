@@ -12,9 +12,12 @@ func ReadByTimeWindow(d time.Duration, input <-chan data.Response, output chan<-
 	go func() {
 		for run {
 			m := <-input
+			//fmt.Print(&m)
 			cache = append(cache, m)
 		}
 	}()
+
 	time.Sleep(d)
+	run = false
 	output <- cache
 }

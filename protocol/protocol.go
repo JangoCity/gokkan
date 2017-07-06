@@ -6,5 +6,6 @@ import (
 
 type IProtocol interface {
 	Encode(frame *data.CANFrame) []byte
-	Decode(bytes []byte) (err error, frame *data.CANFrame)
+	Decode(bytes <-chan byte, frames chan<- data.Response)
+	Stop()
 }
