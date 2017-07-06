@@ -42,49 +42,39 @@
 #include <string.h>
 #include "main.h"
 
-extern uint8_t serial_RX_Data[256];
-extern uint8_t RX_Data;
+extern uint8_t serial_RX_Data[30];
 
 extern uint8_t canLocked;
 extern uint8_t serialLocked;
 
+uint8_t fifo = 0;
+
 extern uint8_t* pt_serialMessage;
-//extern uint8_t* pt_CANMessage;
 
 extern osMessageQId CAN_TO_SERIALHandle;
 extern osMessageQId SERIAL_TO_CANHandle;
 extern uint8_t rxMessageSize;
 
 uint8_t serial_RX_iter = 0x00;
-uint8_t serial_RX_lm = 0x00;
 
-uint8_t STOP_CHAR = '#';
 uint8_t CMD_CHAR = '>';
 uint8_t FILTER_CHAR = '^';
 
-uint8_t FILTER_DBG[] = "FILTER_LOL\n";
-uint8_t CMD_DBG[] = "CMD_LOL\n";
-
-uint8_t BLYA_DBG[] = "BLAY=((((\n";
-
-
-void processCanMessage(CAN_HandleTypeDef *can) {
-    HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-    uint8_t *receiveMsg = malloc(rxMessageSize);
+void processCanMessage(uint8_t *receiveMsg) {
     SMessage sMessage;
-    memcpy(receiveMsg, can->pRxMsg, rxMessageSize);
     sMessage.serialMessageId = 0;
     sMessage.dataPointer = (uint8_t*) receiveMsg;
     xQueueSendFromISR(CAN_TO_SERIALHandle, &sMessage, NULL);
+    
 }
 
-void sendCommand(uint8_t *msg, uint8_t length) {
+void sendCommand() {
    
     uint32_t sizeOfTxMsg = sizeof(CanTxMsgTypeDef);
     uint8_t *pt_CANMessage = malloc(sizeOfTxMsg);
    
   
-    memcpy(pt_CANMessage, msg + 1, sizeOfTxMsg);
+    memcpy(pt_CANMessage, serial_RX_Data + 1, sizeOfTxMsg);
     
     CANMessage cMessage;
     cMessage.canMessageId = 0;
@@ -92,50 +82,28 @@ void sendCommand(uint8_t *msg, uint8_t length) {
     xQueueSendFromISR(SERIAL_TO_CANHandle, &cMessage, NULL);
 }
 
-void processSerialMessage(UART_HandleTypeDef *uart) {
+void processSerialMessage() {
     HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
-
-    uint8_t message_length = 0;
-    uint32_t sizeofReciverBuffer = sizeof(serial_RX_Data);
-    if (serial_RX_lm < serial_RX_iter) {
-        message_length = serial_RX_iter - serial_RX_lm;
-    } else {
-        message_length = (sizeofReciverBuffer - 1) - serial_RX_lm + serial_RX_iter;
-    }
-
-    uint8_t *message_buff;
-    message_buff = (uint8_t *) malloc(message_length);
-
-    for (uint8_t i = 0; i < message_length; i++) {
-        uint8_t buff_idx = serial_RX_lm + i;
-        if (buff_idx == (sizeofReciverBuffer - 1)) {
-            buff_idx = buff_idx - (sizeofReciverBuffer - 1);
-        }
-        message_buff[i] = serial_RX_Data[buff_idx];
-    }
-
-    if (message_buff[0] == FILTER_CHAR) {
-        HAL_UART_Transmit(uart, FILTER_DBG, sizeof(FILTER_DBG) - 1, 100);
-    } else if (message_buff[0] == CMD_CHAR) {
-        sendCommand(message_buff, message_length);
-    }
     
-    free(message_buff);
+ 
+    if (serial_RX_Data[0] == CMD_CHAR) {
+        sendCommand();
+    } else if (serial_RX_Data[0] == FILTER_CHAR) {
+        //HAL_UART_Transmit(uart, FILTER_DBG, sizeof(FILTER_DBG) - 1, 100);
+    }
 
 }
 
 void receiveChar(uint8_t ch, UART_HandleTypeDef *uart) {
-    if (ch == STOP_CHAR) {
-        processSerialMessage(uart);
-        serial_RX_lm = serial_RX_iter;
+    if (serial_RX_iter == 30) {
+        processSerialMessage();
+        serial_RX_iter = 0;
     } else {
         serial_RX_Data[serial_RX_iter] = ch;
-        serial_RX_iter++;
-        if (serial_RX_iter == (sizeof(serial_RX_Data) - 1)) {
-            serial_RX_iter = 0;
-        }
+        serial_RX_iter++;      
     }
 }
+
 
 /* USER CODE END 0 */
 
@@ -377,13 +345,22 @@ void HAL_CAN_TxCpltCallback(CAN_HandleTypeDef *hcan) {
 
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-    receiveChar(RX_Data, &huart3);
-    HAL_UART_Receive_IT(&huart3, &RX_Data, 1);
+    processSerialMessage();
+    HAL_UART_Receive_IT(&huart3, serial_RX_Data, 30);
 }
 
 void HAL_CAN_RxCpltCallback(CAN_HandleTypeDef *can) {
-    processCanMessage(can);
-    HAL_CAN_Receive_IT(&hcan, CAN_FIFO1);
+    uint8_t *receiveMsg = malloc(rxMessageSize);
+    memcpy(receiveMsg, can->pRxMsg, rxMessageSize);
+    processCanMessage(receiveMsg);
+    if (fifo == 0) {    
+        HAL_CAN_Receive_IT(&hcan, CAN_FIFO1);
+        fifo = 1;
+    } else {
+        HAL_CAN_Receive_IT(&hcan, CAN_FIFO1);
+        fifo = 0;
+    }
+    HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
 }
 
 void HAL_CAN_ErrorCallback(CAN_HandleTypeDef *hcan) {

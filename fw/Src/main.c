@@ -71,8 +71,7 @@ osMessageQId SERIAL_TO_CANHandle;
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 
-uint8_t serial_RX_Data[256];
-uint8_t RX_Data;
+uint8_t serial_RX_Data[30];
 
 uint8_t* pt_serialMessage;
 uint8_t* pt_CANMessage;
@@ -84,7 +83,7 @@ uint8_t serialLocked = 0;
 uint8_t rxMessageSize = sizeof(CanRxMsgTypeDef) - 8;
 
 static CanTxMsgTypeDef TxMessage;
-//static CanRxMsgTypeDef RxMessage;
+static CanRxMsgTypeDef RxMessage;
 
 
 /* USER CODE END PV */
@@ -147,31 +146,41 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 
-    CAN_FilterConfTypeDef sFilterConfig;
-    sFilterConfig.FilterNumber = 0;
-    sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
-    sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-    sFilterConfig.FilterIdHigh = 0x0000;
-    sFilterConfig.FilterIdLow = 0x0000;
-    sFilterConfig.FilterMaskIdHigh = 0x0000;
-    sFilterConfig.FilterMaskIdLow = 0x0000;
-    sFilterConfig.FilterFIFOAssignment = 1;
-    sFilterConfig.FilterActivation = ENABLE;
-    sFilterConfig.BankNumber = 14;
+    CAN_FilterConfTypeDef f0FilterConfig;
+    f0FilterConfig.FilterNumber = 0;
+    f0FilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
+    f0FilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+    f0FilterConfig.FilterIdHigh = 0x0000;
+    f0FilterConfig.FilterIdLow = 0x0000;
+    f0FilterConfig.FilterMaskIdHigh = 0x0000;
+    f0FilterConfig.FilterMaskIdLow = 0x0000;
+    f0FilterConfig.FilterFIFOAssignment = 0;
+    f0FilterConfig.FilterActivation = ENABLE;
+    f0FilterConfig.BankNumber = 13;
+    
+    CAN_FilterConfTypeDef f1FilterConfig;
+    f1FilterConfig.FilterNumber = 0;
+    f1FilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
+    f1FilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+    f1FilterConfig.FilterIdHigh = 0x0000;
+    f1FilterConfig.FilterIdLow = 0x0000;
+    f1FilterConfig.FilterMaskIdHigh = 0x0000;
+    f1FilterConfig.FilterMaskIdLow = 0x0000;
+    f1FilterConfig.FilterFIFOAssignment = 1;
+    f1FilterConfig.FilterActivation = ENABLE;
+    f1FilterConfig.BankNumber = 14;
 
-    if (HAL_CAN_ConfigFilter(&hcan, &sFilterConfig) != HAL_OK) {
-        /* Filter configuration Error */
-        Error_Handler();
-    }
+    HAL_CAN_ConfigFilter(&hcan, &f0FilterConfig);
+    HAL_CAN_ConfigFilter(&hcan, &f1FilterConfig);
 
     
     hcan.pTxMsg = &TxMessage;
-    hcan.pRxMsg = malloc(sizeof(CanRxMsgTypeDef));
+    hcan.pRxMsg = &RxMessage;
 
 
     flushBuffers();
 
-    HAL_UART_Receive_IT(&huart3, &RX_Data, 1);
+    HAL_UART_Receive_IT(&huart3, serial_RX_Data, 30);
     HAL_CAN_Receive_IT(&hcan, CAN_FIFO1);
 
   /* USER CODE END 2 */
@@ -346,7 +355,7 @@ static void MX_USART3_UART_Init(void)
 {
 
   huart3.Instance = USART3;
-  huart3.Init.BaudRate = 115200;
+  huart3.Init.BaudRate = 1500000;
   huart3.Init.WordLength = UART_WORDLENGTH_8B;
   huart3.Init.StopBits = UART_STOPBITS_1;
   huart3.Init.Parity = UART_PARITY_NONE;
