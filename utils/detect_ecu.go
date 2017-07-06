@@ -28,7 +28,7 @@ func main() {
 
 	for f.StdId <= data.MAX_STD_ID {
 		c.Skip(false)
-		helpers.ReadByTimeWindow(10*time.Millisecond, c.GetChan(), output)
+		helpers.ReadByTimeWindow(3*time.Millisecond, c.GetChan(), output)
 		c.Send(f)
 		msgs := <-output
 		c.Skip(true)

@@ -1,14 +1,14 @@
 package driver
 
 import (
+	"github.com/jacobsa/go-serial/serial"
 	"github.com/michey/gokkan/data"
 	"github.com/michey/gokkan/protocol"
-	"github.com/tarm/serial"
-	"time"
+	"io"
 )
 
 type SerialCANConnection struct {
-	port          *serial.Port
+	port          *io.ReadWriteCloser
 	protocol      *protocol.IProtocol
 	readEnabled   bool
 	readSkip      bool
@@ -23,14 +23,21 @@ func CANConnectWithPotato(serialName *string, baudRate int) (connection SerialCA
 }
 
 func CANConnect(serialName *string, baudRate int, iProtocol protocol.IProtocol) (connection SerialCANConnection, err error) {
-	s, err := serial.OpenPort(&serial.Config{Name: *serialName, Baud: baudRate, ReadTimeout: time.Second * 5})
+	options := serial.OpenOptions{
+		BaudRate:        1500000,
+		PortName:        *serialName,
+		DataBits:        8,
+		StopBits:        1,
+		MinimumReadSize: 4}
+
+	s, err := serial.Open(options)
 	if err != nil {
 		return SerialCANConnection{nil, nil, true, true, true, nil, nil}, err
 	}
 	input := make(chan data.CANFrame, 256)
 	output := make(chan data.Response, 256)
 
-	c := SerialCANConnection{s, &iProtocol, true, true, true, input, output}
+	c := SerialCANConnection{&s, &iProtocol, true, true, true, input, output}
 	c.Run()
 	return c, nil
 }
@@ -66,7 +73,7 @@ func (conn *SerialCANConnection) reader(output chan<- data.Response) {
 	go p.Decode(bytes, output)
 
 	for conn.readEnabled {
-		n, _ := conn.port.Read(b)
+		n, _ := (*conn.port).Read(b)
 		if n > 0 {
 			for i := 0; i < n; i++ {
 				bytes <- b[i]
@@ -80,6 +87,6 @@ func (conn *SerialCANConnection) writer(input <-chan data.CANFrame) {
 		f := <-input
 		p := *conn.protocol
 		b := p.Encode(&f)
-		conn.port.Write(b)
+		(*conn.port).Write(b)
 	}
 }
