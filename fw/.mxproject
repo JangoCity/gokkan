@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/Users/mixey/Documents/can-to-serial/Inc
+HeaderPath=C:/Users/mixey/go/src/github.com/michey/gokkan/fw/Inc
 HeaderFiles=FreeRTOSConfig.h;stm32f1xx_it.h;stm32f1xx_hal_conf.h;main.h;
-SourcePath=C:/Users/mixey/Documents/can-to-serial/Src
+SourcePath=C:/Users/mixey/go/src/github.com/michey/gokkan/fw/Src
 SourceFiles=FreeRTOSConfig.h;stm32f1xx_it.h;stm32f1xx_hal_conf.h;main.h;freertos.c;stm32f1xx_it.c;stm32f1xx_hal_msp.c;stm32f1xx_hal_timebase_TIM.c;main.c;
 
 [PreviousLibFiles]
