@@ -1,5 +1,0 @@
-/home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug/fw/CMakeFiles/rebuild_cache.dir
-/home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug/fw/CMakeFiles/edit_cache.dir
-/home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug/fw/CMakeFiles/gokkan.elf.dir
