@@ -2,3 +2,9 @@
 
 .idea
 .iml
+
+.o
+.d
+.crf
+.lst
+.s

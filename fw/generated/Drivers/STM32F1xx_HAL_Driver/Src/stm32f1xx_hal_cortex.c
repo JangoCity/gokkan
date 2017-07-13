@@ -10,19 +10,19 @@
   *          functionalities of the CORTEX:
   *           + Initialization and de-initialization functions
   *           + Peripheral Control functions
-  *          
-  *  @verbatim    
+  *
+  *  @verbatim
   ==============================================================================
                         ##### How to use this driver #####
   ==============================================================================
 
-    [..]  
+    [..]
     *** How to configure Interrupts using Cortex HAL driver ***
     ===========================================================
-    [..]     
+    [..]
     This section provide functions allowing to configure the NVIC interrupts (IRQ).
     The Cortex-M3 exceptions are managed by CMSIS functions.
-   
+
     (#) Configure the NVIC Priority Grouping using HAL_NVIC_SetPriorityGrouping()
         function according to the following table.
 
@@ -36,35 +36,35 @@
        --------------------------------------------------------------------------------------------------------------------------
         NVIC_PRIORITYGROUP_1  |                0-1                |            0-7              | 1 bits for pre-emption priority
                               |                                   |                             | 3 bits for subpriority
-       --------------------------------------------------------------------------------------------------------------------------    
+       --------------------------------------------------------------------------------------------------------------------------
         NVIC_PRIORITYGROUP_2  |                0-3                |            0-3              | 2 bits for pre-emption priority
                               |                                   |                             | 2 bits for subpriority
-       --------------------------------------------------------------------------------------------------------------------------    
+       --------------------------------------------------------------------------------------------------------------------------
         NVIC_PRIORITYGROUP_3  |                0-7                |            0-1              | 3 bits for pre-emption priority
                               |                                   |                             | 1 bits for subpriority
-       --------------------------------------------------------------------------------------------------------------------------    
+       --------------------------------------------------------------------------------------------------------------------------
         NVIC_PRIORITYGROUP_4  |                0-15               |            0                | 4 bits for pre-emption priority
-                              |                                   |                             | 0 bits for subpriority                       
+                              |                                   |                             | 0 bits for subpriority
        ==========================================================================================================================
-     (#)  Configure the priority of the selected IRQ Channels using HAL_NVIC_SetPriority() 
+     (#)  Configure the priority of the selected IRQ Channels using HAL_NVIC_SetPriority()
 
-     (#)  Enable the selected IRQ Channels using HAL_NVIC_EnableIRQ() 
-      
+     (#)  Enable the selected IRQ Channels using HAL_NVIC_EnableIRQ()
 
-     -@- When the NVIC_PRIORITYGROUP_0 is selected, IRQ pre-emption is no more possible. 
+
+     -@- When the NVIC_PRIORITYGROUP_0 is selected, IRQ pre-emption is no more possible.
          The pending IRQ priority will be managed only by the sub priority.
-   
+
      -@- IRQ priority order (sorted by highest to lowest priority):
         (+@) Lowest pre-emption priority
         (+@) Lowest sub priority
         (+@) Lowest hardware priority (IRQ number)
- 
-    [..]  
+
+    [..]
     *** How to configure Systick using Cortex HAL driver ***
     ========================================================
     [..]
     Setup SysTick Timer for 1 msec interrupts.
-           
+
    (+) The HAL_SYSTICK_Config()function calls the SysTick_Config() function which
        is a CMSIS function that:
         (++) Configures the SysTick Reload register with value passed as function parameter.
@@ -73,21 +73,21 @@
         (++) Configures the SysTick Counter clock source to be Core Clock Source (HCLK).
         (++) Enables the SysTick Interrupt.
         (++) Starts the SysTick Counter.
-    
+
    (+) You can change the SysTick Clock source to be HCLK_Div8 by calling the function
        HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK_DIV8) just after the
        HAL_SYSTICK_Config() function call.
 
    (+) You can change the SysTick IRQ priority by calling the
-       HAL_NVIC_SetPriority(SysTick_IRQn,...) function just after the HAL_SYSTICK_Config() function 
+       HAL_NVIC_SetPriority(SysTick_IRQn,...) function just after the HAL_SYSTICK_Config() function
        call. The HAL_NVIC_SetPriority() call the NVIC_SetPriority() function which is a CMSIS function.
 
    (+) To adjust the SysTick time base, use the following formula:
-                            
+
        Reload Value = SysTick Counter Clock (Hz) x  Desired Time base (s)
        (++) Reload Value is the parameter to be passed for HAL_SYSTICK_Config() function
        (++) Reload Value should not exceed 0xFFFFFF
-   
+
   @endverbatim
   ******************************************************************************
   * @attention
@@ -146,15 +146,15 @@
 
 
 /** @defgroup CORTEX_Exported_Functions_Group1 Initialization and de-initialization functions
- *  @brief    Initialization and Configuration functions 
+ *  @brief    Initialization and Configuration functions
  *
-@verbatim    
+@verbatim
   ==============================================================================
               ##### Initialization and de-initialization functions #####
   ==============================================================================
     [..]
       This section provide the Cortex HAL driver functions allowing to configure Interrupts
-      Systick functionalities 
+      Systick functionalities
 
 @endverbatim
   * @{
@@ -164,7 +164,7 @@
 /**
   * @brief  Sets the priority grouping field (pre-emption priority and subpriority)
   *         using the required unlock sequence.
-  * @param  PriorityGroup: The priority grouping bits length. 
+  * @param  PriorityGroup: The priority grouping bits length.
   *         This parameter can be one of the following values:
   *         @arg NVIC_PRIORITYGROUP_0: 0 bits for pre-emption priority
   *                                    4 bits for subpriority
@@ -176,15 +176,14 @@
   *                                    1 bits for subpriority
   *         @arg NVIC_PRIORITYGROUP_4: 4 bits for pre-emption priority
   *                                    0 bits for subpriority
-  * @note   When the NVIC_PriorityGroup_0 is selected, IRQ pre-emption is no more possible. 
-  *         The pending IRQ priority will be managed only by the subpriority. 
+  * @note   When the NVIC_PriorityGroup_0 is selected, IRQ pre-emption is no more possible.
+  *         The pending IRQ priority will be managed only by the subpriority.
   * @retval None
   */
-void HAL_NVIC_SetPriorityGrouping(uint32_t PriorityGroup)
-{
+void HAL_NVIC_SetPriorityGrouping(uint32_t PriorityGroup) {
   /* Check the parameters */
   assert_param(IS_NVIC_PRIORITY_GROUP(PriorityGroup));
-  
+
   /* Set the PRIGROUP[10:8] bits according to the PriorityGroup parameter value */
   NVIC_SetPriorityGrouping(PriorityGroup);
 }
@@ -196,36 +195,34 @@ void HAL_NVIC_SetPriorityGrouping(uint32_t PriorityGroup)
   *         (For the complete STM32 Devices IRQ Channels list, please refer to the appropriate CMSIS device file (stm32f10xxx.h))
   * @param  PreemptPriority: The pre-emption priority for the IRQn channel.
   *         This parameter can be a value between 0 and 15
-  *         A lower priority value indicates a higher priority 
+  *         A lower priority value indicates a higher priority
   * @param  SubPriority: the subpriority level for the IRQ channel.
   *         This parameter can be a value between 0 and 15
-  *         A lower priority value indicates a higher priority.          
+  *         A lower priority value indicates a higher priority.
   * @retval None
   */
-void HAL_NVIC_SetPriority(IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t SubPriority)
-{
+void HAL_NVIC_SetPriority(IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t SubPriority) {
   uint32_t prioritygroup = 0x00;
-  
+
   /* Check the parameters */
   assert_param(IS_NVIC_SUB_PRIORITY(SubPriority));
   assert_param(IS_NVIC_PREEMPTION_PRIORITY(PreemptPriority));
-  
+
   prioritygroup = NVIC_GetPriorityGrouping();
-  
+
   NVIC_SetPriority(IRQn, NVIC_EncodePriority(prioritygroup, PreemptPriority, SubPriority));
 }
 
 /**
   * @brief  Enables a device specific interrupt in the NVIC interrupt controller.
   * @note   To configure interrupts priority correctly, the NVIC_PriorityGroupConfig()
-  *         function should be called before. 
+  *         function should be called before.
   * @param  IRQn External interrupt number
   *         This parameter can be an enumerator of IRQn_Type enumeration
   *         (For the complete STM32 Devices IRQ Channels list, please refer to the appropriate CMSIS device file (stm32f10xxx.h))
   * @retval None
   */
-void HAL_NVIC_EnableIRQ(IRQn_Type IRQn)
-{
+void HAL_NVIC_EnableIRQ(IRQn_Type IRQn) {
   /* Check the parameters */
   assert_param(IS_NVIC_DEVICE_IRQ(IRQn));
 
@@ -237,11 +234,10 @@ void HAL_NVIC_EnableIRQ(IRQn_Type IRQn)
   * @brief  Disables a device specific interrupt in the NVIC interrupt controller.
   * @param  IRQn External interrupt number
   *         This parameter can be an enumerator of IRQn_Type enumeration
-  *         (For the complete STM32 Devices IRQ Channels list, please refer to the appropriate CMSIS device file (stm32f10xxx.h))  
+  *         (For the complete STM32 Devices IRQ Channels list, please refer to the appropriate CMSIS device file (stm32f10xxx.h))
   * @retval None
   */
-void HAL_NVIC_DisableIRQ(IRQn_Type IRQn)
-{
+void HAL_NVIC_DisableIRQ(IRQn_Type IRQn) {
   /* Check the parameters */
   assert_param(IS_NVIC_DEVICE_IRQ(IRQn));
 
@@ -254,8 +250,7 @@ void HAL_NVIC_DisableIRQ(IRQn_Type IRQn)
   * @brief  Initiates a system reset request to reset the MCU.
   * @retval None
   */
-void HAL_NVIC_SystemReset(void)
-{
+void HAL_NVIC_SystemReset(void) {
   /* System Reset */
   NVIC_SystemReset();
 }
@@ -267,26 +262,25 @@ void HAL_NVIC_SystemReset(void)
   * @retval status:  - 0  Function succeeded.
   *                  - 1  Function failed.
   */
-uint32_t HAL_SYSTICK_Config(uint32_t TicksNumb)
-{
-   return SysTick_Config(TicksNumb);
+uint32_t HAL_SYSTICK_Config(uint32_t TicksNumb) {
+  return SysTick_Config(TicksNumb);
 }
 /**
   * @}
   */
 
 /** @defgroup CORTEX_Exported_Functions_Group2 Peripheral Control functions
- *  @brief    Cortex control functions 
+ *  @brief    Cortex control functions
  *
-@verbatim   
+@verbatim
   ==============================================================================
                       ##### Peripheral Control functions #####
   ==============================================================================
     [..]
       This subsection provides a set of functions allowing to control the CORTEX
-      (NVIC, SYSTICK, MPU) functionalities. 
- 
-      
+      (NVIC, SYSTICK, MPU) functionalities.
+
+
 @endverbatim
   * @{
   */
@@ -318,7 +312,7 @@ void HAL_MPU_ConfigRegion(MPU_Region_InitTypeDef *MPU_Init)
     assert_param(IS_MPU_ACCESS_BUFFERABLE(MPU_Init->IsBufferable));
     assert_param(IS_MPU_SUB_REGION_DISABLE(MPU_Init->SubRegionDisable));
     assert_param(IS_MPU_REGION_SIZE(MPU_Init->Size));
-    
+
     MPU->RBAR = MPU_Init->BaseAddress;
     MPU->RASR = ((uint32_t)MPU_Init->DisableExec             << MPU_RASR_XN_Pos)   |
                 ((uint32_t)MPU_Init->AccessPermission        << MPU_RASR_AP_Pos)   |
@@ -342,8 +336,7 @@ void HAL_MPU_ConfigRegion(MPU_Region_InitTypeDef *MPU_Init)
   * @brief  Gets the priority grouping field from the NVIC Interrupt Controller.
   * @retval Priority grouping field (SCB->AIRCR [10:8] PRIGROUP field)
   */
-uint32_t HAL_NVIC_GetPriorityGrouping(void)
-{
+uint32_t HAL_NVIC_GetPriorityGrouping(void) {
   /* Get the PRIGROUP[10:8] field value */
   return NVIC_GetPriorityGrouping();
 }
@@ -369,11 +362,10 @@ uint32_t HAL_NVIC_GetPriorityGrouping(void)
   * @param  pSubPriority: Pointer on the Subpriority value (starting from 0).
   * @retval None
   */
-void HAL_NVIC_GetPriority(IRQn_Type IRQn, uint32_t PriorityGroup, uint32_t* pPreemptPriority, uint32_t* pSubPriority)
-{
+void HAL_NVIC_GetPriority(IRQn_Type IRQn, uint32_t PriorityGroup, uint32_t *pPreemptPriority, uint32_t *pSubPriority) {
   /* Check the parameters */
   assert_param(IS_NVIC_PRIORITY_GROUP(PriorityGroup));
- /* Get priority for Cortex-M system or device specific interrupts */
+  /* Get priority for Cortex-M system or device specific interrupts */
   NVIC_DecodePriority(NVIC_GetPriority(IRQn), PriorityGroup, pPreemptPriority, pSubPriority);
 }
 
@@ -381,26 +373,24 @@ void HAL_NVIC_GetPriority(IRQn_Type IRQn, uint32_t PriorityGroup, uint32_t* pPre
   * @brief  Sets Pending bit of an external interrupt.
   * @param  IRQn External interrupt number
   *         This parameter can be an enumerator of IRQn_Type enumeration
-  *         (For the complete STM32 Devices IRQ Channels list, please refer to the appropriate CMSIS device file (stm32f10xxx.h))  
+  *         (For the complete STM32 Devices IRQ Channels list, please refer to the appropriate CMSIS device file (stm32f10xxx.h))
   * @retval None
   */
-void HAL_NVIC_SetPendingIRQ(IRQn_Type IRQn)
-{ 
+void HAL_NVIC_SetPendingIRQ(IRQn_Type IRQn) {
   /* Set interrupt pending */
   NVIC_SetPendingIRQ(IRQn);
 }
 
 /**
-  * @brief Gets Pending Interrupt (reads the pending register in the NVIC 
+  * @brief Gets Pending Interrupt (reads the pending register in the NVIC
   *         and returns the pending bit for the specified interrupt).
   * @param IRQn External interrupt number
   *         This parameter can be an enumerator of IRQn_Type enumeration
-  *         (For the complete STM32 Devices IRQ Channels list, please refer to the appropriate CMSIS device file (stm32f10xxx.h))  
+  *         (For the complete STM32 Devices IRQ Channels list, please refer to the appropriate CMSIS device file (stm32f10xxx.h))
   * @retval status: - 0  Interrupt status is not pending.
   *                 - 1  Interrupt status is pending.
   */
-uint32_t HAL_NVIC_GetPendingIRQ(IRQn_Type IRQn)
-{ 
+uint32_t HAL_NVIC_GetPendingIRQ(IRQn_Type IRQn) {
   /* Return 1 if pending else 0 */
   return NVIC_GetPendingIRQ(IRQn);
 }
@@ -409,11 +399,10 @@ uint32_t HAL_NVIC_GetPendingIRQ(IRQn_Type IRQn)
   * @brief Clears the pending bit of an external interrupt.
   * @param IRQn External interrupt number
   *         This parameter can be an enumerator of IRQn_Type enumeration
-  *         (For the complete STM32 Devices IRQ Channels list, please refer to the appropriate CMSIS device file (stm32f10xxx.h))  
+  *         (For the complete STM32 Devices IRQ Channels list, please refer to the appropriate CMSIS device file (stm32f10xxx.h))
   * @retval None
   */
-void HAL_NVIC_ClearPendingIRQ(IRQn_Type IRQn)
-{ 
+void HAL_NVIC_ClearPendingIRQ(IRQn_Type IRQn) {
   /* Clear pending interrupt */
   NVIC_ClearPendingIRQ(IRQn);
 }
@@ -422,12 +411,11 @@ void HAL_NVIC_ClearPendingIRQ(IRQn_Type IRQn)
   * @brief Gets active interrupt ( reads the active register in NVIC and returns the active bit).
   * @param IRQn External interrupt number
   *         This parameter can be an enumerator of IRQn_Type enumeration
-  *         (For the complete STM32 Devices IRQ Channels list, please refer to the appropriate CMSIS device file (stm32f10xxx.h))  
+  *         (For the complete STM32 Devices IRQ Channels list, please refer to the appropriate CMSIS device file (stm32f10xxx.h))
   * @retval status: - 0  Interrupt status is not pending.
   *                 - 1  Interrupt status is pending.
   */
-uint32_t HAL_NVIC_GetActive(IRQn_Type IRQn)
-{ 
+uint32_t HAL_NVIC_GetActive(IRQn_Type IRQn) {
   /* Return 1 if active else 0 */
   return NVIC_GetActive(IRQn);
 }
@@ -440,16 +428,12 @@ uint32_t HAL_NVIC_GetActive(IRQn_Type IRQn)
   *             @arg SYSTICK_CLKSOURCE_HCLK: AHB clock selected as SysTick clock source.
   * @retval None
   */
-void HAL_SYSTICK_CLKSourceConfig(uint32_t CLKSource)
-{
+void HAL_SYSTICK_CLKSourceConfig(uint32_t CLKSource) {
   /* Check the parameters */
   assert_param(IS_SYSTICK_CLK_SOURCE(CLKSource));
-  if (CLKSource == SYSTICK_CLKSOURCE_HCLK)
-  {
+  if (CLKSource == SYSTICK_CLKSOURCE_HCLK) {
     SysTick->CTRL |= SYSTICK_CLKSOURCE_HCLK;
-  }
-  else
-  {
+  } else {
     SysTick->CTRL &= ~SYSTICK_CLKSOURCE_HCLK;
   }
 }
@@ -458,8 +442,7 @@ void HAL_SYSTICK_CLKSourceConfig(uint32_t CLKSource)
   * @brief  This function handles SYSTICK interrupt request.
   * @retval None
   */
-void HAL_SYSTICK_IRQHandler(void)
-{
+void HAL_SYSTICK_IRQHandler(void) {
   HAL_SYSTICK_Callback();
 }
 
@@ -467,8 +450,7 @@ void HAL_SYSTICK_IRQHandler(void)
   * @brief  SYSTICK callback.
   * @retval None
   */
-__weak void HAL_SYSTICK_Callback(void)
-{
+__weak void HAL_SYSTICK_Callback(void) {
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_SYSTICK_Callback could be implemented in the user file
    */

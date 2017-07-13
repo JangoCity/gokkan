@@ -32,7 +32,9 @@
 					<Add directory="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc"/>
 					<Add directory="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Middlewares/ST/STM32_USB_Device_Library/Core/Inc"/>
 					<Add directory="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS"/>
+					<Add directory="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Middlewares/Third_Party/FreeRTOS/Source/include"/>
 					<Add directory="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3"/>
+					<Add directory="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/lib/protobuf-c"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/7.1.1/../../../../include/c++/7.1.1"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/7.1.1/../../../../include/c++/7.1.1/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/7.1.1/../../../../include/c++/7.1.1/backward"/>
@@ -63,7 +65,9 @@
 					<Add directory="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc"/>
 					<Add directory="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Middlewares/ST/STM32_USB_Device_Library/Core/Inc"/>
 					<Add directory="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS"/>
+					<Add directory="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Middlewares/Third_Party/FreeRTOS/Source/include"/>
 					<Add directory="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3"/>
+					<Add directory="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/lib/protobuf-c"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/7.1.1/../../../../include/c++/7.1.1"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/7.1.1/../../../../include/c++/7.1.1/x86_64-pc-linux-gnu"/>
 					<Add directory="/usr/lib/gcc/x86_64-pc-linux-gnu/7.1.1/../../../../include/c++/7.1.1/backward"/>
@@ -213,6 +217,9 @@
 			<Option target="gokkan.elf"/>
 		</Unit>
 		<Unit filename="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Src/usbd_desc.c">
+			<Option target="gokkan.elf"/>
+		</Unit>
+		<Unit filename="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/lib/protobuf-c/protobuf-c.c">
 			<Option target="gokkan.elf"/>
 		</Unit>
 		<Unit filename="/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/logic/custom.c">

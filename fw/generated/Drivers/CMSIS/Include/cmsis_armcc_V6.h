@@ -47,8 +47,7 @@
   \details Enables IRQ interrupts by clearing the I-bit in the CPSR.
            Can only be executed in Privileged modes.
  */
-__attribute__((always_inline)) __STATIC_INLINE void __enable_irq(void)
-{
+__attribute__((always_inline)) __STATIC_INLINE void __enable_irq(void) {
   __ASM volatile ("cpsie i" : : : "memory");
 }
 
@@ -58,8 +57,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __enable_irq(void)
   \details Disables IRQ interrupts by setting the I-bit in the CPSR.
            Can only be executed in Privileged modes.
  */
-__attribute__((always_inline)) __STATIC_INLINE void __disable_irq(void)
-{
+__attribute__((always_inline)) __STATIC_INLINE void __disable_irq(void) {
   __ASM volatile ("cpsid i" : : : "memory");
 }
 
@@ -69,12 +67,12 @@ __attribute__((always_inline)) __STATIC_INLINE void __disable_irq(void)
   \details Returns the content of the Control Register.
   \return               Control Register value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __get_CONTROL(void)
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_CONTROL(void)
 {
   uint32_t result;
 
-  __ASM volatile ("MRS %0, control" : "=r" (result) );
-  return(result);
+  __ASM volatile ("MRS %0, control" : "=r"(result));
+  return (result);
 }
 
 
@@ -99,9 +97,10 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_CONTROL_NS(void
   \details Writes the given value to the Control Register.
   \param [in]    control  Control Register value to set
  */
-__attribute__((always_inline)) __STATIC_INLINE void __set_CONTROL(uint32_t control)
+__attribute__((always_inline)) __STATIC_INLINE void __set_CONTROL(uint32_t
+control)
 {
-  __ASM volatile ("MSR control, %0" : : "r" (control) : "memory");
+__ASM volatile ("MSR control, %0" : : "r" (control) : "memory");
 }
 
 
@@ -123,12 +122,12 @@ __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_CONTROL_NS(uint32_t
   \details Returns the content of the IPSR Register.
   \return               IPSR Register value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __get_IPSR(void)
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_IPSR(void)
 {
   uint32_t result;
 
-  __ASM volatile ("MRS %0, ipsr" : "=r" (result) );
-  return(result);
+  __ASM volatile ("MRS %0, ipsr" : "=r"(result));
+  return (result);
 }
 
 
@@ -153,12 +152,12 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_IPSR_NS(void)
   \details Returns the content of the APSR Register.
   \return               APSR Register value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __get_APSR(void)
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_APSR(void)
 {
   uint32_t result;
 
-  __ASM volatile ("MRS %0, apsr" : "=r" (result) );
-  return(result);
+  __ASM volatile ("MRS %0, apsr" : "=r"(result));
+  return (result);
 }
 
 
@@ -183,12 +182,12 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_APSR_NS(void)
   \details Returns the content of the xPSR Register.
   \return               xPSR Register value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __get_xPSR(void)
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_xPSR(void)
 {
   uint32_t result;
 
-  __ASM volatile ("MRS %0, xpsr" : "=r" (result) );
-  return(result);
+  __ASM volatile ("MRS %0, xpsr" : "=r"(result));
+  return (result);
 }
 
 
@@ -213,12 +212,12 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_xPSR_NS(void)
   \details Returns the current value of the Process Stack Pointer (PSP).
   \return               PSP Register value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __get_PSP(void)
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_PSP(void)
 {
   register uint32_t result;
 
-  __ASM volatile ("MRS %0, psp"  : "=r" (result) );
-  return(result);
+  __ASM volatile ("MRS %0, psp"  : "=r"(result));
+  return (result);
 }
 
 
@@ -243,9 +242,10 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_PSP_NS(void)
   \details Assigns the given value to the Process Stack Pointer (PSP).
   \param [in]    topOfProcStack  Process Stack Pointer value to set
  */
-__attribute__((always_inline)) __STATIC_INLINE void __set_PSP(uint32_t topOfProcStack)
+__attribute__((always_inline)) __STATIC_INLINE void __set_PSP(uint32_t
+topOfProcStack)
 {
-  __ASM volatile ("MSR psp, %0" : : "r" (topOfProcStack) : "sp");
+__ASM volatile ("MSR psp, %0" : : "r" (topOfProcStack) : "sp");
 }
 
 
@@ -267,12 +267,12 @@ __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_PSP_NS(uint32_t top
   \details Returns the current value of the Main Stack Pointer (MSP).
   \return               MSP Register value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __get_MSP(void)
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_MSP(void)
 {
   register uint32_t result;
 
-  __ASM volatile ("MRS %0, msp" : "=r" (result) );
-  return(result);
+  __ASM volatile ("MRS %0, msp" : "=r"(result));
+  return (result);
 }
 
 
@@ -297,9 +297,10 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_MSP_NS(void)
   \details Assigns the given value to the Main Stack Pointer (MSP).
   \param [in]    topOfMainStack  Main Stack Pointer value to set
  */
-__attribute__((always_inline)) __STATIC_INLINE void __set_MSP(uint32_t topOfMainStack)
+__attribute__((always_inline)) __STATIC_INLINE void __set_MSP(uint32_t
+topOfMainStack)
 {
-  __ASM volatile ("MSR msp, %0" : : "r" (topOfMainStack) : "sp");
+__ASM volatile ("MSR msp, %0" : : "r" (topOfMainStack) : "sp");
 }
 
 
@@ -321,12 +322,12 @@ __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_MSP_NS(uint32_t top
   \details Returns the current state of the priority mask bit from the Priority Mask Register.
   \return               Priority Mask value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __get_PRIMASK(void)
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_PRIMASK(void)
 {
   uint32_t result;
 
-  __ASM volatile ("MRS %0, primask" : "=r" (result) );
-  return(result);
+  __ASM volatile ("MRS %0, primask" : "=r"(result));
+  return (result);
 }
 
 
@@ -351,9 +352,10 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_PRIMASK_NS(void
   \details Assigns the given value to the Priority Mask Register.
   \param [in]    priMask  Priority Mask
  */
-__attribute__((always_inline)) __STATIC_INLINE void __set_PRIMASK(uint32_t priMask)
+__attribute__((always_inline)) __STATIC_INLINE void __set_PRIMASK(uint32_t
+priMask)
 {
-  __ASM volatile ("MSR primask, %0" : : "r" (priMask) : "memory");
+__ASM volatile ("MSR primask, %0" : : "r" (priMask) : "memory");
 }
 
 
@@ -464,7 +466,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __set_BASEPRI_MAX(uint32_t v
 /**
   \brief   Set Base Priority with condition (non_secure)
   \details Assigns the given value to the non-secure Base Priority register when in secure state only if BASEPRI masking is disabled,
-	       or the new value increases the BASEPRI priority level.
+         or the new value increases the BASEPRI priority level.
   \param [in]    basePri  Base Priority value to set
  */
 __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_BASEPRI_MAX_NS(uint32_t value)
@@ -832,13 +834,15 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __REV16(uint32_t value)
   \param [in]    value  Value to reverse
   \return               Reversed value
  */
-                                                          /* ToDo:  ARMCC_V6: check if __builtin_bswap16 could be used */
-__attribute__((always_inline)) __STATIC_INLINE int32_t __REVSH(int32_t value)
+/* ToDo:  ARMCC_V6: check if __builtin_bswap16 could be used */
+__attribute__((always_inline)) __STATIC_INLINE int32_t
+__REVSH(int32_t
+value)
 {
-  int32_t result;
+int32_t result;
 
-  __ASM volatile ("revsh %0, %1" : __CMSIS_GCC_OUT_REG (result) : __CMSIS_GCC_USE_REG (value) );
-  return(result);
+__ASM volatile ("revsh %0, %1" : __CMSIS_GCC_OUT_REG (result) : __CMSIS_GCC_USE_REG (value));
+return(result);
 }
 
 
@@ -849,9 +853,13 @@ __attribute__((always_inline)) __STATIC_INLINE int32_t __REVSH(int32_t value)
   \param [in]    op2  Number of Bits to rotate
   \return               Rotated value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __ROR(uint32_t op1, uint32_t op2)
+__attribute__((always_inline)) __STATIC_INLINE uint32_t
+__ROR(uint32_t
+op1,
+uint32_t op2
+)
 {
-  return (op1 >> op2) | (op1 << (32U - op2));
+return (op1 >> op2) | (op1 << (32U - op2));
 }
 
 
@@ -871,26 +879,31 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __ROR(uint32_t op1, uint
   \param [in]    value  Value to reverse
   \return               Reversed value
  */
-                                                          /* ToDo:  ARMCC_V6: check if __builtin_arm_rbit is supported */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t __RBIT(uint32_t value)
+/* ToDo:  ARMCC_V6: check if __builtin_arm_rbit is supported */
+__attribute__((always_inline)) __STATIC_INLINE uint32_t
+__RBIT(uint32_t
+value)
 {
-  uint32_t result;
+uint32_t result;
 
 #if ((__ARM_ARCH_7M__ == 1U) || (__ARM_ARCH_7EM__ == 1U) || (__ARM_ARCH_8M__ == 1U))  /* ToDo:  ARMCC_V6: check if this is ok for cortex >=3 */
-   __ASM volatile ("rbit %0, %1" : "=r" (result) : "r" (value) );
+__ASM volatile ("rbit %0, %1" : "=r" (result) : "r" (value) );
 #else
-  int32_t s = 4 /*sizeof(v)*/ * 8 - 1; /* extra shift needed at end */
+int32_t s = 4 /*sizeof(v)*/ * 8 - 1; /* extra shift needed at end */
 
-  result = value;                      /* r will be reversed bits of v; first get LSB of v */
-  for (value >>= 1U; value; value >>= 1U)
-  {
-    result <<= 1U;
-    result |= value & 1U;
-    s--;
-  }
-  result <<= s;                        /* shift when v's highest bits are zero */
+result = value;                      /* r will be reversed bits of v; first get LSB of v */
+for (value >>= 1U;
+value;
+value >>= 1U)
+{
+result <<= 1U;
+result |= value & 1U;
+s--;
+}
+result <<=
+s;                        /* shift when v's highest bits are zero */
 #endif
-  return(result);
+return(result);
 }
 
 

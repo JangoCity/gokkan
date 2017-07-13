@@ -47,6 +47,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Src/usbd_cdc_if.c" "/home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug/fw/CMakeFiles/gokkan.elf.dir/generated/Src/usbd_cdc_if.c.o"
   "/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Src/usbd_conf.c" "/home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug/fw/CMakeFiles/gokkan.elf.dir/generated/Src/usbd_conf.c.o"
   "/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/generated/Src/usbd_desc.c" "/home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug/fw/CMakeFiles/gokkan.elf.dir/generated/Src/usbd_desc.c.o"
+  "/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/lib/protobuf-c/protobuf-c.c" "/home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug/fw/CMakeFiles/gokkan.elf.dir/lib/protobuf-c/protobuf-c.c.o"
   "/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/logic/custom.c" "/home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug/fw/CMakeFiles/gokkan.elf.dir/logic/custom.c.o"
   "/home/michey/Projects/f/go/src/github.com/michey/gokkan/fw/logic/messages.pb-c.c" "/home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug/fw/CMakeFiles/gokkan.elf.dir/logic/messages.pb-c.c.o"
   )
@@ -62,7 +63,9 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "../fw/generated/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc"
   "../fw/generated/Middlewares/ST/STM32_USB_Device_Library/Core/Inc"
   "../fw/generated/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS"
+  "../fw/generated/Middlewares/Third_Party/FreeRTOS/Source/include"
   "../fw/generated/Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3"
+  "../fw/lib/protobuf-c"
   )
 
 # Targets to which this target links.

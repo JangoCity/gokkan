@@ -44,6 +44,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/gokkan.elf.dir/generated/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c.o"
   "CMakeFiles/gokkan.elf.dir/generated/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c.o"
   "CMakeFiles/gokkan.elf.dir/generated/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.c.o"
+  "CMakeFiles/gokkan.elf.dir/lib/protobuf-c/protobuf-c.c.o"
   "gokkan.elf.pdb"
   "gokkan.elf"
 )

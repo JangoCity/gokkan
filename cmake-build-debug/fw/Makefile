@@ -1286,6 +1286,33 @@ generated/Src/usbd_desc.c.s:
 	cd /home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug && $(MAKE) -f fw/CMakeFiles/gokkan.elf.dir/build.make fw/CMakeFiles/gokkan.elf.dir/generated/Src/usbd_desc.c.s
 .PHONY : generated/Src/usbd_desc.c.s
 
+lib/protobuf-c/protobuf-c.o: lib/protobuf-c/protobuf-c.c.o
+
+.PHONY : lib/protobuf-c/protobuf-c.o
+
+# target to build an object file
+lib/protobuf-c/protobuf-c.c.o:
+	cd /home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug && $(MAKE) -f fw/CMakeFiles/gokkan.elf.dir/build.make fw/CMakeFiles/gokkan.elf.dir/lib/protobuf-c/protobuf-c.c.o
+.PHONY : lib/protobuf-c/protobuf-c.c.o
+
+lib/protobuf-c/protobuf-c.i: lib/protobuf-c/protobuf-c.c.i
+
+.PHONY : lib/protobuf-c/protobuf-c.i
+
+# target to preprocess a source file
+lib/protobuf-c/protobuf-c.c.i:
+	cd /home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug && $(MAKE) -f fw/CMakeFiles/gokkan.elf.dir/build.make fw/CMakeFiles/gokkan.elf.dir/lib/protobuf-c/protobuf-c.c.i
+.PHONY : lib/protobuf-c/protobuf-c.c.i
+
+lib/protobuf-c/protobuf-c.s: lib/protobuf-c/protobuf-c.c.s
+
+.PHONY : lib/protobuf-c/protobuf-c.s
+
+# target to generate assembly for a file
+lib/protobuf-c/protobuf-c.c.s:
+	cd /home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug && $(MAKE) -f fw/CMakeFiles/gokkan.elf.dir/build.make fw/CMakeFiles/gokkan.elf.dir/lib/protobuf-c/protobuf-c.c.s
+.PHONY : lib/protobuf-c/protobuf-c.c.s
+
 logic/custom.o: logic/custom.c.o
 
 .PHONY : logic/custom.o
@@ -1478,6 +1505,9 @@ help:
 	@echo "... generated/Src/usbd_desc.o"
 	@echo "... generated/Src/usbd_desc.i"
 	@echo "... generated/Src/usbd_desc.s"
+	@echo "... lib/protobuf-c/protobuf-c.o"
+	@echo "... lib/protobuf-c/protobuf-c.i"
+	@echo "... lib/protobuf-c/protobuf-c.s"
 	@echo "... logic/custom.o"
 	@echo "... logic/custom.i"
 	@echo "... logic/custom.s"

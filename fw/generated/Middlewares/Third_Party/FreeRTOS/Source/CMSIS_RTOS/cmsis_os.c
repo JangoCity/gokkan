@@ -21,12 +21,12 @@
  * Version 1.02
  *    Control functions for short timeouts in microsecond resolution:
  *    Added: osKernelSysTick, osKernelSysTickFrequency, osKernelSysTickMicroSec
- *    Removed: osSignalGet 
- *    
- *  
+ *    Removed: osSignalGet
+ *
+ *
  *----------------------------------------------------------------------------
  *
- * Portions Copyright © 2016 STMicroelectronics International N.V. All rights reserved.
+ * Portions Copyright ï¿½ 2016 STMicroelectronics International N.V. All rights reserved.
  * Portions Copyright (c) 2013 ARM LIMITED
  * All rights reserved.
  * Redistribution and use in source and binary forms, with or without
@@ -53,48 +53,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *---------------------------------------------------------------------------*/
 
- /**
-  ******************************************************************************
-  * @file    cmsis_os.c
-  * @author  MCD Application Team
-  * @date    22-January-2016
-  * @brief   CMSIS-RTOS API implementation for FreeRTOS V8.2.3
-  ******************************************************************************
-  * @attention
-  *
-  * Redistribution and use in source and binary forms, with or without 
-  * modification, are permitted, provided that the following conditions are met:
-  *
-  * 1. Redistribution of source code must retain the above copyright notice, 
-  *    this list of conditions and the following disclaimer.
-  * 2. Redistributions in binary form must reproduce the above copyright notice,
-  *    this list of conditions and the following disclaimer in the documentation
-  *    and/or other materials provided with the distribution.
-  * 3. Neither the name of STMicroelectronics nor the names of other 
-  *    contributors to this software may be used to endorse or promote products 
-  *    derived from this software without specific written permission.
-  * 4. This software, including modifications and/or derivative works of this 
-  *    software, must execute solely and exclusively on microcontroller or
-  *    microprocessor devices manufactured by or for STMicroelectronics.
-  * 5. Redistribution and use of this software other than as permitted under 
-  *    this license is void and will automatically terminate your rights under 
-  *    this license. 
-  *
-  * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS" 
-  * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT 
-  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
-  * PARTICULAR PURPOSE AND NON-INFRINGEMENT OF THIRD PARTY INTELLECTUAL PROPERTY
-  * RIGHTS ARE DISCLAIMED TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT 
-  * SHALL STMICROELECTRONICS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
-  * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
-  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
-  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  *
-  ******************************************************************************
-  */ 
+/**
+ ******************************************************************************
+ * @file    cmsis_os.c
+ * @author  MCD Application Team
+ * @date    22-January-2016
+ * @brief   CMSIS-RTOS API implementation for FreeRTOS V8.2.3
+ ******************************************************************************
+ * @attention
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted, provided that the following conditions are met:
+ *
+ * 1. Redistribution of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * 3. Neither the name of STMicroelectronics nor the names of other
+ *    contributors to this software may be used to endorse or promote products
+ *    derived from this software without specific written permission.
+ * 4. This software, including modifications and/or derivative works of this
+ *    software, must execute solely and exclusively on microcontroller or
+ *    microprocessor devices manufactured by or for STMicroelectronics.
+ * 5. Redistribution and use of this software other than as permitted under
+ *    this license is void and will automatically terminate your rights under
+ *    this license.
+ *
+ * THIS SOFTWARE IS PROVIDED BY STMICROELECTRONICS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS, IMPLIED OR STATUTORY WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+ * PARTICULAR PURPOSE AND NON-INFRINGEMENT OF THIRD PARTY INTELLECTUAL PROPERTY
+ * RIGHTS ARE DISCLAIMED TO THE FULLEST EXTENT PERMITTED BY LAW. IN NO EVENT
+ * SHALL STMICROELECTRONICS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+ * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ ******************************************************************************
+ */
 
 #include <string.h>
 #include "cmsis_os.h"
@@ -102,35 +102,34 @@
 extern void xPortSysTickHandler(void);
 
 /* Convert from CMSIS type osPriority to FreeRTOS priority number */
-static unsigned portBASE_TYPE makeFreeRtosPriority (osPriority priority)
-{
+static unsigned portBASE_TYPE makeFreeRtosPriority(osPriority priority) {
   unsigned portBASE_TYPE fpriority = tskIDLE_PRIORITY;
-  
+
   if (priority != osPriorityError) {
     fpriority += (priority - osPriorityIdle);
   }
-  
+
   return fpriority;
 }
 
 #if (INCLUDE_uxTaskPriorityGet == 1)
+
 /* Convert from FreeRTOS priority number to CMSIS type osPriority */
-static osPriority makeCmsisPriority (unsigned portBASE_TYPE fpriority)
-{
+static osPriority makeCmsisPriority(unsigned portBASE_TYPE fpriority) {
   osPriority priority = osPriorityError;
-  
+
   if ((fpriority - tskIDLE_PRIORITY) <= (osPriorityRealtime - osPriorityIdle)) {
-    priority = (osPriority)((int)osPriorityIdle + (int)(fpriority - tskIDLE_PRIORITY));
+    priority = (osPriority) ((int) osPriorityIdle + (int) (fpriority - tskIDLE_PRIORITY));
   }
-  
+
   return priority;
 }
+
 #endif
 
 
 /* Determine whether we are in thread mode or handler mode. */
-static int inHandlerMode (void)
-{
+static int inHandlerMode(void) {
   return __get_IPSR() != 0;
 }
 
@@ -140,7 +139,7 @@ static int inHandlerMode (void)
 * @retval status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osKernelInitialize shall be consistent in every CMSIS-RTOS.
 */
-osStatus osKernelInitialize (void);
+osStatus osKernelInitialize(void);
 
 /**
 * @brief  Start the RTOS Kernel with executing the specified thread.
@@ -149,10 +148,9 @@ osStatus osKernelInitialize (void);
 * @retval status code that indicates the execution status of the function
 * @note   MUST REMAIN UNCHANGED: \b osKernelStart shall be consistent in every CMSIS-RTOS.
 */
-osStatus osKernelStart (void)
-{
+osStatus osKernelStart(void) {
   vTaskStartScheduler();
-  
+
   return osOK;
 }
 
@@ -161,37 +159,36 @@ osStatus osKernelStart (void)
 * @param  None
 * @retval (0) RTOS is not started
 *         (1) RTOS is started
-*         (-1) if this feature is disabled in FreeRTOSConfig.h 
+*         (-1) if this feature is disabled in FreeRTOSConfig.h
 * @note  MUST REMAIN UNCHANGED: \b osKernelRunning shall be consistent in every CMSIS-RTOS.
 */
-int32_t osKernelRunning(void)
-{
-#if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
+int32_t osKernelRunning(void) {
+#if ((INCLUDE_xTaskGetSchedulerState == 1) || (configUSE_TIMERS == 1))
   if (xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED)
     return 0;
   else
     return 1;
 #else
-	return (-1);
-#endif	
+  return (-1);
+#endif
 }
 
-#if (defined (osFeature_SysTick)  &&  (osFeature_SysTick != 0))     // System Timer available
+#if (defined (osFeature_SysTick) && (osFeature_SysTick != 0))     // System Timer available
+
 /**
 * @brief  Get the value of the Kernel SysTick timer
 * @param  None
 * @retval None
 * @note   MUST REMAIN UNCHANGED: \b osKernelSysTick shall be consistent in every CMSIS-RTOS.
 */
-uint32_t osKernelSysTick(void)
-{
+uint32_t osKernelSysTick(void) {
   if (inHandlerMode()) {
     return xTaskGetTickCountFromISR();
-  }
-  else {
+  } else {
     return xTaskGetTickCount();
   }
 }
+
 #endif    // System Timer available
 /*********************** Thread Management *****************************/
 /**
@@ -201,17 +198,16 @@ uint32_t osKernelSysTick(void)
 * @retval thread ID for reference by other functions or NULL in case of error.
 * @note   MUST REMAIN UNCHANGED: \b osThreadCreate shall be consistent in every CMSIS-RTOS.
 */
-osThreadId osThreadCreate (const osThreadDef_t *thread_def, void *argument)
-{
+osThreadId osThreadCreate(const osThreadDef_t *thread_def, void *argument) {
   TaskHandle_t handle;
-  
-  
-  if (xTaskCreate((TaskFunction_t)thread_def->pthread,(const portCHAR *)thread_def->name,
-              thread_def->stacksize, argument, makeFreeRtosPriority(thread_def->tpriority),
-              &handle) != pdPASS)  {
+
+
+  if (xTaskCreate((TaskFunction_t) thread_def->pthread, (const portCHAR *) thread_def->name,
+                  thread_def->stacksize, argument, makeFreeRtosPriority(thread_def->tpriority),
+                  &handle) != pdPASS) {
     return NULL;
   }
-  
+
   return handle;
 }
 
@@ -220,12 +216,11 @@ osThreadId osThreadCreate (const osThreadDef_t *thread_def, void *argument)
 * @retval thread ID for reference by other functions or NULL in case of error.
 * @note   MUST REMAIN UNCHANGED: \b osThreadGetId shall be consistent in every CMSIS-RTOS.
 */
-osThreadId osThreadGetId (void)
-{
-#if ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) )
+osThreadId osThreadGetId(void) {
+#if ((INCLUDE_xTaskGetCurrentTaskHandle == 1) || (configUSE_MUTEXES == 1))
   return xTaskGetCurrentTaskHandle();
 #else
-	return NULL;
+  return NULL;
 #endif
 }
 
@@ -235,8 +230,7 @@ osThreadId osThreadGetId (void)
 * @retval  status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osThreadTerminate shall be consistent in every CMSIS-RTOS.
 */
-osStatus osThreadTerminate (osThreadId thread_id)
-{
+osStatus osThreadTerminate(osThreadId thread_id) {
 #if (INCLUDE_vTaskDelete == 1)
   vTaskDelete(thread_id);
   return osOK;
@@ -250,10 +244,9 @@ osStatus osThreadTerminate (osThreadId thread_id)
 * @retval status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osThreadYield shall be consistent in every CMSIS-RTOS.
 */
-osStatus osThreadYield (void)
-{
+osStatus osThreadYield(void) {
   taskYIELD();
-  
+
   return osOK;
 }
 
@@ -264,8 +257,7 @@ osStatus osThreadYield (void)
 * @retval  status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osThreadSetPriority shall be consistent in every CMSIS-RTOS.
 */
-osStatus osThreadSetPriority (osThreadId thread_id, osPriority priority)
-{
+osStatus osThreadSetPriority(osThreadId thread_id, osPriority priority) {
 #if (INCLUDE_vTaskPrioritySet == 1)
   vTaskPrioritySet(thread_id, makeFreeRtosPriority(priority));
   return osOK;
@@ -280,15 +272,11 @@ osStatus osThreadSetPriority (osThreadId thread_id, osPriority priority)
 * @retval  current priority value of the thread function.
 * @note   MUST REMAIN UNCHANGED: \b osThreadGetPriority shall be consistent in every CMSIS-RTOS.
 */
-osPriority osThreadGetPriority (osThreadId thread_id)
-{
+osPriority osThreadGetPriority(osThreadId thread_id) {
 #if (INCLUDE_uxTaskPriorityGet == 1)
-  if (inHandlerMode())
-  {
-    return makeCmsisPriority(uxTaskPriorityGetFromISR(thread_id));  
-  }
-  else
-  {  
+  if (inHandlerMode()) {
+    return makeCmsisPriority(uxTaskPriorityGetFromISR(thread_id));
+  } else {
     return makeCmsisPriority(uxTaskPriorityGet(thread_id));
   }
 #else
@@ -302,22 +290,21 @@ osPriority osThreadGetPriority (osThreadId thread_id)
 * @param   millisec      time delay value
 * @retval  status code that indicates the execution status of the function.
 */
-osStatus osDelay (uint32_t millisec)
-{
+osStatus osDelay(uint32_t millisec) {
 #if INCLUDE_vTaskDelay
   TickType_t ticks = millisec / portTICK_PERIOD_MS;
-  
+
   vTaskDelay(ticks ? ticks : 1);          /* Minimum delay = 1 tick */
-  
+
   return osOK;
 #else
   (void) millisec;
-  
+
   return osErrorResource;
 #endif
 }
 
-#if (defined (osFeature_Wait)  &&  (osFeature_Wait != 0)) /* Generic Wait available */
+#if (defined (osFeature_Wait) && (osFeature_Wait != 0)) /* Generic Wait available */
 /**
 * @brief  Wait for Signal, Message, Mail, or Timeout
 * @param   millisec  timeout value or 0 in case of no time-out
@@ -337,16 +324,15 @@ osEvent osWait (uint32_t millisec);
 * @retval  timer ID for reference by other functions or NULL in case of error.
 * @note   MUST REMAIN UNCHANGED: \b osTimerCreate shall be consistent in every CMSIS-RTOS.
 */
-osTimerId osTimerCreate (const osTimerDef_t *timer_def, os_timer_type type, void *argument)
-{
+osTimerId osTimerCreate(const osTimerDef_t *timer_def, os_timer_type type, void *argument) {
 #if (configUSE_TIMERS == 1)
   return xTimerCreate((const char *)"",
                       1, // period should be filled when starting the Timer using osTimerStart
                       (type == osTimerPeriodic) ? pdTRUE : pdFALSE,
                       (void *) argument,
                       (TaskFunction_t)timer_def->ptimer);
-#else 
-	return NULL;
+#else
+  return NULL;
 #endif
 }
 
@@ -357,17 +343,16 @@ osTimerId osTimerCreate (const osTimerDef_t *timer_def, os_timer_type type, void
 * @retval  status code that indicates the execution status of the function
 * @note   MUST REMAIN UNCHANGED: \b osTimerStart shall be consistent in every CMSIS-RTOS.
 */
-osStatus osTimerStart (osTimerId timer_id, uint32_t millisec)
-{
+osStatus osTimerStart(osTimerId timer_id, uint32_t millisec) {
   osStatus result = osOK;
-#if (configUSE_TIMERS == 1)  
+#if (configUSE_TIMERS == 1)
   portBASE_TYPE taskWoken = pdFALSE;
   TickType_t ticks = millisec / portTICK_PERIOD_MS;
 
   if (ticks == 0)
     ticks = 1;
-    
-  if (inHandlerMode()) 
+
+  if (inHandlerMode())
   {
     if (xTimerChangePeriodFromISR(timer_id, ticks, &taskWoken) != pdPASS)
     {
@@ -375,16 +360,16 @@ osStatus osTimerStart (osTimerId timer_id, uint32_t millisec)
     }
     else
     {
-      portEND_SWITCHING_ISR(taskWoken);     
+      portEND_SWITCHING_ISR(taskWoken);
     }
   }
-  else 
+  else
   {
     if (xTimerChangePeriod(timer_id, ticks, 0) != pdPASS)
       result = osErrorOS;
   }
 
-#else 
+#else
   result = osErrorOS;
 #endif
   return result;
@@ -396,10 +381,9 @@ osStatus osTimerStart (osTimerId timer_id, uint32_t millisec)
 * @retval  status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osTimerStop shall be consistent in every CMSIS-RTOS.
 */
-osStatus osTimerStop (osTimerId timer_id)
-{
+osStatus osTimerStop(osTimerId timer_id) {
   osStatus result = osOK;
-#if (configUSE_TIMERS == 1)  
+#if (configUSE_TIMERS == 1)
   portBASE_TYPE taskWoken = pdFALSE;
 
   if (inHandlerMode()) {
@@ -413,9 +397,9 @@ osStatus osTimerStop (osTimerId timer_id)
       result = osErrorOS;
     }
   }
-#else 
+#else
   result = osErrorOS;
-#endif 
+#endif
   return result;
 }
 
@@ -425,25 +409,24 @@ osStatus osTimerStop (osTimerId timer_id)
 * @retval  status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osTimerDelete shall be consistent in every CMSIS-RTOS.
 */
-osStatus osTimerDelete (osTimerId timer_id)
-{
-osStatus result = osOK;
+osStatus osTimerDelete(osTimerId timer_id) {
+  osStatus result = osOK;
 
 #if (configUSE_TIMERS == 1)
 
-   if (inHandlerMode()) {
-     return osErrorISR;
-  }
-  else { 
-    if ((xTimerDelete(timer_id, osWaitForever )) != pdPASS) {
-      result = osErrorOS;
-    }
-  } 
-    
-#else 
+  if (inHandlerMode()) {
+    return osErrorISR;
+ }
+ else {
+   if ((xTimerDelete(timer_id, osWaitForever )) != pdPASS) {
+     result = osErrorOS;
+   }
+ }
+
+#else
   result = osErrorOS;
-#endif 
- 
+#endif
+
   return result;
 }
 
@@ -455,29 +438,25 @@ osStatus result = osOK;
 * @retval  osOK if successful, osErrorOS if failed .
 * @note   MUST REMAIN UNCHANGED: \b osSignalSet shall be consistent in every CMSIS-RTOS.
 */
-int32_t osSignalSet (osThreadId thread_id, int32_t signal)
-{
-#if( configUSE_TASK_NOTIFICATIONS == 1 )	
+int32_t osSignalSet(osThreadId thread_id, int32_t signal) {
+#if(configUSE_TASK_NOTIFICATIONS == 1)
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-  
-  if (inHandlerMode())
-  {
-    if(xTaskNotifyFromISR( thread_id, (uint32_t)signal, eSetBits, &xHigherPriorityTaskWoken ) != pdPASS )
+
+  if (inHandlerMode()) {
+    if (xTaskNotifyFromISR(thread_id, (uint32_t) signal, eSetBits, &xHigherPriorityTaskWoken) != pdPASS)
       return osErrorOS;
 
-    portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
-  }  
-  else if(xTaskNotify( thread_id, (uint32_t)signal, eSetBits) != pdPASS )
-  {
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+  } else if (xTaskNotify(thread_id, (uint32_t) signal, eSetBits) != pdPASS) {
     return osErrorOS;
   }
-  
+
   return osOK;
 #else
   (void) thread_id;
   (void) signal;
 
-  return osErrorOS; /* Task Notification not supported */ 	
+  return osErrorOS; /* Task Notification not supported */
 #endif
 }
 
@@ -488,7 +467,7 @@ int32_t osSignalSet (osThreadId thread_id, int32_t signal)
 * @retval  previous signal flags of the specified thread or 0x80000000 in case of incorrect parameters.
 * @note   MUST REMAIN UNCHANGED: \b osSignalClear shall be consistent in every CMSIS-RTOS.
 */
-int32_t osSignalClear (osThreadId thread_id, int32_t signal);
+int32_t osSignalClear(osThreadId thread_id, int32_t signal);
 
 /**
 * @brief  Wait for one or more Signal Flags to become signaled for the current \b RUNNING thread.
@@ -497,50 +476,41 @@ int32_t osSignalClear (osThreadId thread_id, int32_t signal);
 * @retval  event flag information or error code.
 * @note   MUST REMAIN UNCHANGED: \b osSignalWait shall be consistent in every CMSIS-RTOS.
 */
-osEvent osSignalWait (int32_t signals, uint32_t millisec)
-{
+osEvent osSignalWait(int32_t signals, uint32_t millisec) {
   osEvent ret;
 
-#if( configUSE_TASK_NOTIFICATIONS == 1 )
-	
+#if(configUSE_TASK_NOTIFICATIONS == 1)
+
   TickType_t ticks;
 
-  ret.value.signals = 0;  
+  ret.value.signals = 0;
   ticks = 0;
   if (millisec == osWaitForever) {
     ticks = portMAX_DELAY;
-  }
-  else if (millisec != 0) {
+  } else if (millisec != 0) {
     ticks = millisec / portTICK_PERIOD_MS;
     if (ticks == 0) {
       ticks = 1;
     }
-  }  
-  
-  if (inHandlerMode())
-  {
-    ret.status = osErrorISR;  /*Not allowed in ISR*/
   }
-  else
-  {
-    if(xTaskNotifyWait( 0,(uint32_t) signals, (uint32_t *)&ret.value.signals, ticks) != pdTRUE)
-    {
-      if(ticks == 0)  ret.status = osOK;
-      else  ret.status = osEventTimeout;
-    }
-    else if(ret.value.signals < 0)
-    {
-      ret.status =  osErrorValue;     
-    }
-    else  ret.status =  osEventSignal;
+
+  if (inHandlerMode()) {
+    ret.status = osErrorISR;  /*Not allowed in ISR*/
+  } else {
+    if (xTaskNotifyWait(0, (uint32_t) signals, (uint32_t *) &ret.value.signals, ticks) != pdTRUE) {
+      if (ticks == 0) ret.status = osOK;
+      else ret.status = osEventTimeout;
+    } else if (ret.value.signals < 0) {
+      ret.status = osErrorValue;
+    } else ret.status = osEventSignal;
   }
 #else
   (void) signals;
   (void) millisec;
-	
+
   ret.status =  osErrorOS;	/* Task Notification not supported */
 #endif
-  
+
   return ret;
 }
 
@@ -551,12 +521,11 @@ osEvent osSignalWait (int32_t signals, uint32_t millisec)
 * @retval  mutex ID for reference by other functions or NULL in case of error.
 * @note   MUST REMAIN UNCHANGED: \b osMutexCreate shall be consistent in every CMSIS-RTOS.
 */
-osMutexId osMutexCreate (const osMutexDef_t *mutex_def)
-{
-#if ( configUSE_MUTEXES == 1)
-  return xSemaphoreCreateMutex(); 
+osMutexId osMutexCreate(const osMutexDef_t *mutex_def) {
+#if (configUSE_MUTEXES == 1)
+  return xSemaphoreCreateMutex();
 #else
-	return NULL;
+  return NULL;
 #endif
 }
 
@@ -567,37 +536,34 @@ osMutexId osMutexCreate (const osMutexDef_t *mutex_def)
 * @retval  status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osMutexWait shall be consistent in every CMSIS-RTOS.
 */
-osStatus osMutexWait (osMutexId mutex_id, uint32_t millisec)
-{
+osStatus osMutexWait(osMutexId mutex_id, uint32_t millisec) {
   TickType_t ticks;
-  portBASE_TYPE taskWoken = pdFALSE;  
-  
-  
+  portBASE_TYPE taskWoken = pdFALSE;
+
+
   if (mutex_id == NULL) {
     return osErrorParameter;
   }
-  
+
   ticks = 0;
   if (millisec == osWaitForever) {
     ticks = portMAX_DELAY;
-  }
-  else if (millisec != 0) {
+  } else if (millisec != 0) {
     ticks = millisec / portTICK_PERIOD_MS;
     if (ticks == 0) {
       ticks = 1;
     }
   }
-  
+
   if (inHandlerMode()) {
     if (xSemaphoreTakeFromISR(mutex_id, &taskWoken) != pdTRUE) {
       return osErrorOS;
     }
-	portEND_SWITCHING_ISR(taskWoken);
-  } 
-  else if (xSemaphoreTake(mutex_id, ticks) != pdTRUE) {
+    portEND_SWITCHING_ISR(taskWoken);
+  } else if (xSemaphoreTake(mutex_id, ticks) != pdTRUE) {
     return osErrorOS;
   }
-  
+
   return osOK;
 }
 
@@ -607,19 +573,16 @@ osStatus osMutexWait (osMutexId mutex_id, uint32_t millisec)
 * @retval  status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osMutexRelease shall be consistent in every CMSIS-RTOS.
 */
-osStatus osMutexRelease (osMutexId mutex_id)
-{
+osStatus osMutexRelease(osMutexId mutex_id) {
   osStatus result = osOK;
   portBASE_TYPE taskWoken = pdFALSE;
-  
+
   if (inHandlerMode()) {
     if (xSemaphoreGiveFromISR(mutex_id, &taskWoken) != pdTRUE) {
       return osErrorOS;
     }
     portEND_SWITCHING_ISR(taskWoken);
-  }
-  else if (xSemaphoreGive(mutex_id) != pdTRUE) 
-  {
+  } else if (xSemaphoreGive(mutex_id) != pdTRUE) {
     result = osErrorOS;
   }
   return result;
@@ -631,8 +594,7 @@ osStatus osMutexRelease (osMutexId mutex_id)
 * @retval  status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osMutexDelete shall be consistent in every CMSIS-RTOS.
 */
-osStatus osMutexDelete (osMutexId mutex_id)
-{
+osStatus osMutexDelete(osMutexId mutex_id) {
   if (inHandlerMode()) {
     return osErrorISR;
   }
@@ -644,7 +606,7 @@ osStatus osMutexDelete (osMutexId mutex_id)
 
 /********************  Semaphore Management Functions **************************/
 
-#if (defined (osFeature_Semaphore)  &&  (osFeature_Semaphore != 0))
+#if (defined (osFeature_Semaphore) && (osFeature_Semaphore != 0))
 
 /**
 * @brief Create and Initialize a Semaphore object used for managing resources
@@ -653,17 +615,16 @@ osStatus osMutexDelete (osMutexId mutex_id)
 * @retval  semaphore ID for reference by other functions or NULL in case of error.
 * @note   MUST REMAIN UNCHANGED: \b osSemaphoreCreate shall be consistent in every CMSIS-RTOS.
 */
-osSemaphoreId osSemaphoreCreate (const osSemaphoreDef_t *semaphore_def, int32_t count)
-{
+osSemaphoreId osSemaphoreCreate(const osSemaphoreDef_t *semaphore_def, int32_t count) {
   (void) semaphore_def;
   osSemaphoreId sema;
-  
+
   if (count == 1) {
     vSemaphoreCreateBinary(sema);
     return sema;
   }
 
-#if (configUSE_COUNTING_SEMAPHORES == 1 )	
+#if (configUSE_COUNTING_SEMAPHORES == 1)
   return xSemaphoreCreateCounting(count, 0);
 #else
   return NULL;
@@ -677,37 +638,34 @@ osSemaphoreId osSemaphoreCreate (const osSemaphoreDef_t *semaphore_def, int32_t 
 * @retval  number of available tokens, or -1 in case of incorrect parameters.
 * @note   MUST REMAIN UNCHANGED: \b osSemaphoreWait shall be consistent in every CMSIS-RTOS.
 */
-int32_t osSemaphoreWait (osSemaphoreId semaphore_id, uint32_t millisec)
-{
+int32_t osSemaphoreWait(osSemaphoreId semaphore_id, uint32_t millisec) {
   TickType_t ticks;
-  portBASE_TYPE taskWoken = pdFALSE;  
-  
-  
+  portBASE_TYPE taskWoken = pdFALSE;
+
+
   if (semaphore_id == NULL) {
     return osErrorParameter;
   }
-  
+
   ticks = 0;
   if (millisec == osWaitForever) {
     ticks = portMAX_DELAY;
-  }
-  else if (millisec != 0) {
+  } else if (millisec != 0) {
     ticks = millisec / portTICK_PERIOD_MS;
     if (ticks == 0) {
       ticks = 1;
     }
   }
-  
+
   if (inHandlerMode()) {
     if (xSemaphoreTakeFromISR(semaphore_id, &taskWoken) != pdTRUE) {
       return osErrorOS;
     }
-	portEND_SWITCHING_ISR(taskWoken);
-  }  
-  else if (xSemaphoreTake(semaphore_id, ticks) != pdTRUE) {
+    portEND_SWITCHING_ISR(taskWoken);
+  } else if (xSemaphoreTake(semaphore_id, ticks) != pdTRUE) {
     return osErrorOS;
   }
-  
+
   return osOK;
 }
 
@@ -717,24 +675,22 @@ int32_t osSemaphoreWait (osSemaphoreId semaphore_id, uint32_t millisec)
 * @retval  status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osSemaphoreRelease shall be consistent in every CMSIS-RTOS.
 */
-osStatus osSemaphoreRelease (osSemaphoreId semaphore_id)
-{
+osStatus osSemaphoreRelease(osSemaphoreId semaphore_id) {
   osStatus result = osOK;
   portBASE_TYPE taskWoken = pdFALSE;
-  
-  
+
+
   if (inHandlerMode()) {
     if (xSemaphoreGiveFromISR(semaphore_id, &taskWoken) != pdTRUE) {
       return osErrorOS;
     }
     portEND_SWITCHING_ISR(taskWoken);
-  }
-  else {
+  } else {
     if (xSemaphoreGive(semaphore_id) != pdTRUE) {
       result = osErrorOS;
     }
   }
-  
+
   return result;
 }
 
@@ -744,22 +700,21 @@ osStatus osSemaphoreRelease (osSemaphoreId semaphore_id)
 * @retval  status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osSemaphoreDelete shall be consistent in every CMSIS-RTOS.
 */
-osStatus osSemaphoreDelete (osSemaphoreId semaphore_id)
-{
+osStatus osSemaphoreDelete(osSemaphoreId semaphore_id) {
   if (inHandlerMode()) {
     return osErrorISR;
   }
 
   vSemaphoreDelete(semaphore_id);
 
-  return osOK; 
+  return osOK;
 }
 
 #endif    /* Use Semaphores */
 
 /*******************   Memory Pool Management Functions  ***********************/
 
-#if (defined (osFeature_Pool)  &&  (osFeature_Pool != 0)) 
+#if (defined (osFeature_Pool) && (osFeature_Pool != 0))
 
 //TODO
 //This is a primitive and inefficient wrapper around the existing FreeRTOS memory management.
@@ -767,11 +722,11 @@ osStatus osSemaphoreDelete (osSemaphoreId semaphore_id)
 
 
 typedef struct os_pool_cb {
-  void *pool;
-  uint8_t *markers;
-  uint32_t pool_sz;
-  uint32_t item_sz;
-  uint32_t currentIndex;
+    void *pool;
+    uint8_t *markers;
+    uint32_t pool_sz;
+    uint32_t item_sz;
+    uint32_t currentIndex;
 } os_pool_cb_t;
 
 
@@ -781,42 +736,39 @@ typedef struct os_pool_cb {
 * @retval  memory pool ID for reference by other functions or NULL in case of error.
 * @note   MUST REMAIN UNCHANGED: \b osPoolCreate shall be consistent in every CMSIS-RTOS.
 */
-osPoolId osPoolCreate (const osPoolDef_t *pool_def)
-{
+osPoolId osPoolCreate(const osPoolDef_t *pool_def) {
   osPoolId thePool;
   int itemSize = 4 * ((pool_def->item_sz + 3) / 4);
   uint32_t i;
-  
+
   /* First have to allocate memory for the pool control block. */
   thePool = pvPortMalloc(sizeof(os_pool_cb_t));
   if (thePool) {
     thePool->pool_sz = pool_def->pool_sz;
     thePool->item_sz = itemSize;
     thePool->currentIndex = 0;
-    
+
     /* Memory for markers */
     thePool->markers = pvPortMalloc(pool_def->pool_sz);
     if (thePool->markers) {
       /* Now allocate the pool itself. */
       thePool->pool = pvPortMalloc(pool_def->pool_sz * itemSize);
-      
+
       if (thePool->pool) {
         for (i = 0; i < pool_def->pool_sz; i++) {
           thePool->markers[i] = 0;
         }
-      }
-      else {
+      } else {
         vPortFree(thePool->markers);
         vPortFree(thePool);
         thePool = NULL;
       }
-    }
-    else {
+    } else {
       vPortFree(thePool);
       thePool = NULL;
     }
   }
-  
+
   return thePool;
 }
 
@@ -826,41 +778,38 @@ osPoolId osPoolCreate (const osPoolDef_t *pool_def)
 * @retval  address of the allocated memory block or NULL in case of no memory available.
 * @note   MUST REMAIN UNCHANGED: \b osPoolAlloc shall be consistent in every CMSIS-RTOS.
 */
-void *osPoolAlloc (osPoolId pool_id)
-{
+void *osPoolAlloc(osPoolId pool_id) {
   int dummy = 0;
   void *p = NULL;
   uint32_t i;
   uint32_t index;
-  
+
   if (inHandlerMode()) {
     dummy = portSET_INTERRUPT_MASK_FROM_ISR();
-  }
-  else {
+  } else {
     vPortEnterCritical();
   }
-  
+
   for (i = 0; i < pool_id->pool_sz; i++) {
     index = pool_id->currentIndex + i;
     if (index >= pool_id->pool_sz) {
       index = 0;
     }
-    
+
     if (pool_id->markers[index] == 0) {
       pool_id->markers[index] = 1;
-      p = (void *)((uint32_t)(pool_id->pool) + (index * pool_id->item_sz));
+      p = (void *) ((uint32_t) (pool_id->pool) + (index * pool_id->item_sz));
       pool_id->currentIndex = index;
       break;
     }
   }
-  
+
   if (inHandlerMode()) {
     portCLEAR_INTERRUPT_MASK_FROM_ISR(dummy);
-  }
-  else {
+  } else {
     vPortExitCritical();
   }
-  
+
   return p;
 }
 
@@ -870,15 +819,13 @@ void *osPoolAlloc (osPoolId pool_id)
 * @retval  address of the allocated memory block or NULL in case of no memory available.
 * @note   MUST REMAIN UNCHANGED: \b osPoolCAlloc shall be consistent in every CMSIS-RTOS.
 */
-void *osPoolCAlloc (osPoolId pool_id)
-{
+void *osPoolCAlloc(osPoolId pool_id) {
   void *p = osPoolAlloc(pool_id);
-  
-  if (p != NULL)
-  {
+
+  if (p != NULL) {
     memset(p, 0, sizeof(pool_id->pool_sz));
   }
-  
+
   return p;
 }
 
@@ -889,23 +836,22 @@ void *osPoolCAlloc (osPoolId pool_id)
 * @retval  status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osPoolFree shall be consistent in every CMSIS-RTOS.
 */
-osStatus osPoolFree (osPoolId pool_id, void *block)
-{
+osStatus osPoolFree(osPoolId pool_id, void *block) {
   uint32_t index;
-  
+
   if (pool_id == NULL) {
     return osErrorParameter;
   }
-  
+
   if (block == NULL) {
     return osErrorParameter;
   }
-  
+
   if (block < pool_id->pool) {
     return osErrorParameter;
   }
-  
-  index = (uint32_t)block - (uint32_t)(pool_id->pool);
+
+  index = (uint32_t) block - (uint32_t) (pool_id->pool);
   if (index % pool_id->item_sz) {
     return osErrorParameter;
   }
@@ -913,9 +859,9 @@ osStatus osPoolFree (osPoolId pool_id, void *block)
   if (index >= pool_id->pool_sz) {
     return osErrorParameter;
   }
-  
+
   pool_id->markers[index] = 0;
-  
+
   return osOK;
 }
 
@@ -924,7 +870,7 @@ osStatus osPoolFree (osPoolId pool_id, void *block)
 
 /*******************   Message Queue Management Functions  *********************/
 
-#if (defined (osFeature_MessageQ)  &&  (osFeature_MessageQ != 0)) /* Use Message Queues */
+#if (defined (osFeature_MessageQ) && (osFeature_MessageQ != 0)) /* Use Message Queues */
 
 /**
 * @brief Create and Initialize a Message Queue
@@ -933,10 +879,9 @@ osStatus osPoolFree (osPoolId pool_id, void *block)
 * @retval  message queue ID for reference by other functions or NULL in case of error.
 * @note   MUST REMAIN UNCHANGED: \b osMessageCreate shall be consistent in every CMSIS-RTOS.
 */
-osMessageQId osMessageCreate (const osMessageQDef_t *queue_def, osThreadId thread_id)
-{
+osMessageQId osMessageCreate(const osMessageQDef_t *queue_def, osThreadId thread_id) {
   (void) thread_id;
-  
+
   return xQueueCreate(queue_def->queue_sz, queue_def->item_sz);
 }
 
@@ -948,28 +893,26 @@ osMessageQId osMessageCreate (const osMessageQDef_t *queue_def, osThreadId threa
 * @retval status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osMessagePut shall be consistent in every CMSIS-RTOS.
 */
-osStatus osMessagePut (osMessageQId queue_id, uint32_t info, uint32_t millisec)
-{
+osStatus osMessagePut(osMessageQId queue_id, uint32_t info, uint32_t millisec) {
   portBASE_TYPE taskWoken = pdFALSE;
   TickType_t ticks;
-  
+
   ticks = millisec / portTICK_PERIOD_MS;
   if (ticks == 0) {
     ticks = 1;
   }
-  
+
   if (inHandlerMode()) {
     if (xQueueSendFromISR(queue_id, &info, &taskWoken) != pdTRUE) {
       return osErrorOS;
     }
     portEND_SWITCHING_ISR(taskWoken);
-  }
-  else {
+  } else {
     if (xQueueSend(queue_id, &info, ticks) != pdTRUE) {
       return osErrorOS;
     }
   }
-  
+
   return osOK;
 }
 
@@ -980,66 +923,61 @@ osStatus osMessagePut (osMessageQId queue_id, uint32_t info, uint32_t millisec)
 * @retval event information that includes status code.
 * @note   MUST REMAIN UNCHANGED: \b osMessageGet shall be consistent in every CMSIS-RTOS.
 */
-osEvent osMessageGet (osMessageQId queue_id, uint32_t millisec)
-{
+osEvent osMessageGet(osMessageQId queue_id, uint32_t millisec) {
   portBASE_TYPE taskWoken;
   TickType_t ticks;
   osEvent event;
-  
+
   event.def.message_id = queue_id;
   event.value.v = 0;
-  
+
   if (queue_id == NULL) {
     event.status = osErrorParameter;
     return event;
   }
-  
+
   taskWoken = pdFALSE;
-  
+
   ticks = 0;
   if (millisec == osWaitForever) {
     ticks = portMAX_DELAY;
-  }
-  else if (millisec != 0) {
+  } else if (millisec != 0) {
     ticks = millisec / portTICK_PERIOD_MS;
     if (ticks == 0) {
       ticks = 1;
     }
   }
-  
+
   if (inHandlerMode()) {
     if (xQueueReceiveFromISR(queue_id, &event.value.v, &taskWoken) == pdTRUE) {
       /* We have mail */
       event.status = osEventMessage;
-    }
-    else {
+    } else {
       event.status = osOK;
     }
     portEND_SWITCHING_ISR(taskWoken);
-  }
-  else {
+  } else {
     if (xQueueReceive(queue_id, &event.value.v, ticks) == pdTRUE) {
       /* We have mail */
       event.status = osEventMessage;
-    }
-    else {
+    } else {
       event.status = (ticks == 0) ? osOK : osEventTimeout;
     }
   }
-  
+
   return event;
 }
 
 #endif     /* Use Message Queues */
 
 /********************   Mail Queue Management Functions  ***********************/
-#if (defined (osFeature_MailQ)  &&  (osFeature_MailQ != 0))  /* Use Mail Queues */
+#if (defined (osFeature_MailQ) && (osFeature_MailQ != 0))  /* Use Mail Queues */
 
 
 typedef struct os_mailQ_cb {
-  const osMailQDef_t *queue_def;
-  QueueHandle_t handle;
-  osPoolId pool;
+    const osMailQDef_t *queue_def;
+    QueueHandle_t handle;
+    osPoolId pool;
 } os_mailQ_cb_t;
 
 /**
@@ -1049,27 +987,26 @@ typedef struct os_mailQ_cb {
 * @retval mail queue ID for reference by other functions or NULL in case of error.
 * @note   MUST REMAIN UNCHANGED: \b osMailCreate shall be consistent in every CMSIS-RTOS.
 */
-osMailQId osMailCreate (const osMailQDef_t *queue_def, osThreadId thread_id)
-{
+osMailQId osMailCreate(const osMailQDef_t *queue_def, osThreadId thread_id) {
   (void) thread_id;
-  
+
   osPoolDef_t pool_def = {queue_def->queue_sz, queue_def->item_sz, NULL};
-  
-  
+
+
   /* Create a mail queue control block */
   *(queue_def->cb) = pvPortMalloc(sizeof(struct os_mailQ_cb));
   if (*(queue_def->cb) == NULL) {
     return NULL;
   }
   (*(queue_def->cb))->queue_def = queue_def;
-  
+
   /* Create a queue in FreeRTOS */
   (*(queue_def->cb))->handle = xQueueCreate(queue_def->queue_sz, sizeof(void *));
   if ((*(queue_def->cb))->handle == NULL) {
     vPortFree(*(queue_def->cb));
     return NULL;
   }
-  
+
   /* Create a mail pool */
   (*(queue_def->cb))->pool = osPoolCreate(&pool_def);
   if ((*(queue_def->cb))->pool == NULL) {
@@ -1077,7 +1014,7 @@ osMailQId osMailCreate (const osMailQDef_t *queue_def, osThreadId thread_id)
     vPortFree(*(queue_def->cb));
     return NULL;
   }
-  
+
   return *(queue_def->cb);
 }
 
@@ -1088,18 +1025,17 @@ osMailQId osMailCreate (const osMailQDef_t *queue_def, osThreadId thread_id)
 * @retval pointer to memory block that can be filled with mail or NULL in case error.
 * @note   MUST REMAIN UNCHANGED: \b osMailAlloc shall be consistent in every CMSIS-RTOS.
 */
-void *osMailAlloc (osMailQId queue_id, uint32_t millisec)
-{
+void *osMailAlloc(osMailQId queue_id, uint32_t millisec) {
   (void) millisec;
   void *p;
-  
-  
+
+
   if (queue_id == NULL) {
     return NULL;
   }
-  
+
   p = osPoolAlloc(queue_id->pool);
-  
+
   return p;
 }
 
@@ -1110,17 +1046,16 @@ void *osMailAlloc (osMailQId queue_id, uint32_t millisec)
 * @retval pointer to memory block that can be filled with mail or NULL in case error.
 * @note   MUST REMAIN UNCHANGED: \b osMailCAlloc shall be consistent in every CMSIS-RTOS.
 */
-void *osMailCAlloc (osMailQId queue_id, uint32_t millisec)
-{
+void *osMailCAlloc(osMailQId queue_id, uint32_t millisec) {
   uint32_t i;
   void *p = osMailAlloc(queue_id, millisec);
-  
+
   if (p) {
     for (i = 0; i < sizeof(queue_id->queue_def->item_sz); i++) {
-      ((uint8_t *)p)[i] = 0;
+      ((uint8_t *) p)[i] = 0;
     }
   }
-  
+
   return p;
 }
 
@@ -1131,29 +1066,27 @@ void *osMailCAlloc (osMailQId queue_id, uint32_t millisec)
 * @retval status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osMailPut shall be consistent in every CMSIS-RTOS.
 */
-osStatus osMailPut (osMailQId queue_id, void *mail)
-{
+osStatus osMailPut(osMailQId queue_id, void *mail) {
   portBASE_TYPE taskWoken;
-  
-  
+
+
   if (queue_id == NULL) {
     return osErrorParameter;
   }
-  
+
   taskWoken = pdFALSE;
-  
+
   if (inHandlerMode()) {
     if (xQueueSendFromISR(queue_id->handle, &mail, &taskWoken) != pdTRUE) {
       return osErrorOS;
     }
     portEND_SWITCHING_ISR(taskWoken);
-  }
-  else {
-    if (xQueueSend(queue_id->handle, &mail, 0) != pdTRUE) { 
+  } else {
+    if (xQueueSend(queue_id->handle, &mail, 0) != pdTRUE) {
       return osErrorOS;
     }
   }
-  
+
   return osOK;
 }
 
@@ -1164,52 +1097,47 @@ osStatus osMailPut (osMailQId queue_id, void *mail)
 * @retval event that contains mail information or error code.
 * @note   MUST REMAIN UNCHANGED: \b osMailGet shall be consistent in every CMSIS-RTOS.
 */
-osEvent osMailGet (osMailQId queue_id, uint32_t millisec)
-{
+osEvent osMailGet(osMailQId queue_id, uint32_t millisec) {
   portBASE_TYPE taskWoken;
   TickType_t ticks;
   osEvent event;
-  
+
   event.def.mail_id = queue_id;
-  
+
   if (queue_id == NULL) {
     event.status = osErrorParameter;
     return event;
   }
-  
+
   taskWoken = pdFALSE;
-  
+
   ticks = 0;
   if (millisec == osWaitForever) {
     ticks = portMAX_DELAY;
-  }
-  else if (millisec != 0) {
+  } else if (millisec != 0) {
     ticks = millisec / portTICK_PERIOD_MS;
     if (ticks == 0) {
       ticks = 1;
     }
   }
-  
+
   if (inHandlerMode()) {
     if (xQueueReceiveFromISR(queue_id->handle, &event.value.p, &taskWoken) == pdTRUE) {
       /* We have mail */
       event.status = osEventMail;
-    }
-    else {
+    } else {
       event.status = osOK;
     }
     portEND_SWITCHING_ISR(taskWoken);
-  }
-  else {
+  } else {
     if (xQueueReceive(queue_id->handle, &event.value.p, ticks) == pdTRUE) {
       /* We have mail */
       event.status = osEventMail;
-    }
-    else {
+    } else {
       event.status = (ticks == 0) ? osOK : osEventTimeout;
     }
   }
-  
+
   return event;
 }
 
@@ -1220,14 +1148,14 @@ osEvent osMailGet (osMailQId queue_id, uint32_t millisec)
 * @retval status code that indicates the execution status of the function.
 * @note   MUST REMAIN UNCHANGED: \b osMailFree shall be consistent in every CMSIS-RTOS.
 */
-osStatus osMailFree (osMailQId queue_id, void *mail)
-{
+osStatus osMailFree(osMailQId queue_id, void *mail) {
   if (queue_id == NULL) {
     return osErrorParameter;
   }
-  
+
   return osPoolFree(queue_id->pool, mail);
 }
+
 #endif  /* Use Mail Queues */
 
 /*************************** Additional specific APIs to Free RTOS ************/
@@ -1236,20 +1164,18 @@ osStatus osMailFree (osMailQId queue_id, void *mail)
 * @param  none.
 * @retval none.
 */
-void osSystickHandler(void)
-{
+void osSystickHandler(void) {
 
-#if (INCLUDE_xTaskGetSchedulerState  == 1 )
-  if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED)
-  {
-#endif  /* INCLUDE_xTaskGetSchedulerState */  
+#if (INCLUDE_xTaskGetSchedulerState == 1)
+  if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
+#endif  /* INCLUDE_xTaskGetSchedulerState */
     xPortSysTickHandler();
-#if (INCLUDE_xTaskGetSchedulerState  == 1 )
+#if (INCLUDE_xTaskGetSchedulerState == 1)
   }
-#endif  /* INCLUDE_xTaskGetSchedulerState */  
+#endif  /* INCLUDE_xTaskGetSchedulerState */
 }
 
-#if ( INCLUDE_eTaskGetState == 1 )
+#if (INCLUDE_eTaskGetState == 1)
 /**
 * @brief  Obtain the state of any thread.
 * @param   thread_id   thread ID obtained by \ref osThreadCreate or \ref osThreadGetId.
@@ -1259,9 +1185,9 @@ osThreadState osThreadGetState(osThreadId thread_id)
 {
   eTaskState ThreadState;
   osThreadState result;
-  
+
   ThreadState = eTaskGetState(thread_id);
-  
+
   switch (ThreadState)
   {
   case eRunning :
@@ -1281,8 +1207,8 @@ osThreadState osThreadGetState(osThreadId thread_id)
     break;
   default:
     result = osThreadError;
-  } 
-  
+  }
+
   return result;
 }
 #endif /* INCLUDE_eTaskGetState */
@@ -1301,16 +1227,16 @@ osStatus osThreadIsSuspended(osThreadId thread_id)
     return osErrorOS;
 }
 #endif /* INCLUDE_eTaskGetState */
+
 /**
 * @brief  Suspend execution of a thread.
 * @param   thread_id   thread ID obtained by \ref osThreadCreate or \ref osThreadGetId.
 * @retval  status code that indicates the execution status of the function.
 */
-osStatus osThreadSuspend (osThreadId thread_id)
-{
+osStatus osThreadSuspend(osThreadId thread_id) {
 #if (INCLUDE_vTaskSuspend == 1)
-    vTaskSuspend(thread_id);
-  
+  vTaskSuspend(thread_id);
+
   return osOK;
 #else
   return osErrorResource;
@@ -1322,18 +1248,13 @@ osStatus osThreadSuspend (osThreadId thread_id)
 * @param   thread_id   thread ID obtained by \ref osThreadCreate or \ref osThreadGetId.
 * @retval  status code that indicates the execution status of the function.
 */
-osStatus osThreadResume (osThreadId thread_id)
-{
-#if (INCLUDE_vTaskSuspend == 1)  
-  if(inHandlerMode())
-  {
-    if (xTaskResumeFromISR(thread_id) == pdTRUE)
-    {
+osStatus osThreadResume(osThreadId thread_id) {
+#if (INCLUDE_vTaskSuspend == 1)
+  if (inHandlerMode()) {
+    if (xTaskResumeFromISR(thread_id) == pdTRUE) {
       portYIELD_FROM_ISR(pdTRUE);
     }
-  }
-  else
-  {
+  } else {
     vTaskResume(thread_id);
   }
   return osOK;
@@ -1346,10 +1267,9 @@ osStatus osThreadResume (osThreadId thread_id)
 * @brief  Suspend execution of a all active threads.
 * @retval  status code that indicates the execution status of the function.
 */
-osStatus osThreadSuspendAll (void)
-{
+osStatus osThreadSuspendAll(void) {
   vTaskSuspendAll();
-  
+
   return osOK;
 }
 
@@ -1357,48 +1277,45 @@ osStatus osThreadSuspendAll (void)
 * @brief  Resume execution of a all suspended threads.
 * @retval  status code that indicates the execution status of the function.
 */
-osStatus osThreadResumeAll (void)
-{
+osStatus osThreadResumeAll(void) {
   if (xTaskResumeAll() == pdTRUE)
     return osOK;
   else
     return osErrorOS;
-  
+
 }
 
 /**
 * @brief  Delay a task until a specified time
-* @param   PreviousWakeTime   Pointer to a variable that holds the time at which the 
+* @param   PreviousWakeTime   Pointer to a variable that holds the time at which the
 *          task was last unblocked. PreviousWakeTime must be initialised with the current time
 *          prior to its first use (PreviousWakeTime = osKernelSysTick() )
 * @param   millisec    time delay value
 * @retval  status code that indicates the execution status of the function.
 */
-osStatus osDelayUntil (uint32_t *PreviousWakeTime, uint32_t millisec)
-{
+osStatus osDelayUntil(uint32_t *PreviousWakeTime, uint32_t millisec) {
 #if INCLUDE_vTaskDelayUntil
   TickType_t ticks = (millisec / portTICK_PERIOD_MS);
   vTaskDelayUntil((TickType_t *) PreviousWakeTime, ticks ? ticks : 1);
-  
+
   return osOK;
 #else
   (void) millisec;
   (void) PreviousWakeTime;
-  
+
   return osErrorResource;
 #endif
 }
 
 /**
-* @brief   Lists all the current threads, along with their current state 
+* @brief   Lists all the current threads, along with their current state
 *          and stack usage high water mark.
 * @param   buffer   A buffer into which the above mentioned details
 *          will be written
 * @retval  status code that indicates the execution status of the function.
 */
-osStatus osThreadList (uint8_t *buffer)
-{
-#if ( ( configUSE_TRACE_FACILITY == 1 ) && ( configUSE_STATS_FORMATTING_FUNCTIONS == 1 ) )
+osStatus osThreadList(uint8_t *buffer) {
+#if ((configUSE_TRACE_FACILITY == 1) && (configUSE_STATS_FORMATTING_FUNCTIONS == 1))
   vTaskList((char *)buffer);
 #endif
   return osOK;
@@ -1410,39 +1327,34 @@ osStatus osThreadList (uint8_t *buffer)
 * @param  millisec  timeout value or 0 in case of no time-out.
 * @retval event information that includes status code.
 */
-osEvent osMessagePeek (osMessageQId queue_id, uint32_t millisec)
-{
+osEvent osMessagePeek(osMessageQId queue_id, uint32_t millisec) {
   TickType_t ticks;
   osEvent event;
-  
+
   event.def.message_id = queue_id;
-  
+
   if (queue_id == NULL) {
     event.status = osErrorParameter;
     return event;
   }
-  
+
   ticks = 0;
   if (millisec == osWaitForever) {
     ticks = portMAX_DELAY;
-  }
-  else if (millisec != 0) {
+  } else if (millisec != 0) {
     ticks = millisec / portTICK_PERIOD_MS;
     if (ticks == 0) {
       ticks = 1;
     }
   }
-  
-  if (xQueuePeek(queue_id, &event.value.v, ticks) == pdTRUE) 
-  {
+
+  if (xQueuePeek(queue_id, &event.value.v, ticks) == pdTRUE) {
     /* We have mail */
     event.status = osEventMessage;
-  }
-  else 
-  {
+  } else {
     event.status = (ticks == 0) ? osOK : osEventTimeout;
   }
-  
+
   return event;
 }
 
@@ -1451,14 +1363,13 @@ osEvent osMessagePeek (osMessageQId queue_id, uint32_t millisec)
 * @param  mutex_def     mutex definition referenced with \ref osMutex.
 * @retval  mutex ID for reference by other functions or NULL in case of error..
 */
-osMutexId osRecursiveMutexCreate (const osMutexDef_t *mutex_def)
-{
+osMutexId osRecursiveMutexCreate(const osMutexDef_t *mutex_def) {
   (void) mutex_def;
 #if (configUSE_RECURSIVE_MUTEXES == 1)
   return xSemaphoreCreateRecursiveMutex();
 #else
   return NULL;
-#endif	
+#endif
 }
 
 /**
@@ -1466,18 +1377,17 @@ osMutexId osRecursiveMutexCreate (const osMutexDef_t *mutex_def)
 * @param   mutex_id      mutex ID obtained by \ref osRecursiveMutexCreate.
 * @retval  status code that indicates the execution status of the function.
 */
-osStatus osRecursiveMutexRelease (osMutexId mutex_id)
-{
+osStatus osRecursiveMutexRelease(osMutexId mutex_id) {
 #if (configUSE_RECURSIVE_MUTEXES == 1)
   osStatus result = osOK;
- 
-  if (xSemaphoreGiveRecursive(mutex_id) != pdTRUE) 
+
+  if (xSemaphoreGiveRecursive(mutex_id) != pdTRUE)
   {
     result = osErrorOS;
   }
   return result;
 #else
-	return osErrorResource;
+  return osErrorResource;
 #endif
 }
 
@@ -1487,36 +1397,35 @@ osStatus osRecursiveMutexRelease (osMutexId mutex_id)
 * @param millisec      timeout value or 0 in case of no time-out.
 * @retval  status code that indicates the execution status of the function.
 */
-osStatus osRecursiveMutexWait (osMutexId mutex_id, uint32_t millisec)
-{
+osStatus osRecursiveMutexWait(osMutexId mutex_id, uint32_t millisec) {
 #if (configUSE_RECURSIVE_MUTEXES == 1)
   TickType_t ticks;
-  
+
   if (mutex_id == NULL)
   {
     return osErrorParameter;
   }
-  
+
   ticks = 0;
-  if (millisec == osWaitForever) 
+  if (millisec == osWaitForever)
   {
     ticks = portMAX_DELAY;
   }
-  else if (millisec != 0) 
+  else if (millisec != 0)
   {
     ticks = millisec / portTICK_PERIOD_MS;
-    if (ticks == 0) 
+    if (ticks == 0)
     {
       ticks = 1;
     }
   }
-  
-  if (xSemaphoreTakeRecursive(mutex_id, ticks) != pdTRUE) 
+
+  if (xSemaphoreTakeRecursive(mutex_id, ticks) != pdTRUE)
   {
     return osErrorOS;
   }
   return osOK;
 #else
-	return osErrorResource;
+  return osErrorResource;
 #endif
 }
