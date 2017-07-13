@@ -25,6 +25,6 @@ Not implemented
  - General errors and strange IRQs handling
  - CANFilters
  - ~~Serial through coroutines~~
- - Move to nice and more suitable hardware
+ - ~~Move to nice and more suitable hardware~~
  - Some UDS (ISO 14229-1:2013) routines
  - Sniff, dump and simple DoS examples 
