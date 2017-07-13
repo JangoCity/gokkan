@@ -3,8 +3,8 @@
 .idea
 .iml
 
-.o
-.d
-.crf
-.lst
-.s
+*.o
+*.d
+*.crf
+*.lst
+*.s
