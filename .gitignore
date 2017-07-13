@@ -8,3 +8,10 @@
 *.crf
 *.lst
 *.s
+*.axf
+*.htm
+*.lnp
+*.sct
+*.map
+*.dep
+
