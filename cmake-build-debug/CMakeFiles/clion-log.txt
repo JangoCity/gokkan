@@ -1,0 +1,4 @@
+/home/michey/ide/clion/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/michey/Projects/f/go/src/github.com/michey/gokkan
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/michey/Projects/f/go/src/github.com/michey/gokkan/cmake-build-debug

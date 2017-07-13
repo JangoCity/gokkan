@@ -40,7 +40,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "main.h"
+#include "custom.h"
 
 extern uint8_t serial_RX_Data[30];
 
@@ -65,27 +65,27 @@ void processCanMessage(uint8_t *receiveMsg) {
     sMessage.serialMessageId = 0;
     sMessage.dataPointer = (uint8_t*) receiveMsg;
     xQueueSendFromISR(CAN_TO_SERIALHandle, &sMessage, NULL);
-    
+
 }
 
 void sendCommand() {
-   
+
     uint32_t sizeOfTxMsg = sizeof(CanTxMsgTypeDef);
     uint8_t *pt_CANMessage = malloc(sizeOfTxMsg);
-   
-  
+
+
     memcpy(pt_CANMessage, serial_RX_Data + 1, sizeOfTxMsg);
-    
+
     CANMessage cMessage;
     cMessage.canMessageId = 0;
-    cMessage.dataPointer = pt_CANMessage;    
+    cMessage.dataPointer = pt_CANMessage;
     xQueueSendFromISR(SERIAL_TO_CANHandle, &cMessage, NULL);
 }
 
 void processSerialMessage() {
     HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
-    
- 
+
+
     if (serial_RX_Data[0] == CMD_CHAR) {
         sendCommand();
     } else if (serial_RX_Data[0] == FILTER_CHAR) {
@@ -100,7 +100,7 @@ void receiveChar(uint8_t ch, UART_HandleTypeDef *uart) {
         serial_RX_iter = 0;
     } else {
         serial_RX_Data[serial_RX_iter] = ch;
-        serial_RX_iter++;      
+        serial_RX_iter++;
     }
 }
 
@@ -114,7 +114,7 @@ extern UART_HandleTypeDef huart3;
 extern TIM_HandleTypeDef htim1;
 
 /******************************************************************************/
-/*            Cortex-M3 Processor Interruption and Exception Handlers         */ 
+/*            Cortex-M3 Processor Interruption and Exception Handlers         */
 /******************************************************************************/
 
 /**
@@ -353,7 +353,7 @@ void HAL_CAN_RxCpltCallback(CAN_HandleTypeDef *can) {
     uint8_t *receiveMsg = malloc(rxMessageSize);
     memcpy(receiveMsg, can->pRxMsg, rxMessageSize);
     processCanMessage(receiveMsg);
-    if (fifo == 0) {    
+    if (fifo == 0) {
         HAL_CAN_Receive_IT(&hcan, CAN_FIFO1);
         fifo = 1;
     } else {
