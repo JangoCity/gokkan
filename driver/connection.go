@@ -1,8 +1,10 @@
 package driver
 
-import "github.com/michey/gokkan/data"
+import (
+	"github.com/michey/gokkan/messages"
+)
 
 type CANConnection interface {
-	Send(frame data.CANFrame)
-	GetChan() chan data.Response
+	Send(frame messages.ToDevice)
+	GetChan() chan messages.FromDevice
 }

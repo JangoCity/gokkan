@@ -1,8 +1,13 @@
 package data
 
-import "fmt"
+import (
+	"encoding/binary"
+	"fmt"
+	"github.com/derekparker/delve/pkg/dwarf/frame"
+	"github.com/michey/gokkan/messages"
+)
 
-type IDE uint32
+type IDE int32
 
 const (
 	MIN_STD_ID = 0x00
@@ -15,7 +20,7 @@ const (
 	CAN_IDE_EXT IDE = 4
 )
 
-type RTR uint32
+type RTR int32
 
 //CAN Remote Transmission Request
 const (
@@ -49,11 +54,58 @@ func (frame *CANFrame) String() string {
 	return fmt.Sprintf("id:%#v; dlc:%d; ", id, frame.DLC) + data
 }
 
-type Response struct {
-	*CANFrame
-	Timestamp int64
+func (frame *CANFrame) FromDevice(device *messages.FromDevice) {
+	frame.StdId = device.Frame.Id
+	frame.ExtendedId = device.Frame.Eid
+	frame.DLC = device.Frame.Dlc
+	frame.RTR = getFrameRTR(device.Frame.Rtr)
+	frame.IDE = getFrameIDE(device.Frame.Ide)
+	binary.LittleEndian.PutUint64(frame.Data, device.Frame.Data)
 }
 
-func (r *Response) String() string {
-	return fmt.Sprintf("timestamp:%d; ", r.Timestamp) + r.CANFrame.String()
+func (frame *CANFrame) ToDevice() messages.ToDevice {
+	toDevice := messages.ToDevice{}
+	toDevice.Type = messages.ToDevice_SEND_FRAME
+	toDevice.Frame.Id = frame.StdId
+	toDevice.Frame.Eid = frame.ExtendedId
+	toDevice.Frame.Dlc = frame.DLC
+	toDevice.Frame.Ide = frame.getMsgIDE()
+	toDevice.Frame.Rtr = frame.getMsgRTR()
+	return toDevice
+}
+
+func (frame *CANFrame) getData() uint64 {
+	return binary.LittleEndian.Uint64(frame.Data)
+}
+
+func (frame *CANFrame) getMsgIDE() messages.Frame_IDE {
+	if frame.IDE == CAN_IDE_STD {
+		return messages.Frame_STD
+	} else {
+		return messages.Frame_EXT
+	}
+}
+
+func (frame *CANFrame) getMsgRTR() messages.Frame_RTR {
+	if frame.RTR == CAN_RTR_DATA {
+		return messages.Frame_DATA
+	} else {
+		return messages.Frame_REMOTE
+	}
+}
+
+func getFrameRTR(rtr messages.Frame_RTR) RTR {
+	if rtr == messages.Frame_DATA {
+		return CAN_RTR_DATA
+	} else {
+		return CAN_RTR_REMOTE
+	}
+}
+
+func getFrameIDE(ide messages.Frame_IDE) IDE {
+	if ide == messages.Frame_EXT {
+		return CAN_IDE_EXT
+	} else {
+		return CAN_IDE_STD
+	}
 }

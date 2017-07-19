@@ -3,6 +3,7 @@ package driver
 import (
 	"github.com/jacobsa/go-serial/serial"
 	"github.com/michey/gokkan/data"
+	"github.com/michey/gokkan/messages"
 	"github.com/michey/gokkan/protocol"
 	"io"
 )
@@ -13,8 +14,8 @@ type SerialCANConnection struct {
 	readEnabled   bool
 	readSkip      bool
 	writeEnabled  bool
-	inputChannel  chan data.CANFrame
-	outputChannel chan data.Response
+	inputChannel  chan messages.ToDevice
+	outputChannel chan messages.FromDevice
 }
 
 func CANConnectWithPotato(serialName *string, baudRate int) (connection SerialCANConnection, err error) {
@@ -34,15 +35,15 @@ func CANConnect(serialName *string, baudRate int, iProtocol protocol.IProtocol) 
 	if err != nil {
 		return SerialCANConnection{nil, nil, true, true, true, nil, nil}, err
 	}
-	input := make(chan data.CANFrame, 256)
-	output := make(chan data.Response, 256)
+	input := make(chan messages.ToDevice, 256)
+	output := make(chan messages.FromDevice, 256)
 
 	c := SerialCANConnection{&s, &iProtocol, true, true, true, input, output}
 	c.Run()
 	return c, nil
 }
 
-func (conn *SerialCANConnection) Send(frame data.CANFrame) {
+func (conn *SerialCANConnection) Send(frame messages.ToDevice) {
 	conn.inputChannel <- frame
 }
 
@@ -55,7 +56,7 @@ func (conn *SerialCANConnection) Run() {
 	go conn.writer(conn.inputChannel)
 }
 
-func (conn *SerialCANConnection) GetChan() <-chan data.Response {
+func (conn *SerialCANConnection) GetChan() <-chan messages.FromDevice {
 	return conn.outputChannel
 }
 
@@ -65,7 +66,7 @@ func (conn *SerialCANConnection) stop() {
 	(*conn.protocol).Stop()
 }
 
-func (conn *SerialCANConnection) reader(output chan<- data.Response) {
+func (conn *SerialCANConnection) reader(output chan<- messages.FromDevice) {
 	p := *conn.protocol
 	bytes := make(chan byte, 1)
 	b := make([]byte, 32)
@@ -82,7 +83,7 @@ func (conn *SerialCANConnection) reader(output chan<- data.Response) {
 	}
 }
 
-func (conn *SerialCANConnection) writer(input <-chan data.CANFrame) {
+func (conn *SerialCANConnection) writer(input <-chan messages.ToDevice) {
 	for conn.writeEnabled {
 		f := <-input
 		p := *conn.protocol
