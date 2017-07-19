@@ -501,8 +501,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __RBIT(uint32_t value) {
   int32_t s = 4 /*sizeof(v)*/ * 8 - 1; /* extra shift needed at end */
 
   result = value;                      /* r will be reversed bits of v; first get LSB of v */
-  for (value >>= 1U; value; value >>= 1U)
-  {
+  for (value >>= 1U; value; value >>= 1U) {
     result <<= 1U;
     result |= value & 1U;
     s--;

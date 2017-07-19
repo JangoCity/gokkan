@@ -180,12 +180,13 @@
   *         The pending IRQ priority will be managed only by the subpriority.
   * @retval None
   */
-void HAL_NVIC_SetPriorityGrouping(uint32_t PriorityGroup) {
-  /* Check the parameters */
-  assert_param(IS_NVIC_PRIORITY_GROUP(PriorityGroup));
+void HAL_NVIC_SetPriorityGrouping(uint32_t
+PriorityGroup) {
+/* Check the parameters */
+assert_param(IS_NVIC_PRIORITY_GROUP(PriorityGroup));
 
-  /* Set the PRIGROUP[10:8] bits according to the PriorityGroup parameter value */
-  NVIC_SetPriorityGrouping(PriorityGroup);
+/* Set the PRIGROUP[10:8] bits according to the PriorityGroup parameter value */
+NVIC_SetPriorityGrouping(PriorityGroup);
 }
 
 /**
@@ -262,8 +263,10 @@ void HAL_NVIC_SystemReset(void) {
   * @retval status:  - 0  Function succeeded.
   *                  - 1  Function failed.
   */
-uint32_t HAL_SYSTICK_Config(uint32_t TicksNumb) {
-  return SysTick_Config(TicksNumb);
+uint32_t HAL_SYSTICK_Config(uint32_t
+TicksNumb) {
+return
+SysTick_Config(TicksNumb);
 }
 /**
   * @}
@@ -428,14 +431,16 @@ uint32_t HAL_NVIC_GetActive(IRQn_Type IRQn) {
   *             @arg SYSTICK_CLKSOURCE_HCLK: AHB clock selected as SysTick clock source.
   * @retval None
   */
-void HAL_SYSTICK_CLKSourceConfig(uint32_t CLKSource) {
-  /* Check the parameters */
-  assert_param(IS_SYSTICK_CLK_SOURCE(CLKSource));
-  if (CLKSource == SYSTICK_CLKSOURCE_HCLK) {
-    SysTick->CTRL |= SYSTICK_CLKSOURCE_HCLK;
-  } else {
-    SysTick->CTRL &= ~SYSTICK_CLKSOURCE_HCLK;
-  }
+void HAL_SYSTICK_CLKSourceConfig(uint32_t
+CLKSource) {
+/* Check the parameters */
+assert_param(IS_SYSTICK_CLK_SOURCE(CLKSource));
+if (CLKSource == SYSTICK_CLKSOURCE_HCLK) {
+SysTick->CTRL |= SYSTICK_CLKSOURCE_HCLK;
+} else {
+SysTick->CTRL &=
+~SYSTICK_CLKSOURCE_HCLK;
+}
 }
 
 /**

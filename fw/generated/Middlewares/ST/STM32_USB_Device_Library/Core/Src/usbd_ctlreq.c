@@ -282,7 +282,7 @@ USBD_StatusTypeDef USBD_StdEPReq(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef 
           }
 
           USBD_CtlSendData(pdev,
-                           (uint8_t *) &pep->status,
+                           (uint8_t * ) & pep->status,
                            2);
           break;
 
@@ -332,7 +332,7 @@ static void USBD_GetDescriptor(USBD_HandleTypeDef *pdev,
       break;
 
     case USB_DESC_TYPE_STRING:
-      switch ((uint8_t) (req->wValue)) {
+      switch ((uint8_t)(req->wValue)) {
         case USBD_IDX_LANGID_STR:
           pbuf = pdev->pDesc->GetLangIDStrDescriptor(pdev->dev_speed, &len);
           break;
@@ -415,7 +415,7 @@ static void USBD_SetAddress(USBD_HandleTypeDef *pdev,
   uint8_t dev_addr;
 
   if ((req->wIndex == 0) && (req->wLength == 0)) {
-    dev_addr = (uint8_t) (req->wValue) & 0x7F;
+    dev_addr = (uint8_t)(req->wValue) & 0x7F;
 
     if (pdev->dev_state == USBD_STATE_CONFIGURED) {
       USBD_CtlError(pdev, req);
@@ -447,7 +447,7 @@ static void USBD_SetConfig(USBD_HandleTypeDef *pdev,
 
   static uint8_t cfgidx;
 
-  cfgidx = (uint8_t) (req->wValue);
+  cfgidx = (uint8_t)(req->wValue);
 
   if (cfgidx > USBD_MAX_NUM_CONFIGURATION) {
     USBD_CtlError(pdev, req);
@@ -514,14 +514,14 @@ static void USBD_GetConfig(USBD_HandleTypeDef *pdev,
       case USBD_STATE_ADDRESSED:
         pdev->dev_default_config = 0;
         USBD_CtlSendData(pdev,
-                         (uint8_t *) &pdev->dev_default_config,
+                         (uint8_t * ) & pdev->dev_default_config,
                          1);
         break;
 
       case USBD_STATE_CONFIGURED:
 
         USBD_CtlSendData(pdev,
-                         (uint8_t *) &pdev->dev_config,
+                         (uint8_t * ) & pdev->dev_config,
                          1);
         break;
 
@@ -558,7 +558,7 @@ static void USBD_GetStatus(USBD_HandleTypeDef *pdev,
       }
 
       USBD_CtlSendData(pdev,
-                       (uint8_t *) &pdev->dev_config_status,
+                       (uint8_t * ) & pdev->dev_config_status,
                        2);
       break;
 
@@ -622,8 +622,8 @@ static void USBD_ClrFeature(USBD_HandleTypeDef *pdev,
 */
 
 void USBD_ParseSetupRequest(USBD_SetupReqTypedef *req, uint8_t *pdata) {
-  req->bmRequest = *(uint8_t *) (pdata);
-  req->bRequest = *(uint8_t *) (pdata + 1);
+  req->bmRequest = *(uint8_t * )(pdata);
+  req->bRequest = *(uint8_t * )(pdata + 1);
   req->wValue = SWAPBYTE      (pdata + 2);
   req->wIndex = SWAPBYTE      (pdata + 4);
   req->wLength = SWAPBYTE      (pdata + 6);

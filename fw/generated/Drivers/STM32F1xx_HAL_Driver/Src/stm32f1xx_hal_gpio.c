@@ -199,7 +199,8 @@ void HAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_Init) {
   uint32_t iocurrent = 0x00;
   uint32_t temp = 0x00;
   uint32_t config = 0x00;
-  __IO uint32_t *configregister; /* Store the address of CRL or CRH register based on pin number */
+  __IO
+  uint32_t * configregister; /* Store the address of CRL or CRH register based on pin number */
   uint32_t registeroffset = 0; /* offset used during computation of CNF and MODE bits placement inside CRL or CRH register */
 
   /* Check the parameters */
@@ -208,12 +209,14 @@ void HAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_Init) {
   assert_param(IS_GPIO_MODE(GPIO_Init->Mode));
 
   /* Configure the port pins */
-  for (position = 0; position < GPIO_NUMBER; position++) {
+  for (position = 0; position < GPIO_NUMBER;
+  position++) {
     /* Get the IO position */
-    ioposition = ((uint32_t) 0x01) << position;
+    ioposition = ((uint32_t)
+    0x01) << position;
 
     /* Get the current IO position */
-    iocurrent = (uint32_t) (GPIO_Init->Pin) & ioposition;
+    iocurrent = (uint32_t)(GPIO_Init->Pin) & ioposition;
 
     if (iocurrent == ioposition) {
       /* Check the Alternate function parameters */
@@ -260,15 +263,15 @@ void HAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_Init) {
           /* Check the GPIO pull parameter */
           assert_param(IS_GPIO_PULL(GPIO_Init->Pull));
           if (GPIO_Init->Pull == GPIO_NOPULL) {
-            config = GPIO_CR_MODE_INPUT + GPIO_CR_CNF_INPUT_FLOATING;
-          } else if (GPIO_Init->Pull == GPIO_PULLUP) {
-            config = GPIO_CR_MODE_INPUT + GPIO_CR_CNF_INPUT_PU_PD;
+        config = GPIO_CR_MODE_INPUT +GPIO_CR_CNF_INPUT_FLOATING;
+      } else if (GPIO_Init->Pull == GPIO_PULLUP) {
+        config = GPIO_CR_MODE_INPUT +GPIO_CR_CNF_INPUT_PU_PD;
 
-            /* Set the corresponding ODR bit */
-            GPIOx->BSRR = ioposition;
-          } else /* GPIO_PULLDOWN */
+        /* Set the corresponding ODR bit */
+        GPIOx->BSRR = ioposition;
+      } else /* GPIO_PULLDOWN */
           {
-            config = GPIO_CR_MODE_INPUT + GPIO_CR_CNF_INPUT_PU_PD;
+            config = GPIO_CR_MODE_INPUT +GPIO_CR_CNF_INPUT_PU_PD;
 
             /* Reset the corresponding ODR bit */
             GPIOx->BRR = ioposition;
@@ -277,7 +280,7 @@ void HAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_Init) {
 
           /* If we are configuring the pin in INPUT analog mode */
         case GPIO_MODE_ANALOG:
-          config = GPIO_CR_MODE_INPUT + GPIO_CR_CNF_ANALOG;
+          config = GPIO_CR_MODE_INPUT +GPIO_CR_CNF_ANALOG;
           break;
 
           /* Parameters are checked with assert_param */
@@ -299,7 +302,8 @@ void HAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_Init) {
         /* Enable AFIO Clock */
         __HAL_RCC_AFIO_CLK_ENABLE();
         temp = AFIO->EXTICR[position >> 2];
-        CLEAR_BIT(temp, ((uint32_t) 0x0F) << (4 * (position & 0x03)));
+        CLEAR_BIT(temp, ((uint32_t)
+            0x0F) << (4 * (position & 0x03)));
         SET_BIT(temp, (GPIO_GET_INDEX(GPIOx)) << (4 * (position & 0x03)));
         AFIO->EXTICR[position >> 2] = temp;
 
@@ -347,7 +351,8 @@ void HAL_GPIO_DeInit(GPIO_TypeDef *GPIOx, uint32_t GPIO_Pin) {
   uint32_t position = 0x00;
   uint32_t iocurrent = 0x00;
   uint32_t tmp = 0x00;
-  __IO uint32_t *configregister; /* Store the address of CRL or CRH register based on pin number */
+  __IO
+  uint32_t * configregister; /* Store the address of CRL or CRH register based on pin number */
   uint32_t registeroffset = 0;
 
   /* Check the parameters */
@@ -357,7 +362,8 @@ void HAL_GPIO_DeInit(GPIO_TypeDef *GPIOx, uint32_t GPIO_Pin) {
   /* Configure the port pins */
   while ((GPIO_Pin >> position) != 0) {
     /* Get current io position */
-    iocurrent = (GPIO_Pin) & ((uint32_t) 1 << position);
+    iocurrent = (GPIO_Pin) & ((uint32_t)
+    1 << position);
 
     if (iocurrent) {
       /*------------------------- GPIO Mode Configuration --------------------*/
@@ -377,18 +383,24 @@ void HAL_GPIO_DeInit(GPIO_TypeDef *GPIOx, uint32_t GPIO_Pin) {
       /* Clear the External Interrupt or Event for the current IO */
 
       tmp = AFIO->EXTICR[position >> 2];
-      tmp &= (((uint32_t) 0x0F) << (4 * (position & 0x03)));
+      tmp &= (((uint32_t)
+      0x0F) << (4 * (position & 0x03)));
       if (tmp == (GPIO_GET_INDEX(GPIOx) << (4 * (position & 0x03)))) {
-        tmp = ((uint32_t) 0x0F) << (4 * (position & 0x03));
+        tmp = ((uint32_t)
+        0x0F) << (4 * (position & 0x03));
         CLEAR_BIT(AFIO->EXTICR[position >> 2], tmp);
 
         /* Clear EXTI line configuration */
-        CLEAR_BIT(EXTI->IMR, (uint32_t) iocurrent);
-        CLEAR_BIT(EXTI->EMR, (uint32_t) iocurrent);
+        CLEAR_BIT(EXTI->IMR, (uint32_t)
+            iocurrent);
+        CLEAR_BIT(EXTI->EMR, (uint32_t)
+            iocurrent);
 
         /* Clear Rising Falling edge configuration */
-        CLEAR_BIT(EXTI->RTSR, (uint32_t) iocurrent);
-        CLEAR_BIT(EXTI->FTSR, (uint32_t) iocurrent);
+        CLEAR_BIT(EXTI->RTSR, (uint32_t)
+            iocurrent);
+        CLEAR_BIT(EXTI->FTSR, (uint32_t)
+            iocurrent);
       }
     }
 
@@ -458,7 +470,8 @@ void HAL_GPIO_WritePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, GPIO_PinState Pin
   if (PinState != GPIO_PIN_RESET) {
     GPIOx->BSRR = GPIO_Pin;
   } else {
-    GPIOx->BSRR = (uint32_t) GPIO_Pin << 16;
+    GPIOx->BSRR = (uint32_t)
+    GPIO_Pin << 16;
   }
 }
 
@@ -486,7 +499,8 @@ void HAL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) {
 * @retval None
 */
 HAL_StatusTypeDef HAL_GPIO_LockPin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) {
-  __IO uint32_t tmp = GPIO_LCKR_LCKK;
+  __IO
+  uint32_t tmp = GPIO_LCKR_LCKK;
 
   /* Check the parameters */
   assert_param(IS_GPIO_LOCK_INSTANCE(GPIOx));
@@ -503,7 +517,7 @@ HAL_StatusTypeDef HAL_GPIO_LockPin(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) {
   /* Read LCKK bit*/
   tmp = GPIOx->LCKR;
 
-  if ((uint32_t) (GPIOx->LCKR & GPIO_LCKR_LCKK)) {
+  if ((uint32_t)(GPIOx->LCKR & GPIO_LCKR_LCKK)) {
     return HAL_OK;
   } else {
     return HAL_ERROR;

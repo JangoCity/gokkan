@@ -366,14 +366,22 @@ void HAL_PWR_EnablePVD(void);
 void HAL_PWR_DisablePVD(void);
 
 /* WakeUp pins configuration functions ****************************************/
-void HAL_PWR_EnableWakeUpPin(uint32_t WakeUpPinx);
+void HAL_PWR_EnableWakeUpPin(uint32_t
+WakeUpPinx);
 
-void HAL_PWR_DisableWakeUpPin(uint32_t WakeUpPinx);
+void HAL_PWR_DisableWakeUpPin(uint32_t
+WakeUpPinx);
 
 /* Low Power modes configuration functions ************************************/
-void HAL_PWR_EnterSTOPMode(uint32_t Regulator, uint8_t STOPEntry);
+void HAL_PWR_EnterSTOPMode(uint32_t
+Regulator,
+uint8_t STOPEntry
+);
 
-void HAL_PWR_EnterSLEEPMode(uint32_t Regulator, uint8_t SLEEPEntry);
+void HAL_PWR_EnterSLEEPMode(uint32_t
+Regulator,
+uint8_t SLEEPEntry
+);
 
 void HAL_PWR_EnterSTANDBYMode(void);
 

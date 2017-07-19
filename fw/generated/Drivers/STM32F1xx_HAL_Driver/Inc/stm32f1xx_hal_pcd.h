@@ -115,11 +115,13 @@ typedef USB_EPTypeDef      PCD_EPTypeDef;
 typedef struct {
     PCD_TypeDef *Instance;   /*!< Register base address               */
     PCD_InitTypeDef Init;        /*!< PCD required parameters             */
-    __IO uint8_t USB_Address; /*!< USB Address: not used by USB OTG FS */
+    __IO uint8_t
+    USB_Address; /*!< USB Address: not used by USB OTG FS */
     PCD_EPTypeDef IN_ep[15];   /*!< IN endpoint parameters              */
     PCD_EPTypeDef OUT_ep[15];  /*!< OUT endpoint parameters             */
     HAL_LockTypeDef Lock;        /*!< PCD peripheral status               */
-    __IO PCD_StateTypeDef State;       /*!< PCD communication state             */
+    __IO PCD_StateTypeDef
+    State;       /*!< PCD communication state             */
     uint32_t Setup[12];   /*!< Setup packet buffer                 */
     void *pData;      /*!< Pointer to upper stack Handler      */
 } PCD_HandleTypeDef;

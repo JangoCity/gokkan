@@ -74,19 +74,21 @@ struct _BaudRate {
 struct _Frame {
     ProtobufCMessage base;
     protobuf_c_boolean has_id;
-    int32_t id;
+    uint32_t id;
+    protobuf_c_boolean has_eid;
+    uint32_t eid;
     protobuf_c_boolean has_dlc;
-    int32_t dlc;
+    uint32_t dlc;
     protobuf_c_boolean has_ide;
     Frame__IDE ide;
     protobuf_c_boolean has_rtr;
     Frame__RTR rtr;
-    size_t n_data;
-    ProtobufCBinaryData *data;
+    protobuf_c_boolean has_data;
+    uint64_t data;
 };
 #define FRAME__INIT \
  { PROTOBUF_C_MESSAGE_INIT (&frame__descriptor) \
-    , 0,0, 0,0, 0,0, 0,0, 0,NULL }
+    , 0,0, 0,0, 0,0, 0,0, 0,0, 0,0 }
 
 
 struct _ToDevice {
@@ -94,7 +96,7 @@ struct _ToDevice {
     protobuf_c_boolean has_type;
     ToDevice__MessageType type;
     protobuf_c_boolean has_id;
-    int32_t id;
+    uint32_t id;
     Frame *frame;
     BaudRate *baudrate;
 };
@@ -129,7 +131,7 @@ struct _FromDevice {
     protobuf_c_boolean has_type;
     FromDevice__MessageType type;
     protobuf_c_boolean has_id;
-    int32_t id;
+    uint32_t id;
     Frame *frame;
     Response *response;
     Status *status;

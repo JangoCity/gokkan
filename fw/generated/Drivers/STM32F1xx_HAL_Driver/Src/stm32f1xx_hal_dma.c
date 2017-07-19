@@ -197,7 +197,8 @@ HAL_StatusTypeDef HAL_DMA_Init(DMA_HandleTypeDef *hdma) {
   tmp = hdma->Instance->CCR;
 
   /* Clear PL, MSIZE, PSIZE, MINC, PINC, CIRC, DIR bits */
-  tmp &= ((uint32_t) ~(DMA_CCR_PL | DMA_CCR_MSIZE | DMA_CCR_PSIZE | \
+  tmp &= ((uint32_t)
+  ~(DMA_CCR_PL | DMA_CCR_MSIZE | DMA_CCR_PSIZE | \
                       DMA_CCR_MINC | DMA_CCR_PINC | DMA_CCR_CIRC | \
                       DMA_CCR_DIR));
 
@@ -646,7 +647,7 @@ static void DMA_SetConfig(DMA_HandleTypeDef *hdma, uint32_t SrcAddress, uint32_t
     /* Configure DMA Channel source address */
     hdma->Instance->CMAR = SrcAddress;
   }
-    /* Memory to Peripheral */
+  /* Memory to Peripheral */
   else {
     /* Configure DMA Channel source address */
     hdma->Instance->CPAR = SrcAddress;

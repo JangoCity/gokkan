@@ -67,8 +67,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __disable_irq(void) {
   \details Returns the content of the Control Register.
   \return               Control Register value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_CONTROL(void)
-{
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_CONTROL(void) {
   uint32_t result;
 
   __ASM volatile ("MRS %0, control" : "=r"(result));
@@ -98,9 +97,8 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_CONTROL_NS(void
   \param [in]    control  Control Register value to set
  */
 __attribute__((always_inline)) __STATIC_INLINE void __set_CONTROL(uint32_t
-control)
-{
-__ASM volatile ("MSR control, %0" : : "r" (control) : "memory");
+                                                                  control) {
+  __ASM volatile ("MSR control, %0" : : "r"(control) : "memory");
 }
 
 
@@ -122,8 +120,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_CONTROL_NS(uint32_t
   \details Returns the content of the IPSR Register.
   \return               IPSR Register value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_IPSR(void)
-{
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_IPSR(void) {
   uint32_t result;
 
   __ASM volatile ("MRS %0, ipsr" : "=r"(result));
@@ -152,8 +149,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_IPSR_NS(void)
   \details Returns the content of the APSR Register.
   \return               APSR Register value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_APSR(void)
-{
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_APSR(void) {
   uint32_t result;
 
   __ASM volatile ("MRS %0, apsr" : "=r"(result));
@@ -182,8 +178,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_APSR_NS(void)
   \details Returns the content of the xPSR Register.
   \return               xPSR Register value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_xPSR(void)
-{
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_xPSR(void) {
   uint32_t result;
 
   __ASM volatile ("MRS %0, xpsr" : "=r"(result));
@@ -212,8 +207,7 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_xPSR_NS(void)
   \details Returns the current value of the Process Stack Pointer (PSP).
   \return               PSP Register value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_PSP(void)
-{
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_PSP(void) {
   register uint32_t result;
 
   __ASM volatile ("MRS %0, psp"  : "=r"(result));
@@ -243,9 +237,8 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_PSP_NS(void)
   \param [in]    topOfProcStack  Process Stack Pointer value to set
  */
 __attribute__((always_inline)) __STATIC_INLINE void __set_PSP(uint32_t
-topOfProcStack)
-{
-__ASM volatile ("MSR psp, %0" : : "r" (topOfProcStack) : "sp");
+                                                              topOfProcStack) {
+  __ASM volatile ("MSR psp, %0" : : "r"(topOfProcStack) : "sp");
 }
 
 
@@ -267,8 +260,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_PSP_NS(uint32_t top
   \details Returns the current value of the Main Stack Pointer (MSP).
   \return               MSP Register value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_MSP(void)
-{
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_MSP(void) {
   register uint32_t result;
 
   __ASM volatile ("MRS %0, msp" : "=r"(result));
@@ -298,9 +290,8 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_MSP_NS(void)
   \param [in]    topOfMainStack  Main Stack Pointer value to set
  */
 __attribute__((always_inline)) __STATIC_INLINE void __set_MSP(uint32_t
-topOfMainStack)
-{
-__ASM volatile ("MSR msp, %0" : : "r" (topOfMainStack) : "sp");
+                                                              topOfMainStack) {
+  __ASM volatile ("MSR msp, %0" : : "r"(topOfMainStack) : "sp");
 }
 
 
@@ -322,8 +313,7 @@ __attribute__((always_inline)) __STATIC_INLINE void __TZ_set_MSP_NS(uint32_t top
   \details Returns the current state of the priority mask bit from the Priority Mask Register.
   \return               Priority Mask value
  */
-__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_PRIMASK(void)
-{
+__attribute__((always_inline)) __STATIC_INLINE uint32_t__get_PRIMASK(void) {
   uint32_t result;
 
   __ASM volatile ("MRS %0, primask" : "=r"(result));
@@ -353,9 +343,8 @@ __attribute__((always_inline)) __STATIC_INLINE uint32_t __TZ_get_PRIMASK_NS(void
   \param [in]    priMask  Priority Mask
  */
 __attribute__((always_inline)) __STATIC_INLINE void __set_PRIMASK(uint32_t
-priMask)
-{
-__ASM volatile ("MSR primask, %0" : : "r" (priMask) : "memory");
+                                                                  priMask) {
+  __ASM volatile ("MSR primask, %0" : : "r"(priMask) : "memory");
 }
 
 

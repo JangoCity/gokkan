@@ -727,10 +727,10 @@ HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, ui
         }
         tmp = (uint16_t *) pData;
         if (huart->Init.Parity == UART_PARITY_NONE) {
-          *tmp = (uint16_t) (huart->Instance->DR & (uint16_t) 0x01FF);
+          *tmp = (uint16_t)(huart->Instance->DR & (uint16_t) 0x01FF);
           pData += 2;
         } else {
-          *tmp = (uint16_t) (huart->Instance->DR & (uint16_t) 0x00FF);
+          *tmp = (uint16_t)(huart->Instance->DR & (uint16_t) 0x00FF);
           pData += 1;
         }
 
@@ -739,9 +739,9 @@ HAL_StatusTypeDef HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, ui
           return HAL_TIMEOUT;
         }
         if (huart->Init.Parity == UART_PARITY_NONE) {
-          *pData++ = (uint8_t) (huart->Instance->DR & (uint8_t) 0x00FF);
+          *pData++ = (uint8_t)(huart->Instance->DR & (uint8_t) 0x00FF);
         } else {
-          *pData++ = (uint8_t) (huart->Instance->DR & (uint8_t) 0x007F);
+          *pData++ = (uint8_t)(huart->Instance->DR & (uint8_t) 0x007F);
         }
 
       }
@@ -865,7 +865,7 @@ HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData,
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_UART_Transmit_DMA(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size) {
-  uint32_t *tmp;
+  uint32_t * tmp;
   uint32_t tmp_state = 0;
 
   tmp_state = huart->State;
@@ -899,8 +899,9 @@ HAL_StatusTypeDef HAL_UART_Transmit_DMA(UART_HandleTypeDef *huart, uint8_t *pDat
     huart->hdmatx->XferErrorCallback = UART_DMAError;
 
     /* Enable the UART transmit DMA channel */
-    tmp = (uint32_t *) &pData;
-    HAL_DMA_Start_IT(huart->hdmatx, *(uint32_t *) tmp, (uint32_t) &huart->Instance->DR, Size);
+    tmp = (uint32_t * ) & pData;
+    HAL_DMA_Start_IT(huart->hdmatx, *(uint32_t * )
+    tmp, (uint32_t) & huart->Instance->DR, Size);
 
     /* Clear the TC flag in the SR register by writing 0 to it */
     __HAL_UART_CLEAR_FLAG(huart, UART_FLAG_TC);
@@ -929,7 +930,7 @@ HAL_StatusTypeDef HAL_UART_Transmit_DMA(UART_HandleTypeDef *huart, uint8_t *pDat
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_UART_Receive_DMA(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size) {
-  uint32_t *tmp;
+  uint32_t * tmp;
   uint32_t tmp_state = 0;
 
   tmp_state = huart->State;
@@ -962,8 +963,9 @@ HAL_StatusTypeDef HAL_UART_Receive_DMA(UART_HandleTypeDef *huart, uint8_t *pData
     huart->hdmarx->XferErrorCallback = UART_DMAError;
 
     /* Enable the DMA channel */
-    tmp = (uint32_t *) &pData;
-    HAL_DMA_Start_IT(huart->hdmarx, (uint32_t) &huart->Instance->DR, *(uint32_t *) tmp, Size);
+    tmp = (uint32_t * ) & pData;
+    HAL_DMA_Start_IT(huart->hdmarx, (uint32_t) & huart->Instance->DR, *(uint32_t * )
+    tmp, Size);
 
     /* Enable the DMA transfer for the receiver request by setting the DMAR bit
        in the UART CR3 register */
@@ -1329,7 +1331,7 @@ HAL_StatusTypeDef HAL_HalfDuplex_EnableTransmitter(UART_HandleTypeDef *huart) {
   /*-------------------------- USART CR1 Configuration -----------------------*/
   /* Clear TE and RE bits */
   /* Enable the USART's transmit interface by setting the TE bit in the USART CR1 register */
-  MODIFY_REG(huart->Instance->CR1, (uint32_t) (USART_CR1_TE | USART_CR1_RE), USART_CR1_TE);
+  MODIFY_REG(huart->Instance->CR1, (uint32_t)(USART_CR1_TE | USART_CR1_RE), USART_CR1_TE);
 
   huart->State = HAL_UART_STATE_READY;
 
@@ -1354,7 +1356,7 @@ HAL_StatusTypeDef HAL_HalfDuplex_EnableReceiver(UART_HandleTypeDef *huart) {
   /*-------------------------- USART CR1 Configuration -----------------------*/
   /* Clear TE and RE bits */
   /* Enable the USART's receive interface by setting the RE bit in the USART CR1 register */
-  MODIFY_REG(huart->Instance->CR1, (uint32_t) (USART_CR1_TE | USART_CR1_RE), USART_CR1_RE);
+  MODIFY_REG(huart->Instance->CR1, (uint32_t)(USART_CR1_TE | USART_CR1_RE), USART_CR1_RE);
 
   huart->State = HAL_UART_STATE_READY;
 
@@ -1583,14 +1585,14 @@ static HAL_StatusTypeDef UART_Transmit_IT(UART_HandleTypeDef *huart) {
   if ((tmp_state == HAL_UART_STATE_BUSY_TX) || (tmp_state == HAL_UART_STATE_BUSY_TX_RX)) {
     if (huart->Init.WordLength == UART_WORDLENGTH_9B) {
       tmp = (uint16_t *) huart->pTxBuffPtr;
-      huart->Instance->DR = (uint16_t) (*tmp & (uint16_t) 0x01FF);
+      huart->Instance->DR = (uint16_t)(*tmp & (uint16_t) 0x01FF);
       if (huart->Init.Parity == UART_PARITY_NONE) {
         huart->pTxBuffPtr += 2;
       } else {
         huart->pTxBuffPtr += 1;
       }
     } else {
-      huart->Instance->DR = (uint8_t) (*huart->pTxBuffPtr++ & (uint8_t) 0x00FF);
+      huart->Instance->DR = (uint8_t)(*huart->pTxBuffPtr++ & (uint8_t) 0x00FF);
     }
 
     if (--huart->TxXferCount == 0) {
@@ -1644,17 +1646,17 @@ static HAL_StatusTypeDef UART_Receive_IT(UART_HandleTypeDef *huart) {
     if (huart->Init.WordLength == UART_WORDLENGTH_9B) {
       tmp = (uint16_t *) huart->pRxBuffPtr;
       if (huart->Init.Parity == UART_PARITY_NONE) {
-        *tmp = (uint16_t) (huart->Instance->DR & (uint16_t) 0x01FF);
+        *tmp = (uint16_t)(huart->Instance->DR & (uint16_t) 0x01FF);
         huart->pRxBuffPtr += 2;
       } else {
-        *tmp = (uint16_t) (huart->Instance->DR & (uint16_t) 0x00FF);
+        *tmp = (uint16_t)(huart->Instance->DR & (uint16_t) 0x00FF);
         huart->pRxBuffPtr += 1;
       }
     } else {
       if (huart->Init.Parity == UART_PARITY_NONE) {
-        *huart->pRxBuffPtr++ = (uint8_t) (huart->Instance->DR & (uint8_t) 0x00FF);
+        *huart->pRxBuffPtr++ = (uint8_t)(huart->Instance->DR & (uint8_t) 0x00FF);
       } else {
-        *huart->pRxBuffPtr++ = (uint8_t) (huart->Instance->DR & (uint8_t) 0x007F);
+        *huart->pRxBuffPtr++ = (uint8_t)(huart->Instance->DR & (uint8_t) 0x007F);
       }
     }
 
@@ -1708,9 +1710,10 @@ static void UART_SetConfig(UART_HandleTypeDef *huart) {
      Set the M bits according to huart->Init.WordLength value
      Set PCE and PS bits according to huart->Init.Parity value
      Set TE and RE bits according to huart->Init.Mode value */
-  tmpreg = (uint32_t) huart->Init.WordLength | huart->Init.Parity | huart->Init.Mode;
+  tmpreg = (uint32_t)
+  huart->Init.WordLength | huart->Init.Parity | huart->Init.Mode;
   MODIFY_REG(huart->Instance->CR1,
-             (uint32_t) (USART_CR1_M | USART_CR1_PCE | USART_CR1_PS | USART_CR1_TE | USART_CR1_RE),
+             (uint32_t)(USART_CR1_M | USART_CR1_PCE | USART_CR1_PS | USART_CR1_TE | USART_CR1_RE),
              tmpreg);
 
   /*------- UART-associated USART registers setting : CR3 Configuration ------*/

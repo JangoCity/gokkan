@@ -403,7 +403,8 @@ HAL_StatusTypeDef HAL_TIMEx_HallSensor_Start_DMA(TIM_HandleTypeDef *htim, uint32
   htim->hdma[TIM_DMA_ID_CC1]->XferErrorCallback = TIM_DMAError;
 
   /* Enable the DMA channel for Capture 1*/
-  HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC1], (uint32_t) &htim->Instance->CCR1, (uint32_t) pData, Length);
+  HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC1], (uint32_t) & htim->Instance->CCR1, (uint32_t)
+  pData, Length);
 
   /* Enable the capture compare 1 Interrupt */
   __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC1);
@@ -543,27 +544,27 @@ HAL_StatusTypeDef HAL_TIMEx_OCN_Start_IT(TIM_HandleTypeDef *htim, uint32_t Chann
 
   switch (Channel) {
     case TIM_CHANNEL_1: {
-      /* Enable the TIM Output Compare interrupt */
-      __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC1);
-    }
+    /* Enable the TIM Output Compare interrupt */
+    __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC1);
+  }
       break;
 
     case TIM_CHANNEL_2: {
-      /* Enable the TIM Output Compare interrupt */
-      __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC2);
-    }
+    /* Enable the TIM Output Compare interrupt */
+    __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC2);
+  }
       break;
 
     case TIM_CHANNEL_3: {
-      /* Enable the TIM Output Compare interrupt */
-      __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC3);
-    }
+    /* Enable the TIM Output Compare interrupt */
+    __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC3);
+  }
       break;
 
     case TIM_CHANNEL_4: {
-      /* Enable the TIM Output Compare interrupt */
-      __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC4);
-    }
+    /* Enable the TIM Output Compare interrupt */
+    __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC4);
+  }
       break;
 
     default:
@@ -606,27 +607,27 @@ HAL_StatusTypeDef HAL_TIMEx_OCN_Stop_IT(TIM_HandleTypeDef *htim, uint32_t Channe
 
   switch (Channel) {
     case TIM_CHANNEL_1: {
-      /* Disable the TIM Output Compare interrupt */
-      __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC1);
-    }
+    /* Disable the TIM Output Compare interrupt */
+    __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC1);
+  }
       break;
 
     case TIM_CHANNEL_2: {
-      /* Disable the TIM Output Compare interrupt */
-      __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC2);
-    }
+    /* Disable the TIM Output Compare interrupt */
+    __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC2);
+  }
       break;
 
     case TIM_CHANNEL_3: {
-      /* Disable the TIM Output Compare interrupt */
-      __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC3);
-    }
+    /* Disable the TIM Output Compare interrupt */
+    __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC3);
+  }
       break;
 
     case TIM_CHANNEL_4: {
-      /* Disable the TIM Output Compare interrupt */
-      __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC4);
-    }
+    /* Disable the TIM Output Compare interrupt */
+    __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC4);
+  }
       break;
 
     default:
@@ -681,63 +682,67 @@ HAL_StatusTypeDef HAL_TIMEx_OCN_Start_DMA(TIM_HandleTypeDef *htim, uint32_t Chan
   }
   switch (Channel) {
     case TIM_CHANNEL_1: {
-      /* Set the DMA Period elapsed callback */
-      htim->hdma[TIM_DMA_ID_CC1]->XferCpltCallback = TIM_DMADelayPulseCplt;
+    /* Set the DMA Period elapsed callback */
+    htim->hdma[TIM_DMA_ID_CC1]->XferCpltCallback = TIM_DMADelayPulseCplt;
 
-      /* Set the DMA error callback */
-      htim->hdma[TIM_DMA_ID_CC1]->XferErrorCallback = TIM_DMAError;
+    /* Set the DMA error callback */
+    htim->hdma[TIM_DMA_ID_CC1]->XferErrorCallback = TIM_DMAError;
 
-      /* Enable the DMA channel */
-      HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC1], (uint32_t) pData, (uint32_t) &htim->Instance->CCR1, Length);
+    /* Enable the DMA channel */
+    HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC1], (uint32_t)
+    pData, (uint32_t) & htim->Instance->CCR1, Length);
 
-      /* Enable the TIM Output Compare DMA request */
-      __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC1);
-    }
+    /* Enable the TIM Output Compare DMA request */
+    __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC1);
+  }
       break;
 
     case TIM_CHANNEL_2: {
-      /* Set the DMA Period elapsed callback */
-      htim->hdma[TIM_DMA_ID_CC2]->XferCpltCallback = TIM_DMADelayPulseCplt;
+    /* Set the DMA Period elapsed callback */
+    htim->hdma[TIM_DMA_ID_CC2]->XferCpltCallback = TIM_DMADelayPulseCplt;
 
-      /* Set the DMA error callback */
-      htim->hdma[TIM_DMA_ID_CC2]->XferErrorCallback = TIM_DMAError;
+    /* Set the DMA error callback */
+    htim->hdma[TIM_DMA_ID_CC2]->XferErrorCallback = TIM_DMAError;
 
-      /* Enable the DMA channel */
-      HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC2], (uint32_t) pData, (uint32_t) &htim->Instance->CCR2, Length);
+    /* Enable the DMA channel */
+    HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC2], (uint32_t)
+    pData, (uint32_t) & htim->Instance->CCR2, Length);
 
-      /* Enable the TIM Output Compare DMA request */
-      __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC2);
-    }
+    /* Enable the TIM Output Compare DMA request */
+    __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC2);
+  }
       break;
 
     case TIM_CHANNEL_3: {
-      /* Set the DMA Period elapsed callback */
-      htim->hdma[TIM_DMA_ID_CC3]->XferCpltCallback = TIM_DMADelayPulseCplt;
+    /* Set the DMA Period elapsed callback */
+    htim->hdma[TIM_DMA_ID_CC3]->XferCpltCallback = TIM_DMADelayPulseCplt;
 
-      /* Set the DMA error callback */
-      htim->hdma[TIM_DMA_ID_CC3]->XferErrorCallback = TIM_DMAError;
+    /* Set the DMA error callback */
+    htim->hdma[TIM_DMA_ID_CC3]->XferErrorCallback = TIM_DMAError;
 
-      /* Enable the DMA channel */
-      HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC3], (uint32_t) pData, (uint32_t) &htim->Instance->CCR3, Length);
+    /* Enable the DMA channel */
+    HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC3], (uint32_t)
+    pData, (uint32_t) & htim->Instance->CCR3, Length);
 
-      /* Enable the TIM Output Compare DMA request */
-      __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC3);
-    }
+    /* Enable the TIM Output Compare DMA request */
+    __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC3);
+  }
       break;
 
     case TIM_CHANNEL_4: {
-      /* Set the DMA Period elapsed callback */
-      htim->hdma[TIM_DMA_ID_CC4]->XferCpltCallback = TIM_DMADelayPulseCplt;
+    /* Set the DMA Period elapsed callback */
+    htim->hdma[TIM_DMA_ID_CC4]->XferCpltCallback = TIM_DMADelayPulseCplt;
 
-      /* Set the DMA error callback */
-      htim->hdma[TIM_DMA_ID_CC4]->XferErrorCallback = TIM_DMAError;
+    /* Set the DMA error callback */
+    htim->hdma[TIM_DMA_ID_CC4]->XferErrorCallback = TIM_DMAError;
 
-      /* Enable the DMA channel */
-      HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC4], (uint32_t) pData, (uint32_t) &htim->Instance->CCR4, Length);
+    /* Enable the DMA channel */
+    HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC4], (uint32_t)
+    pData, (uint32_t) & htim->Instance->CCR4, Length);
 
-      /* Enable the TIM Output Compare DMA request */
-      __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC4);
-    }
+    /* Enable the TIM Output Compare DMA request */
+    __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC4);
+  }
       break;
 
     default:
@@ -775,27 +780,27 @@ HAL_StatusTypeDef HAL_TIMEx_OCN_Stop_DMA(TIM_HandleTypeDef *htim, uint32_t Chann
 
   switch (Channel) {
     case TIM_CHANNEL_1: {
-      /* Disable the TIM Output Compare DMA request */
-      __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC1);
-    }
+    /* Disable the TIM Output Compare DMA request */
+    __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC1);
+  }
       break;
 
     case TIM_CHANNEL_2: {
-      /* Disable the TIM Output Compare DMA request */
-      __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC2);
-    }
+    /* Disable the TIM Output Compare DMA request */
+    __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC2);
+  }
       break;
 
     case TIM_CHANNEL_3: {
-      /* Disable the TIM Output Compare DMA request */
-      __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC3);
-    }
+    /* Disable the TIM Output Compare DMA request */
+    __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC3);
+  }
       break;
 
     case TIM_CHANNEL_4: {
-      /* Disable the TIM Output Compare interrupt */
-      __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC4);
-    }
+    /* Disable the TIM Output Compare interrupt */
+    __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC4);
+  }
       break;
 
     default:
@@ -926,27 +931,27 @@ HAL_StatusTypeDef HAL_TIMEx_PWMN_Start_IT(TIM_HandleTypeDef *htim, uint32_t Chan
 
   switch (Channel) {
     case TIM_CHANNEL_1: {
-      /* Enable the TIM Capture/Compare 1 interrupt */
-      __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC1);
-    }
+    /* Enable the TIM Capture/Compare 1 interrupt */
+    __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC1);
+  }
       break;
 
     case TIM_CHANNEL_2: {
-      /* Enable the TIM Capture/Compare 2 interrupt */
-      __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC2);
-    }
+    /* Enable the TIM Capture/Compare 2 interrupt */
+    __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC2);
+  }
       break;
 
     case TIM_CHANNEL_3: {
-      /* Enable the TIM Capture/Compare 3 interrupt */
-      __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC3);
-    }
+    /* Enable the TIM Capture/Compare 3 interrupt */
+    __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC3);
+  }
       break;
 
     case TIM_CHANNEL_4: {
-      /* Enable the TIM Capture/Compare 4 interrupt */
-      __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC4);
-    }
+    /* Enable the TIM Capture/Compare 4 interrupt */
+    __HAL_TIM_ENABLE_IT(htim, TIM_IT_CC4);
+  }
       break;
 
     default:
@@ -989,27 +994,27 @@ HAL_StatusTypeDef HAL_TIMEx_PWMN_Stop_IT(TIM_HandleTypeDef *htim, uint32_t Chann
 
   switch (Channel) {
     case TIM_CHANNEL_1: {
-      /* Disable the TIM Capture/Compare 1 interrupt */
-      __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC1);
-    }
+    /* Disable the TIM Capture/Compare 1 interrupt */
+    __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC1);
+  }
       break;
 
     case TIM_CHANNEL_2: {
-      /* Disable the TIM Capture/Compare 2 interrupt */
-      __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC2);
-    }
+    /* Disable the TIM Capture/Compare 2 interrupt */
+    __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC2);
+  }
       break;
 
     case TIM_CHANNEL_3: {
-      /* Disable the TIM Capture/Compare 3 interrupt */
-      __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC3);
-    }
+    /* Disable the TIM Capture/Compare 3 interrupt */
+    __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC3);
+  }
       break;
 
     case TIM_CHANNEL_4: {
-      /* Disable the TIM Capture/Compare 3 interrupt */
-      __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC4);
-    }
+    /* Disable the TIM Capture/Compare 3 interrupt */
+    __HAL_TIM_DISABLE_IT(htim, TIM_IT_CC4);
+  }
       break;
 
     default:
@@ -1065,63 +1070,67 @@ HAL_TIMEx_PWMN_Start_DMA(TIM_HandleTypeDef *htim, uint32_t Channel, uint32_t *pD
   }
   switch (Channel) {
     case TIM_CHANNEL_1: {
-      /* Set the DMA Period elapsed callback */
-      htim->hdma[TIM_DMA_ID_CC1]->XferCpltCallback = TIM_DMADelayPulseCplt;
+    /* Set the DMA Period elapsed callback */
+    htim->hdma[TIM_DMA_ID_CC1]->XferCpltCallback = TIM_DMADelayPulseCplt;
 
-      /* Set the DMA error callback */
-      htim->hdma[TIM_DMA_ID_CC1]->XferErrorCallback = TIM_DMAError;
+    /* Set the DMA error callback */
+    htim->hdma[TIM_DMA_ID_CC1]->XferErrorCallback = TIM_DMAError;
 
-      /* Enable the DMA channel */
-      HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC1], (uint32_t) pData, (uint32_t) &htim->Instance->CCR1, Length);
+    /* Enable the DMA channel */
+    HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC1], (uint32_t)
+    pData, (uint32_t) & htim->Instance->CCR1, Length);
 
-      /* Enable the TIM Capture/Compare 1 DMA request */
-      __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC1);
-    }
+    /* Enable the TIM Capture/Compare 1 DMA request */
+    __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC1);
+  }
       break;
 
     case TIM_CHANNEL_2: {
-      /* Set the DMA Period elapsed callback */
-      htim->hdma[TIM_DMA_ID_CC2]->XferCpltCallback = TIM_DMADelayPulseCplt;
+    /* Set the DMA Period elapsed callback */
+    htim->hdma[TIM_DMA_ID_CC2]->XferCpltCallback = TIM_DMADelayPulseCplt;
 
-      /* Set the DMA error callback */
-      htim->hdma[TIM_DMA_ID_CC2]->XferErrorCallback = TIM_DMAError;
+    /* Set the DMA error callback */
+    htim->hdma[TIM_DMA_ID_CC2]->XferErrorCallback = TIM_DMAError;
 
-      /* Enable the DMA channel */
-      HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC2], (uint32_t) pData, (uint32_t) &htim->Instance->CCR2, Length);
+    /* Enable the DMA channel */
+    HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC2], (uint32_t)
+    pData, (uint32_t) & htim->Instance->CCR2, Length);
 
-      /* Enable the TIM Capture/Compare 2 DMA request */
-      __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC2);
-    }
+    /* Enable the TIM Capture/Compare 2 DMA request */
+    __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC2);
+  }
       break;
 
     case TIM_CHANNEL_3: {
-      /* Set the DMA Period elapsed callback */
-      htim->hdma[TIM_DMA_ID_CC3]->XferCpltCallback = TIM_DMADelayPulseCplt;
+    /* Set the DMA Period elapsed callback */
+    htim->hdma[TIM_DMA_ID_CC3]->XferCpltCallback = TIM_DMADelayPulseCplt;
 
-      /* Set the DMA error callback */
-      htim->hdma[TIM_DMA_ID_CC3]->XferErrorCallback = TIM_DMAError;
+    /* Set the DMA error callback */
+    htim->hdma[TIM_DMA_ID_CC3]->XferErrorCallback = TIM_DMAError;
 
-      /* Enable the DMA channel */
-      HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC3], (uint32_t) pData, (uint32_t) &htim->Instance->CCR3, Length);
+    /* Enable the DMA channel */
+    HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC3], (uint32_t)
+    pData, (uint32_t) & htim->Instance->CCR3, Length);
 
-      /* Enable the TIM Capture/Compare 3 DMA request */
-      __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC3);
-    }
+    /* Enable the TIM Capture/Compare 3 DMA request */
+    __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC3);
+  }
       break;
 
     case TIM_CHANNEL_4: {
-      /* Set the DMA Period elapsed callback */
-      htim->hdma[TIM_DMA_ID_CC4]->XferCpltCallback = TIM_DMADelayPulseCplt;
+    /* Set the DMA Period elapsed callback */
+    htim->hdma[TIM_DMA_ID_CC4]->XferCpltCallback = TIM_DMADelayPulseCplt;
 
-      /* Set the DMA error callback */
-      htim->hdma[TIM_DMA_ID_CC4]->XferErrorCallback = TIM_DMAError;
+    /* Set the DMA error callback */
+    htim->hdma[TIM_DMA_ID_CC4]->XferErrorCallback = TIM_DMAError;
 
-      /* Enable the DMA channel */
-      HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC4], (uint32_t) pData, (uint32_t) &htim->Instance->CCR4, Length);
+    /* Enable the DMA channel */
+    HAL_DMA_Start_IT(htim->hdma[TIM_DMA_ID_CC4], (uint32_t)
+    pData, (uint32_t) & htim->Instance->CCR4, Length);
 
-      /* Enable the TIM Capture/Compare 4 DMA request */
-      __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC4);
-    }
+    /* Enable the TIM Capture/Compare 4 DMA request */
+    __HAL_TIM_ENABLE_DMA(htim, TIM_DMA_CC4);
+  }
       break;
 
     default:
@@ -1159,27 +1168,27 @@ HAL_StatusTypeDef HAL_TIMEx_PWMN_Stop_DMA(TIM_HandleTypeDef *htim, uint32_t Chan
 
   switch (Channel) {
     case TIM_CHANNEL_1: {
-      /* Disable the TIM Capture/Compare 1 DMA request */
-      __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC1);
-    }
+    /* Disable the TIM Capture/Compare 1 DMA request */
+    __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC1);
+  }
       break;
 
     case TIM_CHANNEL_2: {
-      /* Disable the TIM Capture/Compare 2 DMA request */
-      __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC2);
-    }
+    /* Disable the TIM Capture/Compare 2 DMA request */
+    __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC2);
+  }
       break;
 
     case TIM_CHANNEL_3: {
-      /* Disable the TIM Capture/Compare 3 DMA request */
-      __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC3);
-    }
+    /* Disable the TIM Capture/Compare 3 DMA request */
+    __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC3);
+  }
       break;
 
     case TIM_CHANNEL_4: {
-      /* Disable the TIM Capture/Compare 4 DMA request */
-      __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC4);
-    }
+    /* Disable the TIM Capture/Compare 4 DMA request */
+    __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_CC4);
+  }
       break;
 
     default:
@@ -1399,7 +1408,7 @@ HAL_TIMEx_ConfigCommutationEvent(TIM_HandleTypeDef *htim, uint32_t InputTrigger,
   __HAL_LOCK(htim);
 
   if ((InputTrigger == TIM_TS_ITR0) || (InputTrigger == TIM_TS_ITR1) ||
-      (InputTrigger == TIM_TS_ITR2) || (InputTrigger == TIM_TS_ITR3)) {
+  (InputTrigger == TIM_TS_ITR2) || (InputTrigger == TIM_TS_ITR3)) {
     /* Select the Input trigger */
     htim->Instance->SMCR &= ~TIM_SMCR_TS;
     htim->Instance->SMCR |= InputTrigger;
@@ -1447,7 +1456,7 @@ HAL_TIMEx_ConfigCommutationEvent_IT(TIM_HandleTypeDef *htim, uint32_t InputTrigg
   __HAL_LOCK(htim);
 
   if ((InputTrigger == TIM_TS_ITR0) || (InputTrigger == TIM_TS_ITR1) ||
-      (InputTrigger == TIM_TS_ITR2) || (InputTrigger == TIM_TS_ITR3)) {
+  (InputTrigger == TIM_TS_ITR2) || (InputTrigger == TIM_TS_ITR3)) {
     /* Select the Input trigger */
     htim->Instance->SMCR &= ~TIM_SMCR_TS;
     htim->Instance->SMCR |= InputTrigger;
@@ -1499,7 +1508,7 @@ HAL_TIMEx_ConfigCommutationEvent_DMA(TIM_HandleTypeDef *htim, uint32_t InputTrig
   __HAL_LOCK(htim);
 
   if ((InputTrigger == TIM_TS_ITR0) || (InputTrigger == TIM_TS_ITR1) ||
-      (InputTrigger == TIM_TS_ITR2) || (InputTrigger == TIM_TS_ITR3)) {
+  (InputTrigger == TIM_TS_ITR2) || (InputTrigger == TIM_TS_ITR3)) {
     /* Select the Input trigger */
     htim->Instance->SMCR &= ~TIM_SMCR_TS;
     htim->Instance->SMCR |= InputTrigger;
@@ -1552,13 +1561,14 @@ HAL_StatusTypeDef HAL_TIMEx_ConfigBreakDeadTime(TIM_HandleTypeDef *htim,
 
   /* Set the Lock level, the Break enable Bit and the Polarity, the OSSR State,
      the OSSI State, the dead time value and the Automatic Output Enable Bit */
-  htim->Instance->BDTR = (uint32_t) sBreakDeadTimeConfig->OffStateRunMode |
-                         sBreakDeadTimeConfig->OffStateIDLEMode |
-                         sBreakDeadTimeConfig->LockLevel |
-                         sBreakDeadTimeConfig->DeadTime |
-                         sBreakDeadTimeConfig->BreakState |
-                         sBreakDeadTimeConfig->BreakPolarity |
-                         sBreakDeadTimeConfig->AutomaticOutput;
+  htim->Instance->BDTR = (uint32_t)
+  sBreakDeadTimeConfig->OffStateRunMode |
+  sBreakDeadTimeConfig->OffStateIDLEMode |
+  sBreakDeadTimeConfig->LockLevel |
+  sBreakDeadTimeConfig->DeadTime |
+  sBreakDeadTimeConfig->BreakState |
+  sBreakDeadTimeConfig->BreakPolarity |
+  sBreakDeadTimeConfig->AutomaticOutput;
 
 
   htim->State = HAL_TIM_STATE_READY;
@@ -1739,7 +1749,7 @@ static void TIM_CCxNChannelCmd(TIM_TypeDef *TIMx, uint32_t Channel, uint32_t Cha
   TIMx->CCER &= ~tmp;
 
   /* Set or reset the CCxNE Bit */
-  TIMx->CCER |= (uint32_t) (ChannelNState << Channel);
+  TIMx->CCER |= (uint32_t)(ChannelNState << Channel);
 }
 
 /**

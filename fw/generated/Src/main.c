@@ -46,6 +46,7 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
+#include <custom.h>
 #include "main.h"
 #include "stm32f1xx_hal.h"
 #include "cmsis_os.h"
@@ -107,7 +108,8 @@ int main(void) {
   MX_USART3_UART_Init();
 
   /* USER CODE BEGIN 2 */
-
+  HAL_CAN_DeInit(&hcan1);
+  customInit();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

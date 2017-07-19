@@ -1874,7 +1874,8 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef *PeriphClkI
 
 void HAL_RCCEx_GetPeriphCLKConfig(RCC_PeriphCLKInitTypeDef *PeriphClkInit);
 
-uint32_t HAL_RCCEx_GetPeriphCLKFreq(uint32_t PeriphClk);
+uint32_t HAL_RCCEx_GetPeriphCLKFreq(uint32_t
+PeriphClk);
 
 /**
   * @}

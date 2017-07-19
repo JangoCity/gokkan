@@ -170,7 +170,8 @@ static HAL_StatusTypeDef CAN_Transmit_IT(CAN_HandleTypeDef *hcan);
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_CAN_Init(CAN_HandleTypeDef *hcan) {
-  uint32_t status = CAN_INITSTATUS_FAILED;  /* Default init status */
+  uint32_t
+  status = CAN_INITSTATUS_FAILED;  /* Default init status */
   uint32_t tickstart = 0;
   uint32_t tmp_mcr = 0;
 
@@ -267,11 +268,11 @@ HAL_StatusTypeDef HAL_CAN_Init(CAN_HandleTypeDef *hcan) {
                tmp_mcr);
 
     /* Set the bit timing register */
-    WRITE_REG(hcan->Instance->BTR, (uint32_t) (hcan->Init.Mode |
-                                               hcan->Init.SJW |
-                                               hcan->Init.BS1 |
-                                               hcan->Init.BS2 |
-                                               (hcan->Init.Prescaler - 1)));
+    WRITE_REG(hcan->Instance->BTR, (uint32_t)(hcan->Init.Mode |
+                                              hcan->Init.SJW |
+                                              hcan->Init.BS1 |
+                                              hcan->Init.BS2 |
+                                              (hcan->Init.Prescaler - 1)));
 
     /* Request leave initialisation */
     CLEAR_BIT(hcan->Instance->MCR, CAN_MCR_INRQ);
@@ -335,14 +336,15 @@ HAL_StatusTypeDef HAL_CAN_ConfigFilter(CAN_HandleTypeDef *hcan, CAN_FilterConfTy
   assert_param(IS_FUNCTIONAL_STATE(sFilterConfig->FilterActivation));
   assert_param(IS_CAN_BANKNUMBER(sFilterConfig->BankNumber));
 
-  filternbrbitpos = ((uint32_t) 1) << sFilterConfig->FilterNumber;
+  filternbrbitpos = ((uint32_t)
+  1) << sFilterConfig->FilterNumber;
 
   /* Initialisation mode for the filter */
   /* Select the start slave bank */
   MODIFY_REG(hcan->Instance->FMR,
              CAN_FMR_CAN2SB,
              CAN_FMR_FINIT |
-             (uint32_t) (sFilterConfig->BankNumber << 8));
+             (uint32_t)(sFilterConfig->BankNumber << 8));
 
   /* Filter Deactivation */
   CLEAR_BIT(hcan->Instance->FA1R, filternbrbitpos);
@@ -355,14 +357,18 @@ HAL_StatusTypeDef HAL_CAN_ConfigFilter(CAN_HandleTypeDef *hcan, CAN_FilterConfTy
     /* First 16-bit identifier and First 16-bit mask */
     /* Or First 16-bit identifier and Second 16-bit identifier */
     hcan->Instance->sFilterRegister[sFilterConfig->FilterNumber].FR1 =
-        ((0x0000FFFF & (uint32_t) sFilterConfig->FilterMaskIdLow) << 16) |
-        (0x0000FFFF & (uint32_t) sFilterConfig->FilterIdLow);
+        ((0x0000FFFF & (uint32_t)
+    sFilterConfig->FilterMaskIdLow) << 16) |
+    (0x0000FFFF & (uint32_t)
+    sFilterConfig->FilterIdLow);
 
     /* Second 16-bit identifier and Second 16-bit mask */
     /* Or Third 16-bit identifier and Fourth 16-bit identifier */
     hcan->Instance->sFilterRegister[sFilterConfig->FilterNumber].FR2 =
-        ((0x0000FFFF & (uint32_t) sFilterConfig->FilterMaskIdHigh) << 16) |
-        (0x0000FFFF & (uint32_t) sFilterConfig->FilterIdHigh);
+        ((0x0000FFFF & (uint32_t)
+    sFilterConfig->FilterMaskIdHigh) << 16) |
+    (0x0000FFFF & (uint32_t)
+    sFilterConfig->FilterIdHigh);
   }
 
   if (sFilterConfig->FilterScale == CAN_FILTERSCALE_32BIT) {
@@ -370,12 +376,16 @@ HAL_StatusTypeDef HAL_CAN_ConfigFilter(CAN_HandleTypeDef *hcan, CAN_FilterConfTy
     SET_BIT(hcan->Instance->FS1R, filternbrbitpos);
     /* 32-bit identifier or First 32-bit identifier */
     hcan->Instance->sFilterRegister[sFilterConfig->FilterNumber].FR1 =
-        ((0x0000FFFF & (uint32_t) sFilterConfig->FilterIdHigh) << 16) |
-        (0x0000FFFF & (uint32_t) sFilterConfig->FilterIdLow);
+        ((0x0000FFFF & (uint32_t)
+    sFilterConfig->FilterIdHigh) << 16) |
+    (0x0000FFFF & (uint32_t)
+    sFilterConfig->FilterIdLow);
     /* 32-bit mask or Second 32-bit identifier */
     hcan->Instance->sFilterRegister[sFilterConfig->FilterNumber].FR2 =
-        ((0x0000FFFF & (uint32_t) sFilterConfig->FilterMaskIdHigh) << 16) |
-        (0x0000FFFF & (uint32_t) sFilterConfig->FilterMaskIdLow);
+        ((0x0000FFFF & (uint32_t)
+    sFilterConfig->FilterMaskIdHigh) << 16) |
+    (0x0000FFFF & (uint32_t)
+    sFilterConfig->FilterMaskIdLow);
   }
 
   /* Filter Mode */
@@ -403,7 +413,8 @@ HAL_StatusTypeDef HAL_CAN_ConfigFilter(CAN_HandleTypeDef *hcan, CAN_FilterConfTy
   }
 
   /* Leave the initialisation mode for the filter */
-  CLEAR_BIT(hcan->Instance->FMR, ((uint32_t) CAN_FMR_FINIT));
+  CLEAR_BIT(hcan->Instance->FMR, ((uint32_t)
+      CAN_FMR_FINIT));
 
   /* Return function status */
   return HAL_OK;
@@ -533,27 +544,30 @@ HAL_StatusTypeDef HAL_CAN_Transmit(CAN_HandleTypeDef *hcan, uint32_t Timeout) {
     if (hcan->pTxMsg->IDE == CAN_ID_STD) {
       assert_param(IS_CAN_STDID(hcan->pTxMsg->StdId));
       hcan->Instance->sTxMailBox[transmitmailbox].TIR |= ((hcan->pTxMsg->StdId << CAN_TI0R_STID_BIT_POSITION) |
-                                                          hcan->pTxMsg->RTR);
+      hcan->pTxMsg->RTR);
     } else {
       assert_param(IS_CAN_EXTID(hcan->pTxMsg->ExtId));
       hcan->Instance->sTxMailBox[transmitmailbox].TIR |= ((hcan->pTxMsg->ExtId << CAN_TI0R_EXID_BIT_POSITION) |
-                                                          hcan->pTxMsg->IDE |
-                                                          hcan->pTxMsg->RTR);
+      hcan->pTxMsg->IDE |
+      hcan->pTxMsg->RTR);
     }
 
     /* Set up the DLC */
     hcan->pTxMsg->DLC &= (uint8_t) 0x0000000F;
-    hcan->Instance->sTxMailBox[transmitmailbox].TDTR &= (uint32_t) 0xFFFFFFF0;
+    hcan->Instance->sTxMailBox[transmitmailbox].TDTR &= (uint32_t)
+    0xFFFFFFF0;
     hcan->Instance->sTxMailBox[transmitmailbox].TDTR |= hcan->pTxMsg->DLC;
 
     /* Set up the data field */
     WRITE_REG(hcan->Instance->sTxMailBox[transmitmailbox].TDLR,
-              ((uint32_t) hcan->pTxMsg->Data[3] << CAN_TDL0R_DATA3_BIT_POSITION) |
+              ((uint32_t)
+                  hcan->pTxMsg->Data[3] << CAN_TDL0R_DATA3_BIT_POSITION) |
               ((uint32_t) hcan->pTxMsg->Data[2] << CAN_TDL0R_DATA2_BIT_POSITION) |
               ((uint32_t) hcan->pTxMsg->Data[1] << CAN_TDL0R_DATA1_BIT_POSITION) |
               ((uint32_t) hcan->pTxMsg->Data[0] << CAN_TDL0R_DATA0_BIT_POSITION));
     WRITE_REG(hcan->Instance->sTxMailBox[transmitmailbox].TDHR,
-              ((uint32_t) hcan->pTxMsg->Data[7] << CAN_TDL0R_DATA3_BIT_POSITION) |
+              ((uint32_t)
+                  hcan->pTxMsg->Data[7] << CAN_TDL0R_DATA3_BIT_POSITION) |
               ((uint32_t) hcan->pTxMsg->Data[6] << CAN_TDL0R_DATA2_BIT_POSITION) |
               ((uint32_t) hcan->pTxMsg->Data[5] << CAN_TDL0R_DATA1_BIT_POSITION) |
               ((uint32_t) hcan->pTxMsg->Data[4] << CAN_TDL0R_DATA0_BIT_POSITION));
@@ -640,27 +654,30 @@ HAL_StatusTypeDef HAL_CAN_Transmit_IT(CAN_HandleTypeDef *hcan) {
       if (hcan->pTxMsg->IDE == CAN_ID_STD) {
         assert_param(IS_CAN_STDID(hcan->pTxMsg->StdId));
         hcan->Instance->sTxMailBox[transmitmailbox].TIR |= ((hcan->pTxMsg->StdId << CAN_TI0R_STID_BIT_POSITION) |
-                                                            hcan->pTxMsg->RTR);
+        hcan->pTxMsg->RTR);
       } else {
         assert_param(IS_CAN_EXTID(hcan->pTxMsg->ExtId));
         hcan->Instance->sTxMailBox[transmitmailbox].TIR |= ((hcan->pTxMsg->ExtId << CAN_TI0R_EXID_BIT_POSITION) |
-                                                            hcan->pTxMsg->IDE |
-                                                            hcan->pTxMsg->RTR);
+        hcan->pTxMsg->IDE |
+        hcan->pTxMsg->RTR);
       }
 
       /* Set up the DLC */
       hcan->pTxMsg->DLC &= (uint8_t) 0x0000000F;
-      hcan->Instance->sTxMailBox[transmitmailbox].TDTR &= (uint32_t) 0xFFFFFFF0;
+      hcan->Instance->sTxMailBox[transmitmailbox].TDTR &= (uint32_t)
+      0xFFFFFFF0;
       hcan->Instance->sTxMailBox[transmitmailbox].TDTR |= hcan->pTxMsg->DLC;
 
       /* Set up the data field */
       WRITE_REG(hcan->Instance->sTxMailBox[transmitmailbox].TDLR,
-                ((uint32_t) hcan->pTxMsg->Data[3] << CAN_TDL0R_DATA3_BIT_POSITION) |
+                ((uint32_t)
+                    hcan->pTxMsg->Data[3] << CAN_TDL0R_DATA3_BIT_POSITION) |
                 ((uint32_t) hcan->pTxMsg->Data[2] << CAN_TDL0R_DATA2_BIT_POSITION) |
                 ((uint32_t) hcan->pTxMsg->Data[1] << CAN_TDL0R_DATA1_BIT_POSITION) |
                 ((uint32_t) hcan->pTxMsg->Data[0] << CAN_TDL0R_DATA0_BIT_POSITION));
       WRITE_REG(hcan->Instance->sTxMailBox[transmitmailbox].TDHR,
-                ((uint32_t) hcan->pTxMsg->Data[7] << CAN_TDL0R_DATA3_BIT_POSITION) |
+                ((uint32_t)
+                    hcan->pTxMsg->Data[7] << CAN_TDL0R_DATA3_BIT_POSITION) |
                 ((uint32_t) hcan->pTxMsg->Data[6] << CAN_TDL0R_DATA2_BIT_POSITION) |
                 ((uint32_t) hcan->pTxMsg->Data[5] << CAN_TDL0R_DATA1_BIT_POSITION) |
                 ((uint32_t) hcan->pTxMsg->Data[4] << CAN_TDL0R_DATA0_BIT_POSITION));
@@ -748,14 +765,16 @@ HAL_StatusTypeDef HAL_CAN_Receive(CAN_HandleTypeDef *hcan, uint8_t FIFONumber, u
   }
 
   /* Get the Id */
-  hcan->pRxMsg->IDE = (uint8_t) CAN_ID_EXT & hcan->Instance->sFIFOMailBox[FIFONumber].RIR;
+  hcan->pRxMsg->IDE = (uint8_t)CAN_ID_EXT &hcan->Instance->sFIFOMailBox[FIFONumber].RIR;
   if (hcan->pRxMsg->IDE == CAN_ID_STD) {
-    hcan->pRxMsg->StdId = (uint32_t) 0x000007FF & (hcan->Instance->sFIFOMailBox[FIFONumber].RIR >> 21);
+    hcan->pRxMsg->StdId = (uint32_t)
+    0x000007FF & (hcan->Instance->sFIFOMailBox[FIFONumber].RIR >> 21);
   } else {
-    hcan->pRxMsg->ExtId = (uint32_t) 0x1FFFFFFF & (hcan->Instance->sFIFOMailBox[FIFONumber].RIR >> 3);
+    hcan->pRxMsg->ExtId = (uint32_t)
+    0x1FFFFFFF & (hcan->Instance->sFIFOMailBox[FIFONumber].RIR >> 3);
   }
 
-  hcan->pRxMsg->RTR = (uint8_t) CAN_RTR_REMOTE & hcan->Instance->sFIFOMailBox[FIFONumber].RIR;
+  hcan->pRxMsg->RTR = (uint8_t)CAN_RTR_REMOTE &hcan->Instance->sFIFOMailBox[FIFONumber].RIR;
   /* Get the DLC */
   hcan->pRxMsg->DLC = (uint8_t) 0x0F & hcan->Instance->sFIFOMailBox[FIFONumber].RDTR;
   /* Get the FMI */
@@ -981,22 +1000,22 @@ void HAL_CAN_IRQHandler(CAN_HandleTypeDef *hcan) {
 
   /* Check End of reception flag for FIFO0 */
   if ((__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_FMP0)) &&
-      (__HAL_CAN_MSG_PENDING(hcan, CAN_FIFO0) != 0)) {
+  (__HAL_CAN_MSG_PENDING(hcan, CAN_FIFO0) != 0)) {
     /* Call receive function */
     CAN_Receive_IT(hcan, CAN_FIFO0);
   }
 
   /* Check End of reception flag for FIFO1 */
   if ((__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_FMP1)) &&
-      (__HAL_CAN_MSG_PENDING(hcan, CAN_FIFO1) != 0)) {
+  (__HAL_CAN_MSG_PENDING(hcan, CAN_FIFO1) != 0)) {
     /* Call receive function */
     CAN_Receive_IT(hcan, CAN_FIFO1);
   }
 
   /* Check Error Warning Flag */
   if ((__HAL_CAN_GET_FLAG(hcan, CAN_FLAG_EWG)) &&
-      (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_EWG)) &&
-      (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_ERR))) {
+  (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_EWG)) &&
+  (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_ERR))) {
     /* Set CAN error code to EWG error */
     hcan->ErrorCode |= HAL_CAN_ERROR_EWG;
     /* No need for clear of Error Warning Flag as read-only */
@@ -1004,8 +1023,8 @@ void HAL_CAN_IRQHandler(CAN_HandleTypeDef *hcan) {
 
   /* Check Error Passive Flag */
   if ((__HAL_CAN_GET_FLAG(hcan, CAN_FLAG_EPV)) &&
-      (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_EPV)) &&
-      (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_ERR))) {
+  (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_EPV)) &&
+  (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_ERR))) {
     /* Set CAN error code to EPV error */
     hcan->ErrorCode |= HAL_CAN_ERROR_EPV;
     /* No need for clear of Error Passive Flag as read-only */
@@ -1013,8 +1032,8 @@ void HAL_CAN_IRQHandler(CAN_HandleTypeDef *hcan) {
 
   /* Check Bus-Off Flag */
   if ((__HAL_CAN_GET_FLAG(hcan, CAN_FLAG_BOF)) &&
-      (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_BOF)) &&
-      (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_ERR))) {
+  (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_BOF)) &&
+  (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_ERR))) {
     /* Set CAN error code to BOF error */
     hcan->ErrorCode |= HAL_CAN_ERROR_BOF;
     /* No need for clear of Bus-Off Flag as read-only */
@@ -1023,7 +1042,7 @@ void HAL_CAN_IRQHandler(CAN_HandleTypeDef *hcan) {
   /* Check Last error code Flag */
   if ((!HAL_IS_BIT_CLR(hcan->Instance->ESR, CAN_ESR_LEC)) &&
       (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_LEC)) &&
-      (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_ERR))) {
+  (__HAL_CAN_GET_IT_SOURCE(hcan, CAN_IT_ERR))) {
     switch (hcan->Instance->ESR & CAN_ESR_LEC) {
       case (CAN_ESR_LEC_0):
         /* Set CAN error code to STF error */
@@ -1213,9 +1232,11 @@ static HAL_StatusTypeDef CAN_Receive_IT(CAN_HandleTypeDef *hcan, uint8_t FIFONum
   /* Get the Id */
   hcan->pRxMsg->IDE = (uint8_t) 0x04 & hcan->Instance->sFIFOMailBox[FIFONumber].RIR;
   if (hcan->pRxMsg->IDE == CAN_ID_STD) {
-    hcan->pRxMsg->StdId = (uint32_t) 0x000007FF & (hcan->Instance->sFIFOMailBox[FIFONumber].RIR >> 21);
+    hcan->pRxMsg->StdId = (uint32_t)
+    0x000007FF & (hcan->Instance->sFIFOMailBox[FIFONumber].RIR >> 21);
   } else {
-    hcan->pRxMsg->ExtId = (uint32_t) 0x1FFFFFFF & (hcan->Instance->sFIFOMailBox[FIFONumber].RIR >> 3);
+    hcan->pRxMsg->ExtId = (uint32_t)
+    0x1FFFFFFF & (hcan->Instance->sFIFOMailBox[FIFONumber].RIR >> 3);
   }
 
   hcan->pRxMsg->RTR = (uint8_t) 0x02 & hcan->Instance->sFIFOMailBox[FIFONumber].RIR;

@@ -135,9 +135,11 @@ typedef struct {
 
     HAL_LockTypeDef Lock;             /*!< Locking object                     */
 
-    __IO HAL_UART_StateTypeDef State;            /*!< UART communication state           */
+    __IO HAL_UART_StateTypeDef
+    State;            /*!< UART communication state           */
 
-    __IO uint32_t ErrorCode;        /*!< UART Error code                    */
+    __IO uint32_t
+    ErrorCode;        /*!< UART Error code                    */
 
 } UART_HandleTypeDef;
 

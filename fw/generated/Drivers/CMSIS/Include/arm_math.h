@@ -483,48 +483,46 @@ typedef double float64_t;
    * @brief Clips Q63 to Q31 values.
    */
 static __INLINE q31_tclip_q63_to_q31(
-    q63_t x)
-{
-  return ((q31_t)(x >> 32) != ((q31_t)
-  x >> 31)) ?
-  ((0x7FFFFFFF ^ ((q31_t)(x >> 63)))) : (q31_t)
-  x;
+    q63_t x) {
+  return ((q31_t) (x >> 32) != ((q31_t)
+      x >> 31)) ?
+         ((0x7FFFFFFF ^ ((q31_t) (x >> 63)))) : (q31_t)
+             x;
 }
 
 /**
    * @brief Clips Q63 to Q15 values.
    */
 static __INLINE q15_tclip_q63_to_q15(
-    q63_t x)
-{
+    q63_t x) {
   return ((q31_t) (x >> 32) != ((q31_t) x >> 31)) ?
-         ((0x7FFF ^ ((q15_t)(x >> 63)))) : (q15_t)(x >> 15);
+         ((0x7FFF ^ ((q15_t) (x >> 63)))) : (q15_t) (x >> 15);
 }
 
 /**
    * @brief Clips Q31 to Q7 values.
    */
 static __INLINE q7_t
-clip_q31_to_q7(
-    q31_t
-x)
+    clip_q31_to_q7(
+        q31_t
+        x)
 {
-return ((q31_t) (x >> 24) != ((q31_t) x >> 23)) ?
-((0x7F ^ ((q7_t) (x >> 31)))) : (q7_t)
-x;
+  return ((q31_t) (x >> 24) != ((q31_t) x >> 23)) ?
+         ((0x7F ^ ((q7_t)(x >> 31)))) : (q7_t)
+  x;
 }
 
 /**
    * @brief Clips Q31 to Q15 values.
    */
 static __INLINE q15_t
-clip_q31_to_q15(
-    q31_t
-x)
+    clip_q31_to_q15(
+        q31_t
+        x)
 {
-return ((q31_t) (x >> 16) != ((q31_t) x >> 15)) ?
-((0x7FFF ^ ((q15_t) (x >> 31)))) : (q15_t)
-x;
+  return ((q31_t) (x >> 16) != ((q31_t) x >> 15)) ?
+         ((0x7FFF ^ ((q15_t)(x >> 31)))) : (q15_t)
+  x;
 }
 
 /**
@@ -4755,8 +4753,7 @@ void arm_cmplx_mag_squared_q15(
    */
 static __INLINE float32_tarm_pid_f32(
     arm_pid_instance_f32 *S,
-    float32_t in)
-{
+    float32_t in) {
   float32_t out;
 
   /* y[n] = y[n-1] + A0 * x[n] + A1 * x[n-1] + A2 * x[n-2]  */
@@ -4789,8 +4786,7 @@ static __INLINE float32_tarm_pid_f32(
    */
 static __INLINE q31_tarm_pid_q31(
     arm_pid_instance_q31 *S,
-    q31_t in)
-{
+    q31_t in) {
   q63_t acc;
   q31_t out;
 
@@ -4804,7 +4800,7 @@ static __INLINE q31_tarm_pid_q31(
   acc += (q63_t) S->A2 * S->state[1];
 
   /* convert output to 1.31 format to add y[n-1] */
-  out = (q31_t)(acc >> 31u);
+  out = (q31_t) (acc >> 31u);
 
   /* out += y[n-1] */
   out += S->state[2];
@@ -4836,8 +4832,7 @@ static __INLINE q31_tarm_pid_q31(
    */
 static __INLINE q15_tarm_pid_q15(
     arm_pid_instance_q15 *S,
-    q15_t in)
-{
+    q15_t in) {
   q63_t acc;
   q15_t out;
 
@@ -4868,7 +4863,7 @@ static __INLINE q15_tarm_pid_q15(
   acc += (q31_t) S->state[2] << 15;
 
   /* saturate the output */
-  out = (q15_t)(__SSAT((acc >> 15), 16));
+  out = (q15_t) (__SSAT((acc >> 15), 16));
 
   /* Update state */
   S->state[1] = S->state[0];
@@ -5388,14 +5383,13 @@ void arm_q31_to_float(
    */
 static __INLINE float32_tarm_linear_interp_f32(
     arm_linear_interp_instance_f32 *S,
-    float32_t x)
-{
+    float32_t x) {
   float32_t y;
   float32_t x0, x1;                            /* Nearest input values */
   float32_t y0, y1;                            /* Nearest output values */
   float32_t xSpacing = S->xSpacing;            /* spacing between input values */
   int32_t i;                                   /* Index variable */
-  float32_t * pYData = S->pYData;               /* pointer to output table */
+  float32_t *pYData = S->pYData;               /* pointer to output table */
 
   /* Calculation of index */
   i = (int32_t)((x - S->x1) / xSpacing);
@@ -5712,36 +5706,33 @@ q15_t arm_cos_q15(
    * <code>in</code> is negative value and returns zero output for negative values.
    */
 static __INLINE arm_status
-arm_sqrt_f32(
-    float32_t
-in,
-float32_t *pOut
-)
+    arm_sqrt_f32(
+        float32_t
+        in,
+        float32_t *pOut
+    )
 {
-if(in >= 0.0f)
-{
+  if (in >= 0.0f) {
 
 #if   (__FPU_USED == 1) && defined ( __CC_ARM   )
-*pOut = __sqrtf(in);
+    *pOut = __sqrtf(in);
 #elif (__FPU_USED == 1) && (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
-*pOut = __builtin_sqrtf(in);
+    *pOut = __builtin_sqrtf(in);
 #elif (__FPU_USED == 1) && defined(__GNUC__)
-*pOut = __builtin_sqrtf(in);
+    *pOut = __builtin_sqrtf(in);
 #elif (__FPU_USED == 1) && defined ( __ICCARM__ ) && (__VER__ >= 6040000)
-__ASM("VSQRT.F32 %0,%1" : "=t"(*pOut) : "t"(in));
+    __ASM("VSQRT.F32 %0,%1" : "=t"(*pOut) : "t"(in));
 #else
-*
-pOut = sqrtf(in);
+    *
+        pOut = sqrtf(in);
 #endif
 
-return (ARM_MATH_SUCCESS);
-}
-else
-{
-*
-pOut = 0.0f;
-return (ARM_MATH_ARGUMENT_ERROR);
-}
+    return (ARM_MATH_SUCCESS);
+  } else {
+    *
+        pOut = 0.0f;
+    return (ARM_MATH_ARGUMENT_ERROR);
+  }
 }
 
 
@@ -6707,11 +6698,10 @@ void arm_q15_to_q7(
 static __INLINE float32_tarm_bilinear_interp_f32(
     const arm_bilinear_interp_instance_f32 *S,
     float32_t X,
-    float32_t Y)
-{
+    float32_t Y) {
   float32_t out;
   float32_t f00, f01, f10, f11;
-  float32_t * pData = S->pData;
+  float32_t *pData = S->pData;
   int32_t xIndex, yIndex, index;
   float32_t xdiff, ydiff;
   float32_t b1, b2, b3, b4;
@@ -6772,8 +6762,7 @@ static __INLINE float32_tarm_bilinear_interp_f32(
 static __INLINE q31_tarm_bilinear_interp_q31(
     arm_bilinear_interp_instance_q31 *S,
     q31_t X,
-    q31_t Y)
-{
+    q31_t Y) {
   q31_t out;                                   /* Temporary output */
   q31_t acc = 0;                               /* output */
   q31_t xfract, yfract;                        /* X, Y fractional parts */
@@ -6786,13 +6775,13 @@ static __INLINE q31_tarm_bilinear_interp_q31(
   /* 12 bits for the table index */
   /* Index value calculation */
   rI = ((X & (q31_t)
-  0xFFF00000) >> 20);
+      0xFFF00000) >> 20);
 
   /* Input is in 12.20 format */
   /* 12 bits for the table index */
   /* Index value calculation */
   cI = ((Y & (q31_t)
-  0xFFF00000) >> 20);
+      0xFFF00000) >> 20);
 
   /* Care taken for table outside boundary */
   /* Returns zero output when values are outside table boundary */
@@ -6817,23 +6806,23 @@ static __INLINE q31_tarm_bilinear_interp_q31(
   y2 = pYData[(rI) + (int32_t) nCols * (cI + 1) + 1];
 
   /* Calculation of x1 * (1-xfract ) * (1-yfract) and acc is in 3.29(q29) format */
-  out = ((q31_t)(((q63_t) x1 * (0x7FFFFFFF - xfract)) >> 32));
-  acc = ((q31_t)(((q63_t) out * (0x7FFFFFFF - yfract)) >> 32));
+  out = ((q31_t) (((q63_t) x1 * (0x7FFFFFFF - xfract)) >> 32));
+  acc = ((q31_t) (((q63_t) out * (0x7FFFFFFF - yfract)) >> 32));
 
   /* x2 * (xfract) * (1-yfract)  in 3.29(q29) and adding to acc */
-  out = ((q31_t)((q63_t) x2 * (0x7FFFFFFF - yfract) >> 32));
-  acc += ((q31_t)((q63_t) out * (xfract) >> 32));
+  out = ((q31_t) ((q63_t) x2 * (0x7FFFFFFF - yfract) >> 32));
+  acc += ((q31_t) ((q63_t) out * (xfract) >> 32));
 
   /* y1 * (1 - xfract) * (yfract)  in 3.29(q29) and adding to acc */
-  out = ((q31_t)((q63_t) y1 * (0x7FFFFFFF - xfract) >> 32));
-  acc += ((q31_t)((q63_t) out * (yfract) >> 32));
+  out = ((q31_t) ((q63_t) y1 * (0x7FFFFFFF - xfract) >> 32));
+  acc += ((q31_t) ((q63_t) out * (yfract) >> 32));
 
   /* y2 * (xfract) * (yfract)  in 3.29(q29) and adding to acc */
-  out = ((q31_t)((q63_t) y2 * (xfract) >> 32));
-  acc += ((q31_t)((q63_t) out * (yfract) >> 32));
+  out = ((q31_t) ((q63_t) y2 * (xfract) >> 32));
+  acc += ((q31_t) ((q63_t) out * (yfract) >> 32));
 
   /* Convert acc to 1.31(q31) format */
-  return ((q31_t)(acc << 2));
+  return ((q31_t) (acc << 2));
 }
 
 
@@ -6847,8 +6836,7 @@ static __INLINE q31_tarm_bilinear_interp_q31(
 static __INLINE q15_tarm_bilinear_interp_q15(
     arm_bilinear_interp_instance_q15 *S,
     q31_t X,
-    q31_t Y)
-{
+    q31_t Y) {
   q63_t acc = 0;                               /* output */
   q31_t out;                                   /* Temporary output */
   q15_t x1, x2, y1, y2;                        /* Nearest output values */
@@ -6918,7 +6906,7 @@ static __INLINE q15_tarm_bilinear_interp_q15(
 
   /* acc is in 13.51 format and down shift acc by 36 times */
   /* Convert out to 1.15 format */
-  return ((q15_t)(acc >> 36));
+  return ((q15_t) (acc >> 36));
 }
 
 
@@ -6932,8 +6920,7 @@ static __INLINE q15_tarm_bilinear_interp_q15(
 static __INLINE q7_tarm_bilinear_interp_q7(
     arm_bilinear_interp_instance_q7 *S,
     q31_t X,
-    q31_t Y)
-{
+    q31_t Y) {
   q63_t acc = 0;                               /* output */
   q31_t out;                                   /* Temporary output */
   q31_t xfract, yfract;                        /* X, Y fractional parts */
@@ -6999,7 +6986,7 @@ static __INLINE q7_tarm_bilinear_interp_q7(
   acc += (((q63_t) out * (xfract)));
 
   /* acc in 16.47 format and down shift by 40 to convert to 1.7 format */
-  return ((q7_t)(acc >> 40));
+  return ((q7_t) (acc >> 40));
 }
 
 /**

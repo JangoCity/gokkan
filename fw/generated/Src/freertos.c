@@ -47,10 +47,10 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
+#include <messages.pb-c.h>
 #include "FreeRTOS.h"
 #include "task.h"
 #include "cmsis_os.h"
-
 
 /* USER CODE BEGIN Includes */
 #include "custom.h"
@@ -58,9 +58,9 @@
 
 /* Variables -----------------------------------------------------------------*/
 osThreadId QToCANHandle;
-osThreadId QToSerialHandle;
+osThreadId QToCDCHandle;
 osMessageQId CAN_TO_SERIALHandle;
-osMessageQId SERIAL_TO_CANHandle;
+osMessageQId COMMAND_QUEUEHandle;
 
 /* USER CODE BEGIN Variables */
 
@@ -69,7 +69,7 @@ osMessageQId SERIAL_TO_CANHandle;
 /* Function prototypes -------------------------------------------------------*/
 void QToCANF(void const *argument);
 
-void QToSerialF(void const *argument);
+void QToCDCF(void const *argument);
 
 extern void MX_USB_DEVICE_Init(void);
 
@@ -105,9 +105,9 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(QToCAN, QToCANF, osPriorityNormal, 0, 128);
   QToCANHandle = osThreadCreate(osThread(QToCAN), NULL);
 
-  /* definition and creation of QToSerial */
-  osThreadDef(QToSerial, QToSerialF, osPriorityIdle, 0, 128);
-  QToSerialHandle = osThreadCreate(osThread(QToSerial), NULL);
+  /* definition and creation of QToCDC */
+  osThreadDef(QToCDC, QToCDCF, osPriorityIdle, 0, 128);
+  QToCDCHandle = osThreadCreate(osThread(QToCDC), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -115,12 +115,12 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the queue(s) */
   /* definition and creation of CAN_TO_SERIAL */
-  osMessageQDef(CAN_TO_SERIAL, 16, uint8_t);
+  osMessageQDef(CAN_TO_SERIAL, 16, FromDevice);
   CAN_TO_SERIALHandle = osMessageCreate(osMessageQ(CAN_TO_SERIAL), NULL);
 
-  /* definition and creation of SERIAL_TO_CAN */
-  osMessageQDef(SERIAL_TO_CAN, 16, uint8_t);
-  SERIAL_TO_CANHandle = osMessageCreate(osMessageQ(SERIAL_TO_CAN), NULL);
+  /* definition and creation of COMMAND_QUEUE */
+  osMessageQDef(COMMAND_QUEUE, 16, ToDevice);
+  COMMAND_QUEUEHandle = osMessageCreate(osMessageQ(COMMAND_QUEUE), NULL);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
@@ -133,17 +133,17 @@ void QToCANF(void const *argument) {
   MX_USB_DEVICE_Init();
 
   /* USER CODE BEGIN QToCANF */
-  QueryToCAN(argument);
+  CommandQueueProcess(argument);
   /* Infinite loop */
   /* USER CODE END QToCANF */
 }
 
-/* QToSerialF function */
-void QToSerialF(void const *argument) {
-  /* USER CODE BEGIN QToSerialF */
+/* QToCDCF function */
+void QToCDCF(void const *argument) {
+  /* USER CODE BEGIN QToCDCF */
   /* Infinite loop */
-  QueryToSerial(argument);
-  /* USER CODE END QToSerialF */
+  QueueToUsb(argument);
+  /* USER CODE END QToCDCF */
 }
 
 /* USER CODE BEGIN Application */

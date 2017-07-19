@@ -187,7 +187,7 @@ void HAL_PCD_SuspendCallback(PCD_HandleTypeDef *hpcd) {
   __HAL_PCD_GATE_PHYCLOCK(hpcd);
   if (hpcd->Init.low_power_enable) {
     /* Set SLEEPDEEP bit and SleepOnExit of Cortex System Control Register */
-    SCB->SCR |= (uint32_t) ((uint32_t) (SCB_SCR_SLEEPDEEP_Msk | SCB_SCR_SLEEPONEXIT_Msk));
+    SCB->SCR |= (uint32_t)((uint32_t)(SCB_SCR_SLEEPDEEP_Msk | SCB_SCR_SLEEPONEXIT_Msk));
   }
   /* USER CODE END 2 */
 }
@@ -675,8 +675,9 @@ uint32_t USBD_LL_GetRxDataSize(USBD_HandleTypeDef *pdev, uint8_t ep_addr) {
   * @param  Delay: Delay in ms
   * @retval None
   */
-void USBD_LL_Delay(uint32_t Delay) {
-  HAL_Delay(Delay);
+void USBD_LL_Delay(uint32_t
+Delay) {
+HAL_Delay(Delay);
 }
 
 /**
@@ -684,9 +685,11 @@ void USBD_LL_Delay(uint32_t Delay) {
   * @param  size: size of allocated memory
   * @retval None
   */
-void *USBD_static_malloc(uint32_t size) {
-  static uint32_t mem[(sizeof(USBD_CDC_HandleTypeDef) / 4) + 1];/* On 32-bit boundary */
-  return mem;
+void *USBD_static_malloc(uint32_t
+size) {
+static uint32_t mem[(sizeof(USBD_CDC_HandleTypeDef) / 4) + 1];/* On 32-bit boundary */
+return
+mem;
 }
 
 /**

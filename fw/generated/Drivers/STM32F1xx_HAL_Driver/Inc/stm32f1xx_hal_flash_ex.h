@@ -781,7 +781,8 @@ HAL_StatusTypeDef HAL_FLASHEx_OBProgram(FLASH_OBProgramInitTypeDef *pOBInit);
 
 void HAL_FLASHEx_OBGetConfig(FLASH_OBProgramInitTypeDef *pOBInit);
 
-uint32_t HAL_FLASHEx_OBGetUserData(uint32_t DATAAdress);
+uint32_t HAL_FLASHEx_OBGetUserData(uint32_t
+DATAAdress);
 /**
   * @}
   */

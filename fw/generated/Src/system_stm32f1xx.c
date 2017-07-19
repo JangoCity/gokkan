@@ -175,27 +175,33 @@ static void SystemInit_ExtMemCtl(void);
 void SystemInit(void) {
   /* Reset the RCC clock configuration to the default reset state(for debug purpose) */
   /* Set HSION bit */
-  RCC->CR |= (uint32_t) 0x00000001;
+  RCC->CR |= (uint32_t)
+  0x00000001;
 
   /* Reset SW, HPRE, PPRE1, PPRE2, ADCPRE and MCO bits */
 #if !defined(STM32F105xC) && !defined(STM32F107xC)
   RCC->CFGR &= (uint32_t)0xF8FF0000;
 #else
-  RCC->CFGR &= (uint32_t) 0xF0FF0000;
+  RCC->CFGR &= (uint32_t)
+  0xF0FF0000;
 #endif /* STM32F105xC */
 
   /* Reset HSEON, CSSON and PLLON bits */
-  RCC->CR &= (uint32_t) 0xFEF6FFFF;
+  RCC->CR &= (uint32_t)
+  0xFEF6FFFF;
 
   /* Reset HSEBYP bit */
-  RCC->CR &= (uint32_t) 0xFFFBFFFF;
+  RCC->CR &= (uint32_t)
+  0xFFFBFFFF;
 
   /* Reset PLLSRC, PLLXTPRE, PLLMUL and USBPRE/OTGFSPRE bits */
-  RCC->CFGR &= (uint32_t) 0xFF80FFFF;
+  RCC->CFGR &= (uint32_t)
+  0xFF80FFFF;
 
 #if defined(STM32F105xC) || defined(STM32F107xC)
   /* Reset PLL2ON and PLL3ON bits */
-  RCC->CR &= (uint32_t) 0xEBFFFFFF;
+  RCC->CR &= (uint32_t)
+  0xEBFFFFFF;
 
   /* Disable all interrupts and clear pending bits  */
   RCC->CIR = 0x00FF0000;
@@ -325,7 +331,7 @@ void SystemCoreClockUpdate(void) {
 
       if (pllsource == 0x00) {
         /* HSI oscillator clock divided by 2 selected as PLL clock entry */
-        SystemCoreClock = (HSI_VALUE >> 1) * pllmull;
+        SystemCoreClock = (HSI_VALUE >> 1) *pllmull;
       } else {/* PREDIV1 selected as PLL clock entry */
 
         /* Get PREDIV1 clock source and division factor */
@@ -334,13 +340,13 @@ void SystemCoreClockUpdate(void) {
 
         if (prediv1source == 0) {
           /* HSE oscillator clock selected as PREDIV1 clock entry */
-          SystemCoreClock = (HSE_VALUE / prediv1factor) * pllmull;
+          SystemCoreClock = (HSE_VALUE / prediv1factor) *pllmull;
         } else {/* PLL2 clock selected as PREDIV1 clock entry */
 
           /* Get PREDIV2 division factor and PLL2 multiplication factor */
           prediv2factor = ((RCC->CFGR2 & RCC_CFGR2_PREDIV2) >> 4) + 1;
           pll2mull = ((RCC->CFGR2 & RCC_CFGR2_PLL2MUL) >> 8) + 2;
-          SystemCoreClock = (((HSE_VALUE / prediv2factor) * pll2mull) / prediv1factor) * pllmull;
+          SystemCoreClock = (((HSE_VALUE / prediv2factor) *pll2mull) / prediv1factor) *pllmull;
         }
       }
 #endif /* STM32F105xC */

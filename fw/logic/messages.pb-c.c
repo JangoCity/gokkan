@@ -409,13 +409,13 @@ const ProtobufCEnumDescriptor frame__rtr__descriptor =
         frame__rtr__value_ranges,
         NULL, NULL, NULL, NULL   /* reserved[1234] */
     };
-static const ProtobufCFieldDescriptor frame__field_descriptors[5] =
+static const ProtobufCFieldDescriptor frame__field_descriptors[6] =
     {
         {
             "id",
             1,
             PROTOBUF_C_LABEL_OPTIONAL,
-            PROTOBUF_C_TYPE_INT32,
+            PROTOBUF_C_TYPE_UINT32,
             offsetof(Frame, has_id),
             offsetof(Frame, id),
             NULL,
@@ -424,10 +424,22 @@ static const ProtobufCFieldDescriptor frame__field_descriptors[5] =
             0, NULL, NULL    /* reserved1,reserved2, etc */
         },
         {
-            "dlc",
+            "eid",
             2,
             PROTOBUF_C_LABEL_OPTIONAL,
-            PROTOBUF_C_TYPE_INT32,
+            PROTOBUF_C_TYPE_UINT32,
+            offsetof(Frame, has_eid),
+            offsetof(Frame, eid),
+            NULL,
+            NULL,
+            0,             /* flags */
+            0, NULL, NULL    /* reserved1,reserved2, etc */
+        },
+        {
+            "dlc",
+            3,
+            PROTOBUF_C_LABEL_OPTIONAL,
+            PROTOBUF_C_TYPE_UINT32,
             offsetof(Frame, has_dlc),
             offsetof(Frame, dlc),
             NULL,
@@ -437,7 +449,7 @@ static const ProtobufCFieldDescriptor frame__field_descriptors[5] =
         },
         {
             "ide",
-            3,
+            4,
             PROTOBUF_C_LABEL_OPTIONAL,
             PROTOBUF_C_TYPE_ENUM,
             offsetof(Frame, has_ide),
@@ -449,7 +461,7 @@ static const ProtobufCFieldDescriptor frame__field_descriptors[5] =
         },
         {
             "rtr",
-            4,
+            5,
             PROTOBUF_C_LABEL_OPTIONAL,
             PROTOBUF_C_TYPE_ENUM,
             offsetof(Frame, has_rtr),
@@ -461,10 +473,10 @@ static const ProtobufCFieldDescriptor frame__field_descriptors[5] =
         },
         {
             "data",
-            5,
-            PROTOBUF_C_LABEL_REPEATED,
-            PROTOBUF_C_TYPE_BYTES,
-            offsetof(Frame, n_data),
+            6,
+            PROTOBUF_C_LABEL_OPTIONAL,
+            PROTOBUF_C_TYPE_UINT64,
+            offsetof(Frame, has_data),
             offsetof(Frame, data),
             NULL,
             NULL,
@@ -473,16 +485,17 @@ static const ProtobufCFieldDescriptor frame__field_descriptors[5] =
         },
     };
 static const unsigned frame__field_indices_by_name[] = {
-    4,   /* field[4] = data */
-    1,   /* field[1] = dlc */
+    5,   /* field[5] = data */
+    2,   /* field[2] = dlc */
+    1,   /* field[1] = eid */
     0,   /* field[0] = id */
-    2,   /* field[2] = ide */
-    3,   /* field[3] = rtr */
+    3,   /* field[3] = ide */
+    4,   /* field[4] = rtr */
 };
 static const ProtobufCIntRange frame__number_ranges[1 + 1] =
     {
         {1, 0},
-        {0, 5}
+        {0, 6}
     };
 const ProtobufCMessageDescriptor frame__descriptor =
     {
@@ -492,7 +505,7 @@ const ProtobufCMessageDescriptor frame__descriptor =
         "Frame",
         "",
         sizeof(Frame),
-        5,
+        6,
         frame__field_descriptors,
         frame__field_indices_by_name,
         1, frame__number_ranges,
@@ -554,7 +567,7 @@ static const ProtobufCFieldDescriptor to_device__field_descriptors[4] =
             "id",
             2,
             PROTOBUF_C_LABEL_OPTIONAL,
-            PROTOBUF_C_TYPE_INT32,
+            PROTOBUF_C_TYPE_UINT32,
             offsetof(ToDevice, has_id),
             offsetof(ToDevice, id),
             NULL,
@@ -751,7 +764,7 @@ static const ProtobufCFieldDescriptor from_device__field_descriptors[5] =
             "id",
             2,
             PROTOBUF_C_LABEL_OPTIONAL,
-            PROTOBUF_C_TYPE_INT32,
+            PROTOBUF_C_TYPE_UINT32,
             offsetof(FromDevice, has_id),
             offsetof(FromDevice, id),
             NULL,

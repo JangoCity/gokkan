@@ -1353,7 +1353,10 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef *RCC_ClkInitStruct, uin
   */
 
 /* Peripheral Control functions  ************************************************/
-void HAL_RCC_MCOConfig(uint32_t RCC_MCOx, uint32_t RCC_MCOSource, uint32_t RCC_MCODiv);
+void HAL_RCC_MCOConfig(uint32_t
+RCC_MCOx,
+uint32_t RCC_MCOSource, uint32_t
+RCC_MCODiv);
 
 void HAL_RCC_EnableCSS(void);
 

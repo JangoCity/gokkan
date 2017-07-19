@@ -31,6 +31,7 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
+#include <custom.h>
 #include "stm32f1xx_hal.h"
 #include "stm32f1xx.h"
 #include "stm32f1xx_it.h"
@@ -239,6 +240,10 @@ void OTG_FS_IRQHandler(void) {
   /* USER CODE BEGIN OTG_FS_IRQn 1 */
 
   /* USER CODE END OTG_FS_IRQn 1 */
+}
+
+void HAL_CAN_RxCpltCallback(CAN_HandleTypeDef *can) {
+  receiveBytesFromCAN();
 }
 
 /* USER CODE BEGIN 1 */

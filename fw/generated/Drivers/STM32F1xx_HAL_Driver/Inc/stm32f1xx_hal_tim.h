@@ -281,7 +281,8 @@ typedef struct {
     DMA_HandleTypeDef *hdma[7];      /*!< DMA Handlers array
                                              This array is accessed by a @ref TIM_DMA_Handle_index */
     HAL_LockTypeDef Lock;          /*!< Locking object                    */
-    __IO HAL_TIM_StateTypeDef State;         /*!< TIM operation state               */
+    __IO HAL_TIM_StateTypeDef
+    State;         /*!< TIM operation state               */
 } TIM_HandleTypeDef;
 
 /**

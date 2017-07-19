@@ -104,17 +104,22 @@ typedef enum {
   * @brief  FLASH handle Structure definition
   */
 typedef struct {
-    __IO FLASH_ProcedureTypeDef ProcedureOnGoing; /*!< Internal variable to indicate which procedure is ongoing or not in IT context */
+    __IO FLASH_ProcedureTypeDef
+    ProcedureOnGoing; /*!< Internal variable to indicate which procedure is ongoing or not in IT context */
 
-    __IO uint32_t DataRemaining;    /*!< Internal variable to save the remaining pages to erase or half-word to program in IT context */
+    __IO uint32_t
+    DataRemaining;    /*!< Internal variable to save the remaining pages to erase or half-word to program in IT context */
 
-    __IO uint32_t Address;          /*!< Internal variable to save address selected for program or erase */
+    __IO uint32_t
+    Address;          /*!< Internal variable to save address selected for program or erase */
 
-    __IO uint64_t Data;             /*!< Internal variable to save data to be programmed */
+    __IO uint64_t
+    Data;             /*!< Internal variable to save data to be programmed */
 
     HAL_LockTypeDef Lock;             /*!< FLASH locking object                */
 
-    __IO uint32_t ErrorCode;        /*!< FLASH error code
+    __IO uint32_t
+    ErrorCode;        /*!< FLASH error code
                                                      This parameter can be a value of @ref FLASH_Error_Codes  */
 } FLASH_ProcessTypeDef;
 
@@ -273,17 +278,25 @@ typedef struct {
   * @{
   */
 /* IO operation functions *****************************************************/
-HAL_StatusTypeDef HAL_FLASH_Program(uint32_t TypeProgram, uint32_t Address, uint64_t Data);
+HAL_StatusTypeDef HAL_FLASH_Program(uint32_t
+TypeProgram,
+uint32_t Address, uint64_t
+Data);
 
-HAL_StatusTypeDef HAL_FLASH_Program_IT(uint32_t TypeProgram, uint32_t Address, uint64_t Data);
+HAL_StatusTypeDef HAL_FLASH_Program_IT(uint32_t
+TypeProgram,
+uint32_t Address, uint64_t
+Data);
 
 /* FLASH IRQ handler function */
 void HAL_FLASH_IRQHandler(void);
 
 /* Callbacks in non blocking modes */
-void HAL_FLASH_EndOfOperationCallback(uint32_t ReturnValue);
+void HAL_FLASH_EndOfOperationCallback(uint32_t
+ReturnValue);
 
-void HAL_FLASH_OperationErrorCallback(uint32_t ReturnValue);
+void HAL_FLASH_OperationErrorCallback(uint32_t
+ReturnValue);
 
 /**
   * @}
@@ -325,9 +338,11 @@ uint32_t HAL_FLASH_GetError(void);
 /** @addtogroup FLASH_Private_Functions
  * @{
  */
-void FLASH_PageErase(uint32_t PageAddress);
+void FLASH_PageErase(uint32_t
+PageAddress);
 
-HAL_StatusTypeDef FLASH_WaitForLastOperation(uint32_t Timeout);
+HAL_StatusTypeDef FLASH_WaitForLastOperation(uint32_t
+Timeout);
 
 #if defined(FLASH_BANK2_END)
 HAL_StatusTypeDef       FLASH_WaitForLastOperationBank2(uint32_t Timeout);

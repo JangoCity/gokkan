@@ -185,9 +185,11 @@ typedef struct {
 
     HAL_LockTypeDef Lock;       /*!< CAN locking object             */
 
-    __IO HAL_CAN_StateTypeDef State;      /*!< CAN communication state        */
+    __IO HAL_CAN_StateTypeDef
+    State;      /*!< CAN communication state        */
 
-    __IO uint32_t ErrorCode;  /*!< CAN Error code                 */
+    __IO uint32_t
+    ErrorCode;  /*!< CAN Error code                 */
 
 } CAN_HandleTypeDef;
 /**

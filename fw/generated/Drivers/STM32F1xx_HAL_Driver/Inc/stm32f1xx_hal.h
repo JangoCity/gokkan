@@ -280,7 +280,8 @@ void HAL_MspInit(void);
 
 void HAL_MspDeInit(void);
 
-HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority);
+HAL_StatusTypeDef HAL_InitTick(uint32_t
+TickPriority);
 
 /**
   * @}
