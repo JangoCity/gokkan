@@ -64,6 +64,8 @@
 #define LED2_GPIO_Port GPIOA
 #define BUTTON_Pin GPIO_PIN_2
 #define BUTTON_GPIO_Port GPIOB
+#define USB_ON_Pin GPIO_PIN_12
+#define USB_ON_GPIO_Port GPIOC
 
 /* USER CODE BEGIN Private defines */
 

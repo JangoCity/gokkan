@@ -33,8 +33,8 @@ CanRxMsgTypeDef RxMessage;
 
 
 void println(const char *str) {
-  HAL_UART_Transmit(&huart3, (uint8_t *) str, strlen(str), 10);
-  HAL_UART_Transmit(&huart3, &CR, 1, 10);
+  HAL_UART_Transmit(&huart3, (uint8_t *) str, strlen(str), 100);
+  HAL_UART_Transmit(&huart3, &CR, 1, 100);
 }
 
 
@@ -45,6 +45,11 @@ void flushBuffers() {
 
 
 void customInit() {
+ 
+  //HAL_GPIO_WritePin(USB_ON_GPIO_Port, USB_ON_Pin, 1);
+  HAL_Delay(500);
+  HAL_GPIO_WritePin(USB_ON_GPIO_Port, USB_ON_Pin, 0);
+
 
   CAN_FilterConfTypeDef f0FilterConfig;
   f0FilterConfig.FilterNumber = 0;

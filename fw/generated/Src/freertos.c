@@ -53,6 +53,7 @@
 
 /* USER CODE BEGIN Includes */     
 #include "custom.h"
+#include "messages.pb-c.h"
 /* USER CODE END Includes */
 
 /* Variables -----------------------------------------------------------------*/
