@@ -9,7 +9,6 @@ cmake-build-debug
 *.d
 *.crf
 *.lst
-*.s
 *.axf
 *.htm
 *.lnp
