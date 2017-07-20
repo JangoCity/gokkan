@@ -16,4 +16,5 @@ cmake-build-debug
 *.sct
 *.map
 *.dep
-
+*.__i
+*._ia

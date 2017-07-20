@@ -31,7 +31,6 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
-#include <custom.h>
 #include "stm32f1xx_hal.h"
 #include "stm32f1xx.h"
 #include "stm32f1xx_it.h"
@@ -49,13 +48,14 @@ extern UART_HandleTypeDef huart3;
 extern TIM_HandleTypeDef htim1;
 
 /******************************************************************************/
-/*            Cortex-M3 Processor Interruption and Exception Handlers         */
+/*            Cortex-M3 Processor Interruption and Exception Handlers         */ 
 /******************************************************************************/
 
 /**
 * @brief This function handles Non maskable interrupt.
 */
-void NMI_Handler(void) {
+void NMI_Handler(void)
+{
   /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
 
   /* USER CODE END NonMaskableInt_IRQn 0 */
@@ -67,11 +67,13 @@ void NMI_Handler(void) {
 /**
 * @brief This function handles Hard fault interrupt.
 */
-void HardFault_Handler(void) {
+void HardFault_Handler(void)
+{
   /* USER CODE BEGIN HardFault_IRQn 0 */
 
   /* USER CODE END HardFault_IRQn 0 */
-  while (1) {
+  while (1)
+  {
   }
   /* USER CODE BEGIN HardFault_IRQn 1 */
 
@@ -81,11 +83,13 @@ void HardFault_Handler(void) {
 /**
 * @brief This function handles Memory management fault.
 */
-void MemManage_Handler(void) {
+void MemManage_Handler(void)
+{
   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
 
   /* USER CODE END MemoryManagement_IRQn 0 */
-  while (1) {
+  while (1)
+  {
   }
   /* USER CODE BEGIN MemoryManagement_IRQn 1 */
 
@@ -95,11 +99,13 @@ void MemManage_Handler(void) {
 /**
 * @brief This function handles Prefetch fault, memory access fault.
 */
-void BusFault_Handler(void) {
+void BusFault_Handler(void)
+{
   /* USER CODE BEGIN BusFault_IRQn 0 */
 
   /* USER CODE END BusFault_IRQn 0 */
-  while (1) {
+  while (1)
+  {
   }
   /* USER CODE BEGIN BusFault_IRQn 1 */
 
@@ -109,11 +115,13 @@ void BusFault_Handler(void) {
 /**
 * @brief This function handles Undefined instruction or illegal state.
 */
-void UsageFault_Handler(void) {
+void UsageFault_Handler(void)
+{
   /* USER CODE BEGIN UsageFault_IRQn 0 */
 
   /* USER CODE END UsageFault_IRQn 0 */
-  while (1) {
+  while (1)
+  {
   }
   /* USER CODE BEGIN UsageFault_IRQn 1 */
 
@@ -123,7 +131,8 @@ void UsageFault_Handler(void) {
 /**
 * @brief This function handles Debug monitor.
 */
-void DebugMon_Handler(void) {
+void DebugMon_Handler(void)
+{
   /* USER CODE BEGIN DebugMonitor_IRQn 0 */
 
   /* USER CODE END DebugMonitor_IRQn 0 */
@@ -135,7 +144,8 @@ void DebugMon_Handler(void) {
 /**
 * @brief This function handles System tick timer.
 */
-void SysTick_Handler(void) {
+void SysTick_Handler(void)
+{
   /* USER CODE BEGIN SysTick_IRQn 0 */
 
   /* USER CODE END SysTick_IRQn 0 */
@@ -155,7 +165,8 @@ void SysTick_Handler(void) {
 /**
 * @brief This function handles RCC global interrupt.
 */
-void RCC_IRQHandler(void) {
+void RCC_IRQHandler(void)
+{
   /* USER CODE BEGIN RCC_IRQn 0 */
 
   /* USER CODE END RCC_IRQn 0 */
@@ -167,7 +178,8 @@ void RCC_IRQHandler(void) {
 /**
 * @brief This function handles CAN1 TX interrupt.
 */
-void CAN1_TX_IRQHandler(void) {
+void CAN1_TX_IRQHandler(void)
+{
   /* USER CODE BEGIN CAN1_TX_IRQn 0 */
 
   /* USER CODE END CAN1_TX_IRQn 0 */
@@ -180,7 +192,8 @@ void CAN1_TX_IRQHandler(void) {
 /**
 * @brief This function handles CAN1 RX0 interrupt.
 */
-void CAN1_RX0_IRQHandler(void) {
+void CAN1_RX0_IRQHandler(void)
+{
   /* USER CODE BEGIN CAN1_RX0_IRQn 0 */
 
   /* USER CODE END CAN1_RX0_IRQn 0 */
@@ -193,7 +206,8 @@ void CAN1_RX0_IRQHandler(void) {
 /**
 * @brief This function handles CAN1 RX1 interrupt.
 */
-void CAN1_RX1_IRQHandler(void) {
+void CAN1_RX1_IRQHandler(void)
+{
   /* USER CODE BEGIN CAN1_RX1_IRQn 0 */
 
   /* USER CODE END CAN1_RX1_IRQn 0 */
@@ -206,7 +220,8 @@ void CAN1_RX1_IRQHandler(void) {
 /**
 * @brief This function handles TIM1 update interrupt.
 */
-void TIM1_UP_IRQHandler(void) {
+void TIM1_UP_IRQHandler(void)
+{
   /* USER CODE BEGIN TIM1_UP_IRQn 0 */
 
   /* USER CODE END TIM1_UP_IRQn 0 */
@@ -219,7 +234,8 @@ void TIM1_UP_IRQHandler(void) {
 /**
 * @brief This function handles USART3 global interrupt.
 */
-void USART3_IRQHandler(void) {
+void USART3_IRQHandler(void)
+{
   /* USER CODE BEGIN USART3_IRQn 0 */
 
   /* USER CODE END USART3_IRQn 0 */
@@ -232,7 +248,8 @@ void USART3_IRQHandler(void) {
 /**
 * @brief This function handles USB OTG FS global interrupt.
 */
-void OTG_FS_IRQHandler(void) {
+void OTG_FS_IRQHandler(void)
+{
   /* USER CODE BEGIN OTG_FS_IRQn 0 */
 
   /* USER CODE END OTG_FS_IRQn 0 */
@@ -240,10 +257,6 @@ void OTG_FS_IRQHandler(void) {
   /* USER CODE BEGIN OTG_FS_IRQn 1 */
 
   /* USER CODE END OTG_FS_IRQn 1 */
-}
-
-void HAL_CAN_RxCpltCallback(CAN_HandleTypeDef *can) {
-  receiveBytesFromCAN();
 }
 
 /* USER CODE BEGIN 1 */

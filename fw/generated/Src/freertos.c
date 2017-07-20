@@ -67,12 +67,10 @@ osMessageQId COMMAND_QUEUEHandle;
 /* USER CODE END Variables */
 
 /* Function prototypes -------------------------------------------------------*/
-void QToCANF(void const *argument);
-
-void QToCDCF(void const *argument);
+void QToCANF(void const * argument);
+void QToCDCF(void const * argument);
 
 extern void MX_USB_DEVICE_Init(void);
-
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* USER CODE BEGIN FunctionPrototypes */
@@ -128,7 +126,8 @@ void MX_FREERTOS_Init(void) {
 }
 
 /* QToCANF function */
-void QToCANF(void const *argument) {
+void QToCANF(void const * argument)
+{
   /* init code for USB_DEVICE */
   MX_USB_DEVICE_Init();
 
@@ -139,7 +138,8 @@ void QToCANF(void const *argument) {
 }
 
 /* QToCDCF function */
-void QToCDCF(void const *argument) {
+void QToCDCF(void const * argument)
+{
   /* USER CODE BEGIN QToCDCF */
   /* Infinite loop */
   QueueToUsb(argument);
