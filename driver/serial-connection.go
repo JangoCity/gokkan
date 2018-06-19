@@ -2,8 +2,6 @@ package driver
 
 import (
 	"github.com/jacobsa/go-serial/serial"
-	"github.com/michey/gokkan/data"
-	"github.com/michey/gokkan/messages"
 	"github.com/michey/gokkan/protocol"
 	"io"
 )

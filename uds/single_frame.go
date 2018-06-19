@@ -1,9 +1,9 @@
 package uds
 
-import "github.com/michey/gokkan/data"
+import "github.com/michey/gokkan/protocol"
 
 type ToFrame interface {
-	ToFrame(id uint32) data.CANFrame
+	ToFrame(id uint32) protocol.CANFrame
 }
 
 type SingleFrame struct {
@@ -12,7 +12,7 @@ type SingleFrame struct {
 	Length uint8
 }
 
-func (sf *SingleFrame) ToFrame(id uint32) *data.CANFrame {
+func (sf *SingleFrame) ToFrame(id uint32) *protocol.CANFrame {
 	//well, we can cheat. just use length. but by spec - [0,0,0,0, ..4 bit of length..]
 	b1 := sf.Length
 	b2 := sf.SID
@@ -22,7 +22,7 @@ func (sf *SingleFrame) ToFrame(id uint32) *data.CANFrame {
 	d[1] = uint8(b2)
 	dlc := sf.Length + uint8(len(sf.Data))
 
-	return &data.CANFrame{
+	return &protocol.CANFrame {
 		id,
 		0x00,
 		data.CAN_IDE_STD,
